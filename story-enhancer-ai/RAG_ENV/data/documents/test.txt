@@ -1,0 +1,13 @@
+Esta es una historia de prueba para el sistema RAG.
+
+Capítulo 1: El Comienzo
+En un reino lejano, había un joven aventurero llamado Alex.
+Alex tenía el sueño de convertirse en un gran mago.
+
+Capítulo 2: El Aprendizaje  
+Alex comenzó a estudiar en la Academia de Magia.
+Allí aprendió sobre hechizos, pociones y criaturas mágicas.
+
+Capítulo 3: La Aventura
+Un día, Alex recibió una misión especial del director.
+Debía encontrar un artefacto perdido en el Bosque Oscuro.

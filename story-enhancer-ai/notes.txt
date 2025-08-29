@@ -1,0 +1,58 @@
+python3 -m venv venv
+
+source venv/bin/activate
+
+mkdir -p ~/envs
+# Para tu LLaMA local
+python3 -m venv ~/envs/llama-venv
+
+# Para RAG / Chroma
+python3 -m venv ~/envs/rag-venv
+
+# Para agentes CrewAI
+python3 -m venv ~/envs/agents-venv
+
+-----
+
+# Asegúrate de estar en el entorno virtual
+source venv/bin/activate
+
+# Instalar dependencias del frontend
+pip install streamlit streamlit-chat streamlit-option-menu plotly altair stqdm jsonschema
+
+# O instalar desde requirements.txt actualizado
+pip install -r requirements.txt
+
+
+mkdir -p frontend/{pages,components,utils}
+mkdir -p static/{uploads,outputs,temp}
+mkdir -p logs
+
+
+story_enhancer/
+├── app.py                          # Aplicación principal
+├── run_frontend.sh                 # Script de ejecución
+├── requirements.txt                # Dependencias actualizadas
+├── .streamlit/
+│   └── config.toml                # Configuración de Streamlit
+├── frontend/
+│   ├── pages/
+│   │   ├── document_upload.py     # Carga de documentos
+│   │   ├── manuscript_editor.py   # Editor de manuscrito
+│   │   ├── agent_control.py       # Control de agentes
+│   │   ├── outputs_viewer.py      # Visualización de resultados
+│   │   └── settings_page.py       # Configuraciones
+│   ├── components/
+│   │   └── sidebar.py             # Componente sidebar
+│   └── utils/
+│       └── session_state.py       # Gestión de estado
+├── static/
+│   ├── uploads/                   # Archivos subidos
+│   ├── outputs/                   # Outputs generados
+│   └── temp/                      # Archivos temporales
+├── logs/                          # Archivos de log
+├── agents/                        # (de etapas anteriores)
+├── rag/                          # (de etapas anteriores)
+├── orchestrator/                 # (de etapas anteriores)
+├── config/                       # (de etapas anteriores)
+└── tests/                        # (de etapas anteriores)

@@ -1,0 +1,32 @@
+# Reglas Narrativas para la Historia
+
+## Tono y Estilo
+- **Género**: Fantasía épica juvenil
+- **Tono**: Aventurero pero con momentos de reflexión
+- **Estilo**: Narrativa en tercera persona, lenguaje accesible
+- **Ritmo**: Alternancia entre acción y desarrollo de personajes
+
+## Reglas del Sistema Mágico
+1. La magia tiene un costo: fatiga mental y física
+2. Los hechizos poderosos requieren tiempo de preparación
+3. La magia emocional (ira, miedo) es impredecible
+4. Los elementos opuestos se cancelan (Luz vs Sombra, Fuego vs Agua)
+5. La sobre-utilización causa "agotamiento mágico"
+
+## Estructura Narrativa
+- **Acto I**: Descubrimiento y llamada a la aventura
+- **Acto II**: Entrenamiento y primeros conflictos  
+- **Acto III**: Crisis y crecimiento del personaje
+- **Acto IV**: Confrontación final y resolución
+
+## Arcos de Personajes Obligatorios
+- Alex debe fallar antes de triunfar (crecimiento por adversidad)
+- Lyra debe superar su desconfianza inicial hacia los humanos
+- Eldrin debe revelar su pasado conectado con la oscuridad
+- El grupo debe separarse y reunirse al menos una vez
+
+## Elementos Recurrentes
+- Los sueños proféticos de Alex
+- Las runas antiguas como pistas
+- La importancia de la amistad sobre el poder individual
+- La conexión entre emociones y control mágico

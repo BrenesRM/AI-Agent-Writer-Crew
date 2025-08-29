@@ -1,0 +1,16 @@
+sudo apt update
+sudo apt install python3.12-venv -y
+
+# Crear entorno para RAG
+uv venv ~/envs/rag-env
+source ~/envs/rag-env/bin/activate
+pip install -r requirements-rag.txt
+
+# Crear entorno para LLM
+uv venv ~/envs/llm-env
+source ~/envs/llm-env/bin/activate
+pip install -r requirements-llm.txt
+
+
+source ~/envs/rag-env/bin/activate   # Activas RAG
+source ~/envs/llm-env/bin/activate   # Activas LLM

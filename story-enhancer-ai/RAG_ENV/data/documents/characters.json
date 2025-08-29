@@ -1,0 +1,63 @@
+{
+  "main_characters": {
+    "Alex": {
+      "full_name": "Alexander Brightward",
+      "age": 18,
+      "origin": "Valle Verde",
+      "magic_affinity": [
+        "Luz",
+        "Fuego"
+      ],
+      "personality": [
+        "valiente",
+        "curioso",
+        "impulsivo"
+      ],
+      "background": "Huérfano criado por granjeros, descubre su potencial mágico a los 17",
+      "arc": "De novato inseguro a héroe confiado"
+    },
+    "Eldrin": {
+      "full_name": "Maestro Eldrin Starweaver",
+      "age": 165,
+      "origin": "Academia de Lumina",
+      "magic_affinity": [
+        "Luz",
+        "Aire"
+      ],
+      "personality": [
+        "sabio",
+        "paciente",
+        "misterioso"
+      ],
+      "role": "Mentor principal de Alex",
+      "secret": "Fue alumno del anterior Archimago Oscuro"
+    },
+    "Lyra": {
+      "full_name": "Lyra Moonwhisper",
+      "age": 19,
+      "origin": "Bosques de Plata",
+      "magic_affinity": [
+        "Agua",
+        "Tierra"
+      ],
+      "personality": [
+        "intuitiva",
+        "protectora",
+        "independiente"
+      ],
+      "role": "Compañera de Alex, sanadora del grupo"
+    }
+  },
+  "antagonists": {
+    "Void_Shadow": {
+      "name": "Sombra del Vacío",
+      "origin": "Dimensión paralela",
+      "magic_affinity": [
+        "Sombra",
+        "Vacío"
+      ],
+      "motivation": "Consumir toda la luz y magia del mundo",
+      "weakness": "La magia de luz pura combinada"
+    }
+  }
+}
