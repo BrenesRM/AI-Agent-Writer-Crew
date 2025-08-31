@@ -1,0 +1,248 @@
+---
+- name: Configuración completa del entorno para Sistema Multi-Agente de Novelas
+  hosts: localhost
+  become: yes
+  vars:
+    project_name: "multi_agent_novel_system"
+    project_path: "/home/{{ ansible_user }}/{{ project_name }}"
+    python_version: "3.11"
+    venv_name: "novel_env"
+    
+  tasks:
+    - name: Actualizar cache de paquetes
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Instalar dependencias del sistema
+      apt:
+        name:
+          - python3
+          - python3-dev
+          - python3-venv
+          - python3-pip
+          - git
+          - build-essential
+          - cmake
+          - pkg-config
+          - libssl-dev
+          - libffi-dev
+          - sqlite3
+          - libsqlite3-dev
+          - curl
+          - wget
+          - unzip
+          - libreoffice
+          - pandoc
+        state: present
+
+    - name: Crear directorio del proyecto
+      file:
+        path: "{{ project_path }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0755'
+
+    - name: Crear estructura de carpetas del proyecto
+      file:
+        path: "{{ project_path }}/{{ item }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0755'
+      loop:
+        - agents
+        - agents/crews
+        - agents/tools
+        - rag
+        - rag/vectorstore
+        - rag/documents
+        - rag/processed
+        - orchestrator
+        - frontend
+        - outputs
+        - outputs/final_novel
+        - outputs/story_library
+        - outputs/character_guide
+        - outputs/video_prompts
+        - config
+        - tests
+        - scripts
+        - logs
+        - data
+        - data/manuscripts
+        - data/reference_docs
+        - llm_local
+        - utils
+
+    - name: Crear entorno virtual Python
+      become_user: "{{ ansible_user }}"
+      shell: |
+        cd {{ project_path }}
+        python3 -m venv {{ venv_name }}
+      args:
+        creates: "{{ project_path }}/{{ venv_name }}/bin/activate"
+
+    - name: Crear archivos base del proyecto
+      copy:
+        dest: "{{ project_path }}/{{ item.path }}"
+        content: "{{ item.content }}"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0644'
+      loop:
+        - path: "requirements.txt"
+          content: |
+            # Core AI & ML
+            langchain
+            langgraph
+            crewai
+            
+            # Vector Database & Embeddings
+            chromadb>=0.4.0
+            sentence-transformers>=2.2.2
+            
+            # Document Processing
+            pypdf2>=3.0.1
+            python-docx>=0.8.11
+            openpyxl>=3.1.2
+            markdown>=3.5.1
+            
+            # LLM Local Integration
+            llama-cpp-python>=0.2.0
+            
+            # Web Framework
+            streamlit>=1.28.0
+            gradio>=3.50.0
+            
+            # Utilities
+            python-dotenv>=1.0.0
+            pydantic>=2.5.0
+            sqlalchemy>=2.0.0
+            fastapi>=0.104.0
+            uvicorn>=0.24.0
+            
+            # Development
+            pytest>=7.4.0
+            black>=23.9.0
+            flake8>=6.1.0
+            
+        - path: ".env.example"
+          content: |
+            # LLM Configuration
+            LLM_MODEL_PATH="./model.gguf"
+            LLM_CONTEXT_LENGTH=4096
+            LLM_MAX_TOKENS=2048
+            
+            # Vector Database
+            CHROMA_PERSIST_DIRECTORY="./rag/vectorstore"
+            EMBEDDING_MODEL="all-MiniLM-L6-v2"
+            
+            # Project Configuration
+            PROJECT_NAME="Multi-Agent Novel System"
+            LOG_LEVEL="INFO"
+            
+            # API Keys (if needed)
+            # OPENAI_API_KEY=""
+            # PINECONE_API_KEY=""
+            
+        - path: "README.md"
+          content: |
+            # Sistema Multi-Agente para Creación de Novelas
+            
+            ## Descripción
+            Sistema inteligente que utiliza múltiples agentes especializados para mejorar y desarrollar manuscritos de novelas.
+            
+            ## Estructura del Proyecto
+            ```
+            multi_agent_novel_system/
+            ├── agents/           # Definición de agentes CrewAI
+            ├── rag/             # Sistema RAG y vectorstore
+            ├── orchestrator/    # LangGraph coordinator
+            ├── frontend/        # Interfaz Streamlit/Gradio
+            ├── outputs/         # Archivos generados
+            ├── config/          # Configuraciones
+            ├── utils/           # Utilidades
+            └── tests/           # Tests unitarios
+            ```
+            
+            ## Instalación
+            1. Ejecutar playbook de Ansible
+            2. Activar entorno virtual: `source novel_env/bin/activate`
+            3. Instalar dependencias: `pip install -r requirements.txt`
+            4. Copiar `.env.example` a `.env` y configurar
+            
+            ## Uso
+            ```bash
+            streamlit run frontend/app.py
+            ```
+            
+        - path: "config/__init__.py"
+          content: ""
+          
+        - path: "config/settings.py"
+          content: |
+            import os
+            from pathlib import Path
+            from pydantic import BaseSettings
+            
+            class Settings(BaseSettings):
+                project_name: str = "Multi-Agent Novel System"
+                project_root: Path = Path(__file__).parent.parent
+                
+                # LLM Configuration
+                llm_model_path: str = ""
+                llm_context_length: int = 4096
+                llm_max_tokens: int = 2048
+                
+                # RAG Configuration
+                chroma_persist_directory: str = "./rag/vectorstore"
+                embedding_model: str = "all-MiniLM-L6-v2"
+                
+                # Logging
+                log_level: str = "INFO"
+                
+                class Config:
+                    env_file = ".env"
+            
+            settings = Settings()
+            
+        - path: "utils/__init__.py"
+          content: ""
+          
+        - path: "agents/__init__.py"
+          content: ""
+          
+        - path: "rag/__init__.py"
+          content: ""
+          
+        - path: "orchestrator/__init__.py"
+          content: ""
+          
+        - path: "frontend/__init__.py"
+          content: ""
+
+    - name: Configurar permisos del proyecto
+      file:
+        path: "{{ project_path }}"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        recurse: yes
+
+    - name: Crear script de activación del entorno
+      copy:
+        dest: "{{ project_path }}/activate_env.sh"
+        content: |
+          #!/bin/bash
+          source {{ project_path }}/{{ venv_name }}/bin/activate
+          echo "Entorno activado. Directorio del proyecto: {{ project_path }}"
+          cd {{ project_path }}
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0755'
+
+  handlers:
+    - name: reload systemd
+      systemd:
+        daemon_reload: yes

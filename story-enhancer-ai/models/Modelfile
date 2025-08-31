@@ -1,7 +1,0 @@
-FROM /opt/ollama-models/llama-3.2-1b-instruct-q8_0.gguf
-
-TEMPLATE """
-{{ .Prompt }}
-"""
-
-PARAMETER temperature 0.7

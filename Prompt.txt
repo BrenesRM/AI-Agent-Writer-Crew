@@ -1,0 +1,123 @@
+Actúa como un arquitecto y programador experto en sistemas LLM locales con agentes (CrewAI, LangGraph, LangChain), RAG y frontends interactivos.  
+Quiero que me guíes a crear un proyecto paso a paso para Ubuntu Desktop, instalable y modular.  
+
+## Objetivo del Proyecto
+Un sistema multi-agente que:  
+1. Lea documentos de referencia (PDF, DOCX, TXT, JSON, MARKDOWN, XLSX).  
+2. Tome mi manuscrito de historia base.
+3. Use mi LLM local con llama.cpp en gguff arquitectura.
+4. Use un ciclo iterativo de agentes (CrewAI + LangGraph) para mejorar la historia.  
+5. Genere 4 outputs finales:  
+   - Documento final de la novela.  
+   - Biblioteca de la historia (JSON/Markdown con lore, timeline, lugares, reglas).  
+   - Guía de personajes (arcos, motivaciones, evolución).  
+   - Prompt pack para video AI (escenas clave con estilo cinematográfico).  
+
+## Roles de Agentes (CrewAI)
+
+The Lorekeeper → Analista de lore y reglas (RAG).
+Mantiene coherencia del mundo, reglas y detalles internos.
+
+The Character Developer → Editor de personajes y arcos narrativos. (RAG).
+Crea personajes complejos y consistentes, define evolución y relaciones.
+
+The Plot Weaver → Especialista en trama y estructura. (RAG).
+Diseña la historia, organiza eventos y controla el flujo narrativo.
+
+The Voice & Style Editor → Crítico literario (voz y estilo).
+Revisa coherencia de estilo, tono y voz narrativa.
+
+The Visualizer → Agente cinematográfico para prompts de video AI.
+Genera visualizaciones de escenas, personajes y escenarios.
+
+Coordinator (LangGraph) → Orquestador que controla el flujo iterativo.
+Gestiona la interacción entre todos los agentes, asegurando consistencia y eficiencia.
+
+The Researcher → Agente de investigación y referencias. (RAG).
+Busca información histórica, cultural, científica o geográfica para enriquecer la historia.
+
+The Continuity Auditor → Especialista en consistencia.
+Verifica continuidad de personajes, timelines y reglas del mundo.
+
+The Beta Reader → Simula la respuesta de distintos tipos de lectores.
+Ajusta tono, ritmo y engagement según público objetivo.
+
+The Pacing Specialist → Evaluador de ritmo y tensión narrativa.
+Optimiza el flujo de la historia, asegurando interés y suspenso.
+
+The Proofreader → Corrector gramatical y ortográfico.
+Asegura calidad final del manuscrito.
+
+The Innovation Scout → Agente creativo.
+Propone giros originales, combinaciones de géneros y elementos inesperados.  
+
+## Flujo de Trabajo (LangGraph)
+1. Ingesta de documentos en RAG (ChromaDB o Pinecone).  
+2. Carga de historia base.  
+3. Ciclo iterativo de agentes (Lorekeeper → Character Developer → Plot Weaver → Style Editor).  
+4. Evaluación del Coordinator:  
+   - Si hay cambios relevantes, repetir ciclo.  
+   - Si está estable, pasar a outputs.  
+5. Generación de los 4 outputs finales.  
+
+## Tecnologías por Capa
+- **Ansible**: para generar la instalacion modular.
+- **Lenguaje**: Python 3.11+  
+- **Gestión de entornos**: venv o conda  
+- **Agentes & Orquestación**: CrewAI + LangGraph + LangChain  
+- **Vector Store (RAG)**: ChromaDB (dev), Pinecone/Milvus (prod)  
+- **Embeddings**: all-MiniLM-L6-v2 (local)  
+- **LLM**: DeepSeek-R1-0528-Qwen3-8B-Q4_K_M.gguf (local).
+- **Frontend**: Streamlit o Gradio (para cargar docs, ver outputs y controlar el loop)  
+- **Persistencia**: SQLite para estado del grafo, JSON/Markdown para outputs finales  
+
+## Etapas del Proyecto
+Guíame en **múltiples etapas**, con instrucciones claras, comandos de terminal y ejemplos de código: 
+Output de seguimineto para continuar con siguientes capas y estructura de folders y nombres de files, para mantener la consistencia. 
+
+### Etapa 1: Preparación del entorno en Ubuntu
+- Usar Ansible para administrar el projecto.
+- Creacion de estructura de carpetas y archivos, no importan si estan vacidos.
+- Actualización de paquetes.  
+- Instalación de Python, pip, virtualenv.  
+- Instalación de dependencias base (git, build-essential, etc.).  
+- Creación del entorno del proyecto.  
+
+### Etapa 2: Backend y RAG
+- Instalación de LangChain, LangGraph, CrewAI, ChromaDB.  
+- Implementación de ingesta de documentos (PDF, DOCX, TXT).  
+- Implementación del indexado en vector DB.  
+- Script inicial para consultas al RAG.
+- Usar LLM local para hacer consultas cli al modelo y al RAG.  
+
+### Etapa 3: Definición de Agentes
+- Crear definición de roles en CrewAI (Lorekeeper, Character Developer, Plot Weaver, Style Editor, Visualizer).  
+- Integrar herramientas de cada agente.  
+- Probar interacciones entre ellos.  
+
+### Etapa 4: Orquestación (LangGraph)
+- Implementar grafo con el Coordinator.  
+- Configurar el ciclo iterativo.  
+- Prueba de loop básico (entrada → agentes → salida).  
+
+### Etapa 5: Frontend
+- Implementar interfaz en Streamlit/Gradio.  
+- Funciones: subir documentos, cargar manuscrito, mostrar outputs.  
+
+### Etapa 6: Outputs Finales
+- Exportar historia final en Markdown/DOCX.  
+- Exportar biblioteca narrativa en JSON/Markdown.  
+- Exportar guía de personajes.  
+- Exportar prompts cinematográficos.  
+
+### Etapa 7: Opcional - Integración con LLM Local
+- Instalar Ollama o vLLM en Ubuntu.  
+- Cargar un modelo local (Llama 3, Mixtral).  
+- Reemplazar GPT-4 por el modelo local en el pipeline.  
+
+## Instrucción de Estilo
+- Dame el **código completo de cada etapa**, listo para copiar y pegar.  
+- Explica cada paso con detalle.  
+- Incluye los **comandos exactos de Ubuntu** (apt, pip, etc.).  
+- Usa **estructura modular de carpetas** (ejemplo: /agents, /rag, /frontend, /orchestrator).  
+- Considera buenas prácticas de software (requirements.txt, README.md, .env, SOLID).
