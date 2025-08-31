@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Script de prueba para el sistema de agentes - Versión Corregida"""
+# -*- coding: utf-8 -*-
+"""Script de prueba para el sistema de agentes - VersiÃ³n Corregida"""
 
 import sys
 import logging
 from pathlib import Path
 
-# Añadir el directorio raíz al path
+# AÃ±adir el directorio raÃ­z al path
 project_root = Path(__file__).parent.parent
 sys.path.append(str(project_root))
 
@@ -14,11 +15,11 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
 def test_agent_initialization():
-    """Prueba la inicialización de agentes"""
-    print("?? Probando inicialización de agentes...")
+    """Prueba la inicializaciÃ³n de agentes"""
+    print("?? Probando inicializaciÃ³n de agentes...")
     
     try:
-        # Importar después de configurar el path
+        # Importar despuÃ©s de configurar el path
         from agents.agent_manager import AgentManager
         
         # Inicializar manager sin LLM
@@ -42,7 +43,7 @@ def test_agent_initialization():
         for agent in agents:
             print(f"   - {agent}")
         
-        # Probar obtener agente específico
+        # Probar obtener agente especÃ­fico
         lorekeeper = manager.get_agent('lorekeeper')
         if lorekeeper:
             print("? Agente Lorekeeper accesible")
@@ -52,11 +53,11 @@ def test_agent_initialization():
         return True
         
     except ImportError as e:
-        print(f"? Error de importación: {str(e)}")
-        print("?? Asegúrate de haber copiado todos los archivos de agentes")
+        print(f"? Error de importaciÃ³n: {str(e)}")
+        print("?? AsegÃºrate de haber copiado todos los archivos de agentes")
         return False
     except Exception as e:
-        print(f"? Error en inicialización: {str(e)}")
+        print(f"? Error en inicializaciÃ³n: {str(e)}")
         return False
 
 def test_agent_tools():
@@ -99,7 +100,7 @@ def test_agent_tools():
             return False
             
     except ImportError as e:
-        print(f"? Error de importación: {str(e)}")
+        print(f"? Error de importaciÃ³n: {str(e)}")
         return False
     except Exception as e:
         print(f"? Error probando herramientas: {str(e)}")
@@ -119,40 +120,40 @@ def test_individual_tools():
         # Texto de prueba
         test_text = """
         En el reino de Eldoria, la joven maga Lyra caminaba por el bosque encantado. 
-        Sus ojos azules brillaban con determinación mientras buscaba el cristal perdido.
+        Sus ojos azules brillaban con determinaciÃ³n mientras buscaba el cristal perdido.
         El viento susurraba secretos antiguos entre las hojas doradas.
         """
         
         tools_to_test = [
-            (WritingAnalyzer(), "texto de análisis", test_text),
-            (StyleAnalyzer(), "texto de análisis estilística", test_text),
+            (WritingAnalyzer(), "texto de anÃ¡lisis", test_text),
+            (StyleAnalyzer(), "texto de anÃ¡lisis estilÃ­stica", test_text),
             (CharacterAnalyzer(), "texto que contiene personajes", test_text),
             (ConsistencyChecker(), "texto a verificar", test_text),
             (PacingAnalyzer(), "texto para analizar ritmo", test_text),
             (PlotAnalyzer(), "texto narrativo para trama", test_text),
-            (IdeaGenerator(), "contexto de generación", "reino mágico con cristales"),
-            (VisualPromptGenerator(), "descripción de escena", "maga caminando por bosque encantado")
+            (IdeaGenerator(), "contexto de generaciÃ³n", "reino mÃ¡gico con cristales"),
+            (VisualPromptGenerator(), "descripciÃ³n de escena", "maga caminando por bosque encantado")
         ]
         
         successful_tools = 0
         
         for tool, param_name, test_input in tools_to_test:
             try:
-                # Crear argumentos dinámicamente
+                # Crear argumentos dinÃ¡micamente
                 kwargs = {param_name: test_input}
                 result = tool._run(**kwargs)
                 
-                if result and len(str(result)) > 10:  # Resultado no vacío
+                if result and len(str(result)) > 10:  # Resultado no vacÃ­o
                     print(f"   ? {tool.name}: OK")
                     successful_tools += 1
                 else:
-                    print(f"   ??  {tool.name}: Resultado vacío")
+                    print(f"   ??  {tool.name}: Resultado vacÃ­o")
                     
             except Exception as e:
                 print(f"   ? {tool.name}: {str(e)[:50]}...")
         
         print(f"\n?? Herramientas funcionando: {successful_tools}/{len(tools_to_test)}")
-        return successful_tools >= len(tools_to_test) * 0.7  # 70% de éxito
+        return successful_tools >= len(tools_to_test) * 0.7  # 70% de Ã©xito
         
     except ImportError as e:
         print(f"? Error importando herramientas: {str(e)}")
@@ -162,31 +163,31 @@ def test_individual_tools():
         return False
 
 def test_manuscript_analysis():
-    """Prueba análisis de manuscrito simple"""
-    print("\n?? Probando análisis de manuscrito...")
+    """Prueba anÃ¡lisis de manuscrito simple"""
+    print("\n?? Probando anÃ¡lisis de manuscrito...")
     
     try:
         from agents.agent_manager import AgentManager
         
         manager = AgentManager()
         
-        # Manuscrito de prueba más largo
+        # Manuscrito de prueba mÃ¡s largo
         test_manuscript = """
-        En el reino de Eldoria, el joven mago Kael descubrió un antiguo grimorio
-        en las ruinas de la torre de su maestro. El libro contenía hechizos
-        prohibidos que podrían cambiar el destino del reino para siempre.
+        En el reino de Eldoria, el joven mago Kael descubriÃ³ un antiguo grimorio
+        en las ruinas de la torre de su maestro. El libro contenÃ­a hechizos
+        prohibidos que podrÃ­an cambiar el destino del reino para siempre.
         
         Kael era conocido por su cabello dorado y sus ojos verdes como esmeraldas.
-        Su maestro, el anciano Aldric, había desaparecido misteriosamente hace tres días,
-        dejando solo una nota críptica: "El poder tiene un precio, y ese precio es la verdad."
+        Su maestro, el anciano Aldric, habÃ­a desaparecido misteriosamente hace tres dÃ­as,
+        dejando solo una nota crÃ­ptica: "El poder tiene un precio, y ese precio es la verdad."
         
-        Mientras Kael examinaba el grimorio, una sombra se movió en la esquina de la torre.
-        Los hechizos parecían susurrar su nombre, tentándolo con promesas de poder infinito.
+        Mientras Kael examinaba el grimorio, una sombra se moviÃ³ en la esquina de la torre.
+        Los hechizos parecÃ­an susurrar su nombre, tentÃ¡ndolo con promesas de poder infinito.
         Pero Kael recordaba las advertencias de Aldric sobre la magia oscura.
         
-        El reino se enfrentaba a una invasión de las Sombras del Vacío, criaturas
-        que se alimentaban de la esperanza y la luz. Solo la magia más poderosa
-        podría detenerlas, pero ¿a qué costo?
+        El reino se enfrentaba a una invasiÃ³n de las Sombras del VacÃ­o, criaturas
+        que se alimentaban de la esperanza y la luz. Solo la magia mÃ¡s poderosa
+        podrÃ­a detenerlas, pero Â¿a quÃ© costo?
         """
         
         # Establecer manuscrito
@@ -213,7 +214,7 @@ def test_manuscript_analysis():
                     successful_phases += 1
                 else:
                     error_msg = results.get('error', 'Error desconocido') if results else 'Sin resultados'
-                    print(f"   ??  Fase {phase} falló: {str(error_msg)[:100]}...")
+                    print(f"   ??  Fase {phase} fallÃ³: {str(error_msg)[:100]}...")
                     
             except Exception as e:
                 print(f"   ? Error en fase {phase}: {str(e)[:100]}...")
@@ -222,14 +223,14 @@ def test_manuscript_analysis():
         return successful_phases >= 1  # Al menos una fase debe funcionar
         
     except ImportError as e:
-        print(f"? Error de importación: {str(e)}")
+        print(f"? Error de importaciÃ³n: {str(e)}")
         return False
     except Exception as e:
-        print(f"? Error en análisis de manuscrito: {str(e)}")
+        print(f"? Error en anÃ¡lisis de manuscrito: {str(e)}")
         return False
 
 def test_with_llm():
-    """Prueba con modelo LLM si está disponible"""
+    """Prueba con modelo LLM si estÃ¡ disponible"""
     print("\n?? Probando con modelo LLM...")
     
     try:
@@ -243,7 +244,7 @@ def test_with_llm():
             "./llm_local/models/model.gguf",
             "/home/user/multi_agent_novel_system/llm_local/models/model.gguf",
             str(settings.llm_model_path) if settings.llm_model_path else None,
-            # Agregar más ubicaciones comunes
+            # Agregar mÃ¡s ubicaciones comunes
             "./llm_local/models/DeepSeek-R1-Distill-Qwen-1.5B-Q4_K_M.gguf",
             "/home/user/multi_agent_novel_system/llm_local/models/DeepSeek-R1-Distill-Qwen-1.5B-Q4_K_M.gguf"
         ]
@@ -262,11 +263,11 @@ def test_with_llm():
                 print(f"? Manager con LLM inicializado")
                 print(f"   LLM disponible: {summary['llm_available']}")
                 
-                # Probar una consulta simple si LLM está disponible
+                # Probar una consulta simple si LLM estÃ¡ disponible
                 if summary['llm_available']:
-                    print("?? Probando generación con LLM...")
-                    # Aquí podrías hacer una prueba simple del LLM
-                    # pero por ahora solo confirmamos que está disponible
+                    print("?? Probando generaciÃ³n con LLM...")
+                    # AquÃ­ podrÃ­as hacer una prueba simple del LLM
+                    # pero por ahora solo confirmamos que estÃ¡ disponible
                 
                 return True
                 
@@ -274,37 +275,37 @@ def test_with_llm():
                 print(f"? Error con LLM: {str(e)}")
                 return False
         else:
-            print("??  No se encontró modelo LLM - saltando prueba")
+            print("??  No se encontrÃ³ modelo LLM - saltando prueba")
             print("?? Para probar con LLM, coloca un modelo .gguf en ./llm_local/models/")
             return True
             
     except ImportError as e:
-        print(f"? Error de importación: {str(e)}")
+        print(f"? Error de importaciÃ³n: {str(e)}")
         return False
 
 def test_rag_integration():
-    """Prueba la integración con el sistema RAG"""
-    print("\n?? Probando integración RAG...")
+    """Prueba la integraciÃ³n con el sistema RAG"""
+    print("\n?? Probando integraciÃ³n RAG...")
     
     try:
         from agents.tools import RAGTool
         from rag.rag_manager import RAGManager
         
-        # Verificar que RAG esté funcionando
+        # Verificar que RAG estÃ© funcionando
         rag_manager = RAGManager()
         stats = rag_manager.get_stats()
         print(f"?? Vector store: {stats.get('total_documents', 0)} documentos")
         
         # Probar RAGTool
         rag_tool = RAGTool()
-        result = rag_tool._run("reino mágico", k=3)
+        result = rag_tool._run("reino mÃ¡gico", k=3)
         
         if result and len(result) > 20:
             print("? RAGTool funcionando correctamente")
             print(f"   Resultado: {result[:100]}...")
             return True
         else:
-            print("??  RAGTool retornó resultado vacío o muy corto")
+            print("??  RAGTool retornÃ³ resultado vacÃ­o o muy corto")
             return False
             
     except ImportError as e:
@@ -321,12 +322,12 @@ def main():
     print(f"?? Directorio del proyecto: {project_root}")
     
     tests = [
-        ("Inicialización de Agentes", test_agent_initialization),
+        ("InicializaciÃ³n de Agentes", test_agent_initialization),
         ("Herramientas de Agentes", test_agent_tools),
         ("Herramientas Individuales", test_individual_tools),
-        ("Integración RAG", test_rag_integration),
-        ("Análisis de Manuscrito", test_manuscript_analysis),
-        ("Integración con LLM", test_with_llm)
+        ("IntegraciÃ³n RAG", test_rag_integration),
+        ("AnÃ¡lisis de Manuscrito", test_manuscript_analysis),
+        ("IntegraciÃ³n con LLM", test_with_llm)
     ]
     
     results = []
@@ -351,7 +352,7 @@ def main():
     
     passed = 0
     for test_name, result in results:
-        status = "? PASÓ" if result else "? FALLÓ"
+        status = "? PASÃ“" if result else "? FALLÃ“"
         print(f"{status}: {test_name}")
         if result:
             passed += 1
@@ -359,15 +360,15 @@ def main():
     print(f"\n?? Resultado final: {passed}/{len(results)} pruebas pasaron")
     
     if passed == len(results):
-        print("?? ¡Todos los tests pasaron - Sistema de agentes completamente funcional!")
-        print("\n?? Siguiente paso: Ejecutar Etapa 4 - Orquestación LangGraph")
+        print("?? Â¡Todos los tests pasaron - Sistema de agentes completamente funcional!")
+        print("\n?? Siguiente paso: Ejecutar Etapa 4 - OrquestaciÃ³n LangGraph")
     elif passed >= len(results) * 0.7:
-        print("? La mayoría de tests pasaron - Sistema mayormente funcional")
-        print("?? Revisar tests fallidos para optimización")
+        print("? La mayorÃ­a de tests pasaron - Sistema mayormente funcional")
+        print("?? Revisar tests fallidos para optimizaciÃ³n")
     else:
-        print("??  Muchos tests fallaron - Revisar instalación y configuración")
+        print("??  Muchos tests fallaron - Revisar instalaciÃ³n y configuraciÃ³n")
         print("\n?? Pasos de troubleshooting:")
-        print("1. Verificar que todos los archivos de código estén copiados")
+        print("1. Verificar que todos los archivos de cÃ³digo estÃ©n copiados")
         print("2. Instalar dependencias: pip install nltk textblob")
         print("3. Configurar NLTK: python -c \"import nltk; nltk.download('punkt'); nltk.download('averaged_perceptron_tagger')\"")
         print("4. Verificar estructura de directorios con: tree agents/")
