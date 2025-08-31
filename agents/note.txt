@@ -1,0 +1,14 @@
+# 1. Reemplazar el archivo actual
+cd ~/multi_agent_novel_system/agents
+cp test_agents.py test_agents.py.backup  # backup del anterior
+# Copiar el contenido del artifact como test_agents.py
+
+# 2. Ejecutar las pruebas
+python test_agents.py
+
+# 3. Si hay errores de dependencias:
+pip install nltk textblob
+python -c "import nltk; nltk.download('punkt'); nltk.download('averaged_perceptron_tagger')"
+
+# 4. Verificar estructura
+tree agents/ -I "__pycache__"
