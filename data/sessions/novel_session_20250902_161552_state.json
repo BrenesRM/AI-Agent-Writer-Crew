@@ -1,0 +1,103 @@
+{
+  "session_id": "novel_session_20250902_161552",
+  "manuscript": "\n    En el reino de Aethermoor, la maga Lyra Stormwind descubrió un antiguo grimorio\n    que podría salvar al reino de las Sombras del Vacío. Con su compañero élfico\n    Thane Silverleaf, se embarcó en una peligrosa misión hacia las Montañas de Cristal.\n    \n    El grimorio contenía hechizos ancestrales que habían sido olvidados por siglos.\n    Pero usar tal poder tenía un precio que Lyra no estaba segura de poder pagar.\n    \n    Mientras tanto, las fuerzas oscuras del Lord Malachar avanzaban hacia la capital,\n    y el tiempo se agotaba para el reino de la luz.\n    ",
+  "manuscript_hash": "f4f137df52e964a90e6fa00dfa7eece3",
+  "requirements": {
+    "analysis_depth": "comprehensive",
+    "focus_areas": [
+      "worldbuilding",
+      "character_development",
+      "plot_structure"
+    ],
+    "output_format": "detailed_report"
+  },
+  "start_time": "2025-09-02T16:15:52.155643",
+  "iteration": 5,
+  "completed_nodes": [],
+  "failed_nodes": [],
+  "analysis_results": {},
+  "action_history": [
+    {
+      "action_id": "lorekeeper_analysis",
+      "timestamp": "2025-09-02T16:15:52.157293",
+      "status": "success",
+      "iteration": 1
+    },
+    {
+      "action_id": "character_development",
+      "timestamp": "2025-09-02T16:15:52.157362",
+      "status": "success",
+      "iteration": 1
+    },
+    {
+      "action_id": "style_refinement",
+      "timestamp": "2025-09-02T16:15:52.157406",
+      "status": "success",
+      "iteration": 1
+    },
+    {
+      "action_id": "lorekeeper_analysis",
+      "timestamp": "2025-09-02T16:15:52.158470",
+      "status": "success",
+      "iteration": 2
+    },
+    {
+      "action_id": "character_development",
+      "timestamp": "2025-09-02T16:15:52.158514",
+      "status": "success",
+      "iteration": 2
+    },
+    {
+      "action_id": "style_refinement",
+      "timestamp": "2025-09-02T16:15:52.158553",
+      "status": "success",
+      "iteration": 2
+    },
+    {
+      "action_id": "lorekeeper_analysis",
+      "timestamp": "2025-09-02T16:15:52.159893",
+      "status": "success",
+      "iteration": 3
+    },
+    {
+      "action_id": "character_development",
+      "timestamp": "2025-09-02T16:15:52.159936",
+      "status": "success",
+      "iteration": 3
+    },
+    {
+      "action_id": "lorekeeper_analysis",
+      "timestamp": "2025-09-02T16:15:52.163127",
+      "status": "success",
+      "iteration": 4
+    },
+    {
+      "action_id": "character_development",
+      "timestamp": "2025-09-02T16:15:52.163198",
+      "status": "success",
+      "iteration": 4
+    },
+    {
+      "action_id": "lorekeeper_analysis",
+      "timestamp": "2025-09-02T16:15:52.164179",
+      "status": "success",
+      "iteration": 5
+    },
+    {
+      "action_id": "character_development",
+      "timestamp": "2025-09-02T16:15:52.164222",
+      "status": "success",
+      "iteration": 5
+    }
+  ],
+  "consolidated_recommendations": [],
+  "quality_metrics": {},
+  "metadata": {
+    "manuscript_length": 572,
+    "word_count": 89,
+    "created_at": "2025-09-02T16:15:52.155676",
+    "last_updated": "2025-09-02T16:15:52.164256"
+  },
+  "processing_status": "initialized",
+  "error_log": []
+}

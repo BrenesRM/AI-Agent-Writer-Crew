@@ -2,7 +2,7 @@
 import random
 import logging
 from typing import Dict, Any, List
-from crewai_tools import BaseTool
+from crewai.tools import BaseTool
 from pydantic import BaseModel, Field
 
 class IdeaGeneratorInput(BaseModel):

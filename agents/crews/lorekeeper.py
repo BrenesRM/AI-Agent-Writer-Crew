@@ -1,4 +1,5 @@
 # agents/crews/lorekeeper.py
+from typing import Dict, Any
 from .base_agent import BaseNovelAgent
 from crewai import Agent
 
@@ -11,32 +12,32 @@ class LorekeeperAgent(BaseNovelAgent):
     
     def _create_lorekeeper(self) -> Agent:
         return self.create_agent(
-            role="Lorekeeper - Guardián del Conocimiento",
+            role="Lorekeeper - GuardiÃ¡n del Conocimiento",
             goal="""Mantener la coherencia y consistencia del mundo narrativo, 
-            asegurando que todos los elementos de lore, reglas mágicas, geografía, 
-            historia y mitología se mantengan coherentes a lo largo de la historia.""",
-            backstory="""Eres un erudito meticuloso con décadas de experiencia catalogando 
-            y organizando el conocimiento de mundos fantásticos. Tu obsesión por los detalles 
-            y la consistencia te ha convertido en el guardián definitivo del lore narrativo. 
+            asegurando que todos los elementos de lore, reglas mÃ¡gicas, geografÃ­a, 
+            historia y mitologÃ­a se mantengan coherentes a lo largo de la historia.""",
+            backstory="""Eres un erudito meticuloso con dÃ©cadas de experiencia catalogando 
+            y organizando el conocimiento de mundos fantÃ¡sticos. Tu obsesiÃ³n por los detalles 
+            y la consistencia te ha convertido en el guardiÃ¡n definitivo del lore narrativo. 
             
-            Conoces cada ley mágica, cada linaje noble, cada evento histórico y cada tradición 
-            cultural. Tu trabajo es esencial para crear mundos que se sientan auténticos y 
-            vividos, donde cada detalle tiene su lugar y propósito.
+            Conoces cada ley mÃ¡gica, cada linaje noble, cada evento histÃ³rico y cada tradiciÃ³n 
+            cultural. Tu trabajo es esencial para crear mundos que se sientan autÃ©nticos y 
+            vividos, donde cada detalle tiene su lugar y propÃ³sito.
             
-            Siempre consultas los documentos de referencia antes de hacer cualquier afirmación 
+            Siempre consultas los documentos de referencia antes de hacer cualquier afirmaciÃ³n 
             sobre el mundo, y mantienes un registro mental de todas las reglas establecidas."""
         )
     
     def analyze_worldbuilding(self, manuscript: str) -> Dict[str, Any]:
-        """Analiza la construcción del mundo en el manuscrito"""
+        """Analiza la construcciÃ³n del mundo en el manuscrito"""
         task_description = f"""
-        Analiza el siguiente manuscrito enfocándote en los elementos de worldbuilding:
+        Analiza el siguiente manuscrito enfocÃ¡ndote en los elementos de worldbuilding:
         
         MANUSCRITO:
         {manuscript}
         
         TAREAS A REALIZAR:
-        1. Usa la herramienta RAG para consultar información relevante sobre el mundo
+        1. Usa la herramienta RAG para consultar informaciÃ³n relevante sobre el mundo
         2. Identifica todos los elementos de lore presentes (magia, razas, lugares, historia)
         3. Verifica consistencia interna usando el verificador de consistencia
         4. Detecta posibles contradicciones o inconsistencias
@@ -44,12 +45,12 @@ class LorekeeperAgent(BaseNovelAgent):
         
         FORMATO DE SALIDA:
         - Elementos de lore identificados
-        - Verificación de consistencia
+        - VerificaciÃ³n de consistencia
         - Contradicciones encontradas
         - Recomendaciones para mejorar la coherencia
         """
         
-        # Aquí se ejecutaría la tarea del agente
+        # AquÃ­ se ejecutarÃ­a la tarea del agente
         return {"task": task_description, "agent": "lorekeeper"}
     
     def validate_rules(self, text: str, rule_type: str = "magic") -> str:
@@ -60,7 +61,7 @@ class LorekeeperAgent(BaseNovelAgent):
         {text}
         
         Consulta la base de conocimiento para verificar reglas establecidas previamente
-        y asegúrate de que no haya violaciones a la consistencia del mundo.
+        y asegÃºrate de que no haya violaciones a la consistencia del mundo.
         """
         
         return task_description
