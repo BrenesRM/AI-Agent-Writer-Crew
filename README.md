@@ -14,9 +14,10 @@
 - Logging y manejo de errores robusto.
 
 #### Sugerencias menores
-- Conectar los métodos `execute` con los agentes reales para producción.
-- Si agregas nuevos agentes, solo necesitas crear la clase y añadirla en la inicialización del grafo.
-- Considera agregar nodos de consolidación si tu flujo requiere combinar resultados de varios agentes antes de la salida final.
+Las siguientes acciones optimizarán la orquestación y facilitarán la escalabilidad del sistema:
+- Conecta los métodos `execute` de cada nodo con la lógica de los agentes reales para pasar de simulación a producción.
+- Al agregar nuevos agentes, crea su clase correspondiente y añádela en la inicialización del grafo para integrarlos automáticamente al flujo.
+- Si tu flujo requiere combinar resultados de varios agentes antes de la salida final, implementa nodos de consolidación para centralizar y procesar esos resultados.
 
 ---
 
