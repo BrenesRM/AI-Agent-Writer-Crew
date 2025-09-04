@@ -3,20 +3,113 @@
 ## ? ETAPA 1 COMPLETADA: Preparación del Entorno
 
 ### Componentes Implementados:
-- **Ansible Playbook**: Automatización completa de instalación
-- **Estructura de proyecto**: 15 directorios organizados modularmente
-- **Configuración base**: `.env.example`, `requirements.txt`, `README.md`
-- **Scripts de utilidad**: `activate_env.sh`, `setup_env.py`
-- **Sistema de configuración**: `config/settings.py` con Pydantic
 
 ### Tecnologías Configuradas:
-- ? Python 3.11+ 
-- ? Entorno virtual automático
-- ? Dependencias del sistema (build-essential, cmake, etc.)
-- ? Estructura modular SOLID
+
+
+# AI-Agent-Writer-Crew
+
+## Descripción
+
+**AI-Agent-Writer-Crew** es un sistema multi-agente modular diseñado para asistir en la escritura, análisis y mejora de novelas. Utiliza agentes especializados y herramientas avanzadas para automatizar tareas creativas y técnicas, permitiendo la generación iterativa de manuscritos de alta calidad.
+
+## Características principales
+
+- **Agentes especializados:**  
+   11 agentes, cada uno enfocado en áreas clave como desarrollo de personajes, trama, estilo, visualización, investigación, auditoría de continuidad, ritmo, corrección, innovación y lore.
+
+- **Herramientas integradas:**  
+   Análisis de escritura, estilo, personajes, consistencia, ritmo, trama, generación de ideas, prompts visuales y búsqueda semántica (RAG).
+
+- **Gestión centralizada:**  
+   El `AgentManager` coordina la ejecución de los agentes y la agregación de resultados.
+
+- **Orquestación avanzada:**  
+   Flujo de trabajo definido con LangGraph, permitiendo ciclos iterativos de mejora y colaboración entre agentes.
+
+- **Sistema RAG:**  
+   Ingesta y búsqueda semántica de documentos para enriquecer el proceso creativo.
+
+- **Integración con LLM locales:**  
+   Soporte para modelos como Llama para generación y análisis de texto.
+
+- **Frontend interactivo:**  
+   Interfaz planeada con Streamlit o Gradio para facilitar la interacción con el sistema.
+
+- **Generadores de salida:**  
+   Producción de manuscritos, bibliotecas de lore, guías de personajes y prompts visuales.
+
+## Estructura del proyecto
+
+```
+agents/
+   crews/                # Definición de agentes especializados
+   tools/                # Herramientas de análisis y creatividad
+   agent_manager.py      # Coordinador central de agentes
+orchestrator/
+   workflow_graph.py     # Orquestación del flujo de trabajo
+rag/
+   document_processor.py # Ingesta de documentos
+   vector_store.py       # Almacenamiento vectorial
+   rag_manager.py        # Gestión del sistema RAG
+llm_local/
+   llama_manager.py      # Integración con modelos LLM locales
+frontend/               # Interfaz de usuario (Streamlit/Gradio)
+outputs/
+   generators/           # Generadores de manuscritos y recursos
+README.md               # Documentación principal
+```
+
+## Instalación
+
+1. Clona el repositorio:
+    ```bash
+    git clone https://github.com/tu_usuario/AI-Agent-Writer-Crew.git
+    ```
+2. Instala las dependencias:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+## Uso
+
+1. Configura los agentes y herramientas según tus necesidades.
+2. Ejecuta el flujo de trabajo principal desde el orquestador.
+3. Accede a la interfaz frontend para interactuar con el sistema.
+
+## Ejemplo de uso
+
+1. **Preparar el manuscrito inicial:**  
+    Coloca tu borrador o documento en la carpeta `inputs/`.
+
+2. **Ejecutar el sistema multi-agente:**  
+    Desde la terminal, ejecuta el orquestador principal:
+    ```bash
+    python orchestrator/workflow_graph.py
+    ```
+
+3. **Interactuar con los resultados:**  
+    - Revisa los análisis y mejoras generados en la carpeta `outputs/`.
+    - Accede a la interfaz gráfica (si está habilitada):
+       ```bash
+       streamlit run frontend/app.py
+       ```
+    - Explora los informes de agentes, guías de personajes, prompts visuales y manuscritos mejorados.
+
+4. **Iterar y mejorar:**  
+    Puedes ajustar los parámetros de los agentes en sus archivos de configuración y volver a ejecutar el flujo para obtener nuevas versiones y sugerencias.
 
 ---
 
+Este ejemplo te guía para aprovechar el sistema desde la preparación del texto hasta la revisión de los resultados generados por los agentes.
+
+## Contribución
+
+Las contribuciones son bienvenidas. Por favor, abre un issue o envía un pull request para sugerencias y mejoras.
+
+## Licencia
+
+Este proyecto está bajo la licencia MIT.
 ## ? ETAPA 2 COMPLETADA: Backend RAG
 
 ### Componentes Implementados:
