@@ -1,4 +1,5 @@
-# Worldbuilding: Reino de Badra
+# Worldbuilding: Reino de Aetheria
+
 ## Geografía
 El Reino de Aetheria se extiende por tres continentes principales:
 - **Lumina**: Continente de la luz, hogar de la Academia de Magia
