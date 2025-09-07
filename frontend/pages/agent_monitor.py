@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import streamlit as st
 import time
 import pandas as pd
@@ -6,10 +7,10 @@ import plotly.graph_objects as go
 import plotly.express as px
 
 def render_performance_tab(agent_manager):
-    """Tab de rendimiento y métricas"""
+    """Tab de rendimiento y metricas"""
     st.subheader("📊 Rendimiento de Agentes")
     
-    # Métricas de rendimiento general
+    # Metricas de rendimiento general
     col1, col2, col3 = st.columns(3)
     
     with col1:
@@ -30,66 +31,66 @@ def render_performance_tab(agent_manager):
     
     with col3:
         st.metric(
-            "Tasa de Éxito Global",
+            "Tasa de Exito Global",
             "95.7%",
             delta="1.2%",
             help="Porcentaje de tareas completadas exitosamente"
         )
     
-    # Gráficos de rendimiento
+    # Graficos de rendimiento
     st.markdown("---")
     
-    # Gráfico de rendimiento por agente
+    # Grafico de rendimiento por agente
     col1, col2 = st.columns(2)
     
     with col1:
         st.subheader("📈 Rendimiento por Agente")
         
-        # Datos simulados para el gráfico
+        # Datos simulados para el grafico
         performance_data = {
             'Agente': ['Lorekeeper', 'Character Developer', 'Plot Weaver', 'Style Editor', 'Visualizer'],
             'Tareas Completadas': [45, 38, 52, 41, 29],
-            'Tasa de Éxito (%)': [96.2, 94.8, 97.5, 93.1, 91.7]
+            'Tasa de Exito (%)': [96.2, 94.8, 97.5, 93.1, 91.7]
         }
         
         df_perf = pd.DataFrame(performance_data)
         
-        # Gráfico de barras
+        # Grafico de barras
         fig = px.bar(
             df_perf, 
             x='Agente', 
             y='Tareas Completadas',
             title="Tareas Completadas por Agente",
-            color='Tasa de Éxito (%)',
+            color='Tasa de Exito (%)',
             color_continuous_scale='Viridis'
         )
         fig.update_layout(height=400)
         st.plotly_chart(fig, use_container_width=True)
     
     with col2:
-        st.subheader("🎯 Tasa de Éxito")
+        st.subheader("🎯 Tasa de Exito")
         
-        # Gráfico de dona
+        # Grafico de dona
         fig = go.Figure(data=[go.Pie(
             labels=performance_data['Agente'],
-            values=performance_data['Tasa de Éxito (%)'],
+            values=performance_data['Tasa de Exito (%)'],
             hole=.3,
             textinfo="label+percent",
             textposition="inside"
         )])
         
         fig.update_layout(
-            title="Distribución de Tasa de Éxito",
+            title="Distribucion de Tasa de Exito",
             height=400,
             showlegend=True
         )
         st.plotly_chart(fig, use_container_width=True)
     
-    # Métricas temporales
+    # Metricas temporales
     st.markdown("---")
-    st.subheader("⏱️ Análisis Temporal")
+    st.subheader("⏱️ Analisis Temporal")
     
-    # Gráfico de líneas temporal
+    # Grafico de lineas temporal
     import numpy as np
     
     # Generar datos temporales simulados
@@ -105,7 +106,7 @@ def render_performance_tab(agent_manager):
     # Crear DataFrame temporal
     df_temporal = pd.DataFrame(agents_data, index=time_range)
     
-    # Gráfico de líneas
+    # Grafico de lineas
     fig = go.Figure()
     
     for agent in df_temporal.columns:
@@ -118,18 +119,18 @@ def render_performance_tab(agent_manager):
         ))
     
     fig.update_layout(
-        title="Actividad de Agentes en el Tiempo (Últimos 30 días)",
+        title="Actividad de Agentes en el Tiempo (Ultimos 30 dias)",
         xaxis_title="Fecha",
-        yaxis_title="Tareas por Día",
+        yaxis_title="Tareas por Dia",
         height=400,
         hovermode='x unified'
     )
     
     st.plotly_chart(fig, use_container_width=True)
     
-    # Tabla de estadísticas detalladas
+    # Tabla de estadisticas detalladas
     st.markdown("---")
-    st.subheader("📋 Estadísticas Detalladas")
+    st.subheader("📋 Estadisticas Detalladas")
     
     detailed_stats = pd.DataFrame({
         'Agente': ['Lorekeeper', 'Character Developer', 'Plot Weaver', 'Style Editor', 'Visualizer'],
@@ -138,7 +139,7 @@ def render_performance_tab(agent_manager):
         'Tiempo Promedio (s)': [2.1, 3.4, 1.8, 4.2, 2.7],
         'Memoria Usada (MB)': [45, 67, 38, 72, 51],
         'CPU Promedio (%)': [12.3, 18.7, 9.4, 22.1, 14.8],
-        'Última Optimización': ['2h ago', '1h ago', '3h ago', '30min ago', '45min ago']
+        'Ultima Optimizacion': ['2h ago', '1h ago', '3h ago', '30min ago', '45min ago']
     })
     
     st.dataframe(detailed_stats, use_container_width=True)
@@ -151,7 +152,7 @@ def render_performance_tab(agent_manager):
     alerts = [
         {'type': 'warning', 'agent': 'Style Editor', 'message': 'Tiempo de respuesta por encima del promedio (4.2s vs 2.5s esperado)'},
         {'type': 'info', 'agent': 'Visualizer', 'message': 'Rendimiento estable, considerar aumentar carga de trabajo'},
-        {'type': 'success', 'agent': 'Plot Weaver', 'message': 'Excelente rendimiento - 97.5% de éxito'},
+        {'type': 'success', 'agent': 'Plot Weaver', 'message': 'Excelente rendimiento - 97.5% de exito'},
     ]
     
     for alert in alerts:
@@ -173,11 +174,11 @@ def render_realtime_tab(agent_manager):
         # Placeholder para auto-refresh
         placeholder = st.empty()
         
-        # Simulación de datos en tiempo real
+        # Simulacion de datos en tiempo real
         with placeholder.container():
             render_realtime_content()
         
-        # Auto-refresh (en una implementación real, usar st.rerun() con timer)
+        # Auto-refresh (en una implementacion real, usar st.rerun() con timer)
         time.sleep(5)
     else:
         render_realtime_content()
@@ -206,14 +207,14 @@ def render_realtime_content():
     
     # Simular log en tiempo real
     activity_log = [
-        {'timestamp': '14:35:23', 'agent': 'Character Developer', 'action': 'Análisis de personaje completado', 'status': 'success'},
-        {'timestamp': '14:35:18', 'agent': 'Plot Weaver', 'action': 'Iniciando análisis de estructura narrativa', 'status': 'info'},
+        {'timestamp': '14:35:23', 'agent': 'Character Developer', 'action': 'Analisis de personaje completado', 'status': 'success'},
+        {'timestamp': '14:35:18', 'agent': 'Plot Weaver', 'action': 'Iniciando analisis de estructura narrativa', 'status': 'info'},
         {'timestamp': '14:35:12', 'agent': 'Lorekeeper', 'action': 'Consulta RAG exitosa - 5 documentos encontrados', 'status': 'success'},
         {'timestamp': '14:35:08', 'agent': 'Style Editor', 'action': 'Procesando mejoras de estilo', 'status': 'processing'},
         {'timestamp': '14:35:03', 'agent': 'Visualizer', 'action': 'Generando prompt visual para escena 1', 'status': 'processing'},
-        {'timestamp': '14:34:58', 'agent': 'Proofreader', 'action': 'Corrección ortográfica completada', 'status': 'success'},
+        {'timestamp': '14:34:58', 'agent': 'Proofreader', 'action': 'Correccion ortografica completada', 'status': 'success'},
         {'timestamp': '14:34:52', 'agent': 'Innovation Scout', 'action': 'Identificadas 3 oportunidades creativas', 'status': 'success'},
-        {'timestamp': '14:34:47', 'agent': 'Beta Reader', 'action': 'Simulación de feedback de lector', 'status': 'processing'},
+        {'timestamp': '14:34:47', 'agent': 'Beta Reader', 'action': 'Simulacion de feedback de lector', 'status': 'processing'},
     ]
     
     # Contenedor con scroll para el log
@@ -243,11 +244,11 @@ def render_realtime_content():
             else:
                 st.info(f"`{entry['timestamp']}` {status_icon} **{entry['agent']}**: {entry['action']}")
     
-    # Gráfico de actividad en tiempo real
+    # Grafico de actividad en tiempo real
     st.markdown("---")
     st.subheader("📊 Actividad por Minuto")
     
-    # Generar datos simulados para gráfico en tiempo real
+    # Generar datos simulados para grafico en tiempo real
     import random
     
     minutes = [f"14:{30+i:02d}" for i in range(10)]
@@ -264,7 +265,7 @@ def render_realtime_content():
     ))
     
     fig.update_layout(
-        title="Actividad de Agentes (Últimos 10 minutos)",
+        title="Actividad de Agentes (Ultimos 10 minutos)",
         xaxis_title="Tiempo",
         yaxis_title="Acciones por Minuto",
         height=300,
@@ -282,7 +283,7 @@ def render_realtime_content():
     
     with col2:
         if st.button("📋 Exportar Log"):
-            # Simular exportación
+            # Simular exportacion
             st.success("📄 Log exportado a activity_log.csv")
     
     with col3:
@@ -291,23 +292,23 @@ def render_realtime_content():
             st.success("🗑️ Log limpiado exitosamente")
 
 def render_advanced_config_tab(agent_manager):
-    """Tab de configuración avanzada"""
-    st.subheader("⚙️ Configuración Avanzada de Agentes")
+    """Tab de configuracion avanzada"""
+    st.subheader("⚙️ Configuracion Avanzada de Agentes")
     
-    st.warning("⚠️ **Advertencia**: Los cambios en esta sección pueden afectar el rendimiento del sistema.")
+    st.warning("⚠️ **Advertencia**: Los cambios en esta seccion pueden afectar el rendimiento del sistema.")
     
-    # Configuración global
-    st.markdown("### 🌐 Configuración Global")
+    # Configuracion global
+    st.markdown("### 🌐 Configuracion Global")
     
     col1, col2 = st.columns(2)
     
     with col1:
         max_concurrent_agents = st.slider(
-            "Máximo agentes concurrentes:",
+            "Maximo agentes concurrentes:",
             min_value=1,
             max_value=11,
             value=5,
-            help="Número máximo de agentes que pueden ejecutarse simultáneamente"
+            help="Numero maximo de agentes que pueden ejecutarse simultaneamente"
         )
         
         timeout_seconds = st.slider(
@@ -315,16 +316,16 @@ def render_advanced_config_tab(agent_manager):
             min_value=10,
             max_value=300,
             value=60,
-            help="Tiempo máximo antes de cancelar una tarea"
+            help="Tiempo maximo antes de cancelar una tarea"
         )
     
     with col2:
         memory_limit_mb = st.slider(
-            "Límite de memoria por agente (MB):",
+            "Limite de memoria por agente (MB):",
             min_value=50,
             max_value=500,
             value=150,
-            help="Límite de memoria RAM por agente"
+            help="Limite de memoria RAM por agente"
         )
         
         retry_attempts = st.slider(
@@ -332,12 +333,12 @@ def render_advanced_config_tab(agent_manager):
             min_value=0,
             max_value=5,
             value=2,
-            help="Número de reintentos en caso de error"
+            help="Numero de reintentos en caso de error"
         )
     
-    # Configuración por agente
+    # Configuracion por agente
     st.markdown("---")
-    st.markdown("### 🤖 Configuración por Agente")
+    st.markdown("### 🤖 Configuracion por Agente")
     
     # Selector de agente para configurar
     agents_list = ['LorekeeperAgent', 'CharacterDeveloperAgent', 'PlotWeaverAgent', 
@@ -357,7 +358,7 @@ def render_advanced_config_tab(agent_manager):
             agent_enabled = st.checkbox(f"Habilitar {selected_agent_config}", value=True)
             agent_priority = st.selectbox(
                 "Prioridad:",
-                options=['Baja', 'Normal', 'Alta', 'Crítica'],
+                options=['Baja', 'Normal', 'Alta', 'Critica'],
                 index=1
             )
         
@@ -372,25 +373,25 @@ def render_advanced_config_tab(agent_manager):
             )
             
             agent_max_tokens = st.slider(
-                "Máximo tokens de respuesta:",
+                "Maximo tokens de respuesta:",
                 min_value=100,
                 max_value=4000,
                 value=1000,
-                help="Longitud máxima de las respuestas"
+                help="Longitud maxima de las respuestas"
             )
         
         with col3:
             agent_frequency_penalty = st.slider(
-                "Penalización por frecuencia:",
+                "Penalizacion por frecuencia:",
                 min_value=0.0,
                 max_value=2.0,
                 value=0.5,
                 step=0.1,
-                help="Reduce repetición de palabras"
+                help="Reduce repeticion de palabras"
             )
             
             agent_presence_penalty = st.slider(
-                "Penalización por presencia:",
+                "Penalizacion por presencia:",
                 min_value=0.0,
                 max_value=2.0,
                 value=0.3,
@@ -398,9 +399,9 @@ def render_advanced_config_tab(agent_manager):
                 help="Fomenta temas nuevos"
             )
     
-    # Configuración de herramientas
+    # Configuracion de herramientas
     st.markdown("---")
-    st.markdown("### 🛠️ Configuración de Herramientas")
+    st.markdown("### 🛠️ Configuracion de Herramientas")
     
     tools_config = {
         'RAG Tool': {
@@ -409,11 +410,11 @@ def render_advanced_config_tab(agent_manager):
         },
         'Writing Analyzer': {
             'enabled': st.checkbox('Writing Analyzer', value=True),
-            'complexity_level': st.selectbox('Nivel de complejidad análisis:', ['Básico', 'Intermedio', 'Avanzado'], key='write_complex')
+            'complexity_level': st.selectbox('Nivel de complejidad analisis:', ['Basico', 'Intermedio', 'Avanzado'], key='write_complex')
         },
         'Character Analyzer': {
             'enabled': st.checkbox('Character Analyzer', value=True),
-            'depth_analysis': st.checkbox('Análisis profundo de personajes', value=True, key='char_depth')
+            'depth_analysis': st.checkbox('Analisis profundo de personajes', value=True, key='char_depth')
         }
     }
     
@@ -427,7 +428,7 @@ def render_advanced_config_tab(agent_manager):
         enable_performance_monitoring = st.checkbox(
             "Habilitar monitoreo de rendimiento",
             value=True,
-            help="Registra métricas de rendimiento de cada agente"
+            help="Registra metricas de rendimiento de cada agente"
         )
         
         performance_alert_threshold = st.slider(
@@ -435,14 +436,14 @@ def render_advanced_config_tab(agent_manager):
             min_value=50,
             max_value=95,
             value=80,
-            help="Porcentaje de éxito mínimo antes de generar alerta"
+            help="Porcentaje de exito minimo antes de generar alerta"
         )
     
     with col2:
         enable_error_notifications = st.checkbox(
             "Notificaciones de error",
             value=True,
-            help="Envía notificaciones cuando ocurren errores"
+            help="Envia notificaciones cuando ocurren errores"
         )
         
         log_level = st.selectbox(
@@ -452,14 +453,14 @@ def render_advanced_config_tab(agent_manager):
             help="Nivel de detalle en los logs"
         )
     
-    # Botones de acción
+    # Botones de accion
     st.markdown("---")
     
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        if st.button("💾 Guardar Configuración", type="primary"):
-            # Simular guardado de configuración
+        if st.button("💾 Guardar Configuracion", type="primary"):
+            # Simular guardado de configuracion
             config_data = {
                 'max_concurrent_agents': max_concurrent_agents,
                 'timeout_seconds': timeout_seconds,
@@ -477,32 +478,32 @@ def render_advanced_config_tab(agent_manager):
             
             # Guardar en session state
             st.session_state.agent_config = config_data
-            st.success("✅ Configuración guardada exitosamente")
+            st.success("✅ Configuracion guardada exitosamente")
     
     with col2:
         if st.button("🔄 Restablecer por Defecto"):
-            if st.confirm("¿Restablecer toda la configuración a valores por defecto?"):
-                # Limpiar configuración
+            if st.confirm("¿Restablecer toda la configuracion a valores por defecto?"):
+                # Limpiar configuracion
                 if 'agent_config' in st.session_state:
                     del st.session_state.agent_config
-                st.success("🔄 Configuración restablecida")
+                st.success("🔄 Configuracion restablecida")
                 st.rerun()
     
     with col3:
-        if st.button("📤 Exportar Configuración"):
-            # Simular exportación
-            st.success("📄 Configuración exportada a config.json")
+        if st.button("📤 Exportar Configuracion"):
+            # Simular exportacion
+            st.success("📄 Configuracion exportada a config.json")
     
     with col4:
-        if st.button("📥 Importar Configuración"):
+        if st.button("📥 Importar Configuracion"):
             uploaded_config = st.file_uploader(
-                "Selecciona archivo de configuración:",
+                "Selecciona archivo de configuracion:",
                 type=['json'],
                 key="config_upload"
             )
             if uploaded_config:
-                st.success("📥 Configuración importada exitosamente")_monitor_page(agent_manager):
-    """Renderiza la página de monitoreo de agentes"""
+                st.success("📥 Configuracion importada exitosamente")_monitor_page(agent_manager):
+    """Renderiza la pagina de monitoreo de agentes"""
     
     st.header("🤖 Monitor de Agentes")
     st.markdown("*Supervisa el rendimiento y actividad de los agentes especializados*")
@@ -512,7 +513,7 @@ def render_advanced_config_tab(agent_manager):
         "👥 Estado de Agentes",
         "📊 Rendimiento",
         "📈 Actividad en Tiempo Real",
-        "⚙️ Configuración Avanzada"
+        "⚙️ Configuracion Avanzada"
     ])
     
     with tab1:
@@ -531,11 +532,11 @@ def render_agents_status_tab(agent_manager):
     """Tab de estado de los agentes"""
     st.subheader("👥 Estado de los Agentes")
     
-    # Obtener información de agentes
+    # Obtener informacion de agentes
     try:
         agents = agent_manager.list_agents()
         
-        # Métricas generales
+        # Metricas generales
         col1, col2, col3, col4 = st.columns(4)
         
         with col1:
@@ -558,17 +559,17 @@ def render_agents_status_tab(agent_manager):
         # Lista detallada de agentes
         st.subheader("📋 Detalle de Agentes")
         
-        # Crear DataFrame para mejor visualización
+        # Crear DataFrame para mejor visualizacion
         agents_data = []
         for agent in agents:
             agents_data.append({
                 'Nombre': agent['name'],
                 'Especialidad': agent['role'],
                 'Estado': get_status_emoji(agent.get('status', 'idle')) + ' ' + agent.get('status', 'idle').title(),
-                'Última Actividad': agent.get('last_activity', 'Nunca'),
+                'Ultima Actividad': agent.get('last_activity', 'Nunca'),
                 'Tareas': agent.get('tasks_completed', 0),
                 'Tiempo Activo': agent.get('active_time', '0m'),
-                'Éxito Rate': f"{agent.get('success_rate', 95):.1f}%"
+                'Exito Rate': f"{agent.get('success_rate', 95):.1f}%"
             })
         
         df = pd.DataFrame(agents_data)
@@ -613,10 +614,10 @@ def render_agents_status_tab(agent_manager):
             render_agent_detail_card(agent_info)
     
     except Exception as e:
-        st.error(f"❌ Error obteniendo información de agentes: {str(e)}")
+        st.error(f"❌ Error obteniendo informacion de agentes: {str(e)}")
         
-        # Mostrar información simulada
-        st.info("📊 Mostrando datos simulados para demostración")
+        # Mostrar informacion simulada
+        st.info("📊 Mostrando datos simulados para demostracion")
         render_simulated_agents_data()
 
 def get_status_emoji(status):
@@ -631,7 +632,7 @@ def get_status_emoji(status):
     return status_map.get(status.lower(), '⚪')
 
 def render_agent_detail_card(agent_info):
-    """Renderiza card detallado de un agente específico"""
+    """Renderiza card detallado de un agente especifico"""
     
     with st.container():
         st.markdown(f"""
@@ -642,14 +643,14 @@ def render_agent_detail_card(agent_info):
         </div>
         """, unsafe_allow_html=True)
         
-        # Métricas del agente
+        # Metricas del agente
         col1, col2, col3, col4 = st.columns(4)
         
         with col1:
             st.metric("Tareas Completadas", agent_info.get('tasks_completed', 0))
         
         with col2:
-            st.metric("Tasa de Éxito", f"{agent_info.get('success_rate', 95):.1f}%")
+            st.metric("Tasa de Exito", f"{agent_info.get('success_rate', 95):.1f}%")
         
         with col3:
             st.metric("Tiempo Activo", agent_info.get('active_time', '0m'))
@@ -670,9 +671,9 @@ def render_agent_detail_card(agent_info):
         with col2:
             st.markdown("**🎯 Capacidades Principales:**")
             capabilities = agent_info.get('capabilities', [
-                'Análisis de texto',
-                'Generación de sugerencias',
-                'Evaluación de calidad'
+                'Analisis de texto',
+                'Generacion de sugerencias',
+                'Evaluacion de calidad'
             ])
             for cap in capabilities:
                 st.markdown(f"- {cap}")
@@ -680,8 +681,8 @@ def render_agent_detail_card(agent_info):
         # Historial reciente
         st.markdown("**📜 Actividad Reciente:**")
         recent_activity = agent_info.get('recent_activity', [
-            {'time': '10:30', 'action': 'Análisis de personajes completado', 'status': 'success'},
-            {'time': '10:25', 'action': 'Iniciado análisis de manuscrito', 'status': 'info'},
+            {'time': '10:30', 'action': 'Analisis de personajes completado', 'status': 'success'},
+            {'time': '10:25', 'action': 'Iniciado analisis de manuscrito', 'status': 'info'},
             {'time': '10:20', 'action': 'Herramientas actualizadas', 'status': 'info'}
         ])
         
@@ -701,14 +702,14 @@ def render_simulated_agents_data():
     simulated_agents = [
         {
             'name': 'LorekeeperAgent',
-            'role': 'Guardián del Conocimiento',
+            'role': 'Guardian del Conocimiento',
             'status': 'active',
             'last_activity': '2 min ago',
             'tasks_completed': 23,
             'active_time': '45m',
             'success_rate': 96.2,
             'tools': ['RAG Tool', 'Consistency Checker', 'Research Tool'],
-            'capabilities': ['Verificación de lore', 'Consulta de documentos', 'Análisis de consistencia']
+            'capabilities': ['Verificacion de lore', 'Consulta de documentos', 'Analisis de consistencia']
         },
         {
             'name': 'CharacterDeveloperAgent',
@@ -719,7 +720,7 @@ def render_simulated_agents_data():
             'active_time': '32m',
             'success_rate': 94.8,
             'tools': ['Character Analyzer', 'Idea Generator', 'Writing Analyzer'],
-            'capabilities': ['Análisis de personajes', 'Desarrollo de arcos', 'Generación de ideas']
+            'capabilities': ['Analisis de personajes', 'Desarrollo de arcos', 'Generacion de ideas']
         },
         {
             'name': 'PlotWeaverAgent',
@@ -730,7 +731,7 @@ def render_simulated_agents_data():
             'active_time': '67m',
             'success_rate': 97.5,
             'tools': ['Plot Analyzer', 'Pacing Analyzer', 'Structure Tool'],
-            'capabilities': ['Análisis de trama', 'Optimización de estructura', 'Control de ritmo']
+            'capabilities': ['Analisis de trama', 'Optimizacion de estructura', 'Control de ritmo']
         }
     ]
     

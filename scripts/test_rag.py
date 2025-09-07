@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """Script de prueba para el sistema RAG"""
 
 import sys
 import logging
 from pathlib import Path
 
-# Añadir el directorio raíz al path
+# Añadir el directorio raiz al path
 project_root = Path(__file__).parent.parent
 sys.path.append(str(project_root))
 
@@ -17,34 +18,34 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def test_rag_basic():
-    """Prueba básica del sistema RAG"""
+    """Prueba basica del sistema RAG"""
     print("🧪 Iniciando pruebas del sistema RAG...")
     
     # Inicializar RAG
     rag = RAGManager()
     
-    # Obtener estadísticas
+    # Obtener estadisticas
     stats = rag.get_stats()
-    print(f"📊 Estadísticas del vector store: {stats}")
+    print(f"📊 Estadisticas del vector store: {stats}")
     
     # Crear documento de prueba
     test_doc_path = project_root / "data" / "reference_docs" / "test_doc.txt"
     test_doc_path.parent.mkdir(parents=True, exist_ok=True)
     
     test_content = """
-    Esta es una historia sobre un reino mágico llamado Aethermoor.
+    Esta es una historia sobre un reino magico llamado Aethermoor.
     
-    El reino está habitado por elfos, enanos y humanos que conviven en armonía.
+    El reino esta habitado por elfos, enanos y humanos que conviven en armonia.
     La capital del reino es la ciudad de Luminar, construida sobre cristales flotantes.
     
-    El rey actual es Aldrin Goldenheart, un sabio líder élfico que ha gobernado por 200 años.
+    El rey actual es Aldrin Goldenheart, un sabio lider elfico que ha gobernado por 200 años.
     
     Personajes principales:
     - Lyra Stormwind: Una maga humana especialista en magia elemental
-    - Thorin Ironbeard: Un guerrero enano guardián del reino
-    - Zephyr: Un dragón ancestral que protege los cristales de poder
+    - Thorin Ironbeard: Un guerrero enano guardian del reino
+    - Zephyr: Un dragon ancestral que protege los cristales de poder
     
-    El reino enfrenta una amenaza: las Sombras del Vacío que buscan consumir toda la magia.
+    El reino enfrenta una amenaza: las Sombras del Vacio que buscan consumir toda la magia.
     """
     
     with open(test_doc_path, 'w', encoding='utf-8') as f:
@@ -58,11 +59,11 @@ def test_rag_basic():
     
     # Realizar consultas de prueba
     queries = [
-        "¿Quién es el rey del reino?",
-        "¿Cuáles son las razas que habitan Aethermoor?",
-        "¿Cómo se llama la capital?",
-        "¿Quién es Lyra Stormwind?",
-        "¿Cuál es la amenaza que enfrenta el reino?"
+        "¿Quien es el rey del reino?",
+        "¿Cuales son las razas que habitan Aethermoor?",
+        "¿Como se llama la capital?",
+        "¿Quien es Lyra Stormwind?",
+        "¿Cual es la amenaza que enfrenta el reino?"
     ]
     
     print("\n🔍 Realizando consultas de prueba...")
@@ -75,7 +76,7 @@ def test_rag_basic():
     print("\n✅ Pruebas RAG completadas")
 
 def test_llm_integration(model_path: str = ""):
-    """Prueba la integración con LLM local"""
+    """Prueba la integracion con LLM local"""
     if not model_path or not Path(model_path).exists():
         print("⚠️  Modelo LLM no encontrado, saltando pruebas de LLM")
         return
@@ -86,8 +87,8 @@ def test_llm_integration(model_path: str = ""):
         # Inicializar LLM
         llm = LlamaManager(model_path)
         
-        # Prueba básica de generación
-        prompt = "Escribe una breve descripción de un reino mágico:"
+        # Prueba basica de generacion
+        prompt = "Escribe una breve descripcion de un reino magico:"
         response = llm.generate(prompt, max_tokens=100)
         print(f"🎯 Respuesta del LLM: {response}")
         
@@ -97,7 +98,7 @@ def test_llm_integration(model_path: str = ""):
         
         if rag_result['context']:
             llm_response = llm.generate_with_context(
-                "Describe las características principales de este reino",
+                "Describe las caracteristicas principales de este reino",
                 rag_result['context']
             )
             print(f"🔗 Respuesta con contexto RAG: {llm_response}")
@@ -110,7 +111,7 @@ def test_llm_integration(model_path: str = ""):
 if __name__ == "__main__":
     test_rag_basic()
     
-    # Intentar probar LLM si está configurado
+    # Intentar probar LLM si esta configurado
     model_path = ""
     if len(sys.argv) > 1:
         model_path = sys.argv[1]

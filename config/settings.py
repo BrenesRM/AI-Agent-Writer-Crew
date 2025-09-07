@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 import os
 from pathlib import Path
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     project_name: str = "Multi-Agent Novel System"

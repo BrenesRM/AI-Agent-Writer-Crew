@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # agents/crews/base_agent.py
 import logging
 from typing import Dict, Any, List, Optional
@@ -5,7 +6,7 @@ from crewai import Agent
 from pathlib import Path
 import sys
 
-# Añadir el directorio raíz al path
+# Añadir el directorio raiz al path
 project_root = Path(__file__).parent.parent.parent
 sys.path.append(str(project_root))
 
@@ -35,7 +36,7 @@ class BaseNovelAgent:
         
     def create_agent(self, role: str, goal: str, backstory: str, 
                     specific_tools: List = None) -> Agent:
-        """Crea un agente CrewAI con configuración base"""
+        """Crea un agente CrewAI con configuracion base"""
         
         all_tools = self.common_tools.copy()
         if specific_tools:
@@ -51,5 +52,5 @@ class BaseNovelAgent:
             memory=True,
             allow_delegation=False,
             max_iter=3,
-            max_execution_time=300  # 5 minutos máximo por tarea
+            max_execution_time=300  # 5 minutos maximo por tarea
         )

@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 # orchestrator/coordinator.py
 """
 Coordinador principal del sistema multi-agente para novelas.
-Gestiona la orquestación completa del flujo de trabajo.
+Gestiona la orquestacion completa del flujo de trabajo.
 """
 
 import logging
@@ -40,11 +41,11 @@ class NovelCoordinator:
         requirements: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         """
-        Procesa un manuscrito completo a través del sistema multi-agente
+        Procesa un manuscrito completo a traves del sistema multi-agente
         
         Args:
             manuscript: El texto del manuscrito a procesar
-            requirements: Requisitos específicos del procesamiento
+            requirements: Requisitos especificos del procesamiento
             
         Returns:
             Dict con los resultados del procesamiento
@@ -54,7 +55,7 @@ class NovelCoordinator:
         self.is_running = True
         
         try:
-            self.logger.info(f"Iniciando procesamiento de manuscrito - Sesión: {session_id}")
+            self.logger.info(f"Iniciando procesamiento de manuscrito - Sesion: {session_id}")
             
             # 1. Inicializar estado
             initial_state = await self.state_manager.initialize_state(
@@ -69,7 +70,7 @@ class NovelCoordinator:
             # 3. Generar resultados finales
             results = await self._generate_final_results(final_state)
             
-            self.logger.info(f"Procesamiento completado - Sesión: {session_id}")
+            self.logger.info(f"Procesamiento completado - Sesion: {session_id}")
             return results
             
         except Exception as e:
@@ -87,9 +88,9 @@ class NovelCoordinator:
         # Ciclo principal de iteraciones
         while self.iteration_controller.should_continue(current_state, iteration):
             iteration += 1
-            self.logger.info(f"Iniciando iteración {iteration}")
+            self.logger.info(f"Iniciando iteracion {iteration}")
             
-            # Determinar próximas acciones
+            # Determinar proximas acciones
             next_actions = await self.decision_engine.get_next_actions(current_state)
             
             # Ejecutar acciones en paralelo cuando sea posible
@@ -138,7 +139,7 @@ class NovelCoordinator:
             result = await self._execute_single_action(action, state)
             results[action['id']] = result
             
-            # Actualizar estado para próxima acción secuencial
+            # Actualizar estado para proxima accion secuencial
             state = await self.state_manager.update_state(state, {action['id']: result})
         
         return results
@@ -148,19 +149,19 @@ class NovelCoordinator:
         action: Dict[str, Any], 
         state: Dict[str, Any]
     ) -> Dict[str, Any]:
-        """Ejecuta una acción individual"""
+        """Ejecuta una accion individual"""
         try:
             action_type = action.get('type')
             agent_name = action.get('agent')
             
-            self.logger.info(f"Ejecutando acción: {action_type} con agente: {agent_name}")
+            self.logger.info(f"Ejecutando accion: {action_type} con agente: {agent_name}")
             
             # Obtener nodo del workflow graph
             node = self.workflow_graph.get_node(action_type)
             if not node:
-                raise ValueError(f"Nodo no encontrado para acción: {action_type}")
+                raise ValueError(f"Nodo no encontrado para accion: {action_type}")
             
-            # Ejecutar la acción
+            # Ejecutar la accion
             result = await node.execute(state, action.get('params', {}))
             
             return {
@@ -171,7 +172,7 @@ class NovelCoordinator:
             }
             
         except Exception as e:
-            self.logger.error(f"Error ejecutando acción {action.get('type')}: {str(e)}")
+            self.logger.error(f"Error ejecutando accion {action.get('type')}: {str(e)}")
             return {
                 'status': 'error',
                 'error': str(e),
@@ -196,10 +197,10 @@ class NovelCoordinator:
             'quality_metrics': {}
         }
         
-        # Extraer resultados por categoría
+        # Extraer resultados por categoria
         analysis_results = final_state.get('analysis_results', {})
         
-        # Análisis de worldbuilding
+        # Analisis de worldbuilding
         if 'worldbuilding' in analysis_results:
             results['analysis_results']['worldbuilding'] = analysis_results['worldbuilding']
         
@@ -230,7 +231,7 @@ class NovelCoordinator:
         return results
     
     def _create_session_id(self) -> str:
-        """Genera un ID único para la sesión"""
+        """Genera un ID unico para la sesion"""
         timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
         return f"novel_session_{timestamp}"
     
@@ -255,14 +256,14 @@ class NovelCoordinator:
             await self.state_manager.save_current_state()
             
     async def resume_processing(self, session_id: str) -> Dict[str, Any]:
-        """Reanuda una sesión de procesamiento"""
+        """Reanuda una sesion de procesamiento"""
         try:
             state = await self.state_manager.load_state(session_id)
             if state:
                 self.current_session_id = session_id
                 return await self._execute_workflow(state)
             else:
-                raise ValueError(f"No se pudo cargar el estado para la sesión: {session_id}")
+                raise ValueError(f"No se pudo cargar el estado para la sesion: {session_id}")
         except Exception as e:
-            self.logger.error(f"Error reanudando sesión {session_id}: {str(e)}")
+            self.logger.error(f"Error reanudando sesion {session_id}: {str(e)}")
             raise

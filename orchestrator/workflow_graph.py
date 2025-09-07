@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 # orchestrator/workflow_graph.py
 """
-Definición del grafo de flujo de trabajo usando LangGraph.
+Definicion del grafo de flujo de trabajo usando LangGraph.
 Define los nodos, aristas y flujo del sistema multi-agente.
 """
 
@@ -19,7 +20,7 @@ class NodeType(Enum):
 
 @dataclass
 class WorkflowNode:
-    """Representación de un nodo en el workflow"""
+    """Representacion de un nodo en el workflow"""
     id: str
     name: str
     node_type: NodeType
@@ -29,17 +30,17 @@ class WorkflowNode:
     required: bool = True
     
     async def execute(self, state: Dict[str, Any], params: Dict[str, Any] = None) -> Dict[str, Any]:
-        """Ejecuta la lógica del nodo"""
-        # Esta será implementada por cada nodo específico
+        """Ejecuta la logica del nodo"""
+        # Esta sera implementada por cada nodo especifico
         pass
 
 class LorekeeperNode(WorkflowNode):
-    """Nodo para análisis de worldbuilding"""
+    """Nodo para analisis de worldbuilding"""
     
     def __init__(self):
         super().__init__(
             id="lorekeeper_analysis",
-            name="Análisis de Worldbuilding",
+            name="Analisis de Worldbuilding",
             node_type=NodeType.ANALYSIS,
             agent_class="LorekeeperAgent",
             dependencies=[],
@@ -47,11 +48,11 @@ class LorekeeperNode(WorkflowNode):
         )
     
     async def execute(self, state: Dict[str, Any], params: Dict[str, Any] = None) -> Dict[str, Any]:
-        """Ejecuta análisis de lore y worldbuilding"""
+        """Ejecuta analisis de lore y worldbuilding"""
         try:
             manuscript = state.get('manuscript', '')
             
-            # Simulación del análisis (se conectaría con el agente real)
+            # Simulacion del analisis (se conectaria con el agente real)
             analysis = {
                 'lore_elements': ['Magic System', 'Geography', 'History'],
                 'consistency_score': 85,
@@ -91,7 +92,7 @@ class CharacterDeveloperNode(WorkflowNode):
         )
     
     async def execute(self, state: Dict[str, Any], params: Dict[str, Any] = None) -> Dict[str, Any]:
-        """Ejecuta análisis y desarrollo de personajes"""
+        """Ejecuta analisis y desarrollo de personajes"""
         try:
             manuscript = state.get('manuscript', '')
             
@@ -125,12 +126,12 @@ class CharacterDeveloperNode(WorkflowNode):
             }
 
 class PlotWeaverNode(WorkflowNode):
-    """Nodo para análisis de trama"""
+    """Nodo para analisis de trama"""
     
     def __init__(self):
         super().__init__(
             id="plot_analysis",
-            name="Análisis de Trama",
+            name="Analisis de Trama",
             node_type=NodeType.ANALYSIS,
             agent_class="PlotWeaverAgent",
             dependencies=["lorekeeper_analysis", "character_development"],
@@ -138,7 +139,7 @@ class PlotWeaverNode(WorkflowNode):
         )
     
     async def execute(self, state: Dict[str, Any], params: Dict[str, Any] = None) -> Dict[str, Any]:
-        """Ejecuta análisis de estructura narrativa"""
+        """Ejecuta analisis de estructura narrativa"""
         try:
             manuscript = state.get('manuscript', '')
             worldbuilding = state.get('analysis_results', {}).get('worldbuilding', {})
@@ -189,7 +190,7 @@ class StyleEditorNode(WorkflowNode):
         )
     
     async def execute(self, state: Dict[str, Any], params: Dict[str, Any] = None) -> Dict[str, Any]:
-        """Ejecuta análisis y refinamiento de estilo"""
+        """Ejecuta analisis y refinamiento de estilo"""
         try:
             manuscript = state.get('manuscript', '')
             
@@ -221,12 +222,12 @@ class StyleEditorNode(WorkflowNode):
             }
 
 class VisualizerNode(WorkflowNode):
-    """Nodo para generación de contenido visual"""
+    """Nodo para generacion de contenido visual"""
     
     def __init__(self):
         super().__init__(
             id="visual_generation",
-            name="Generación Visual",
+            name="Generacion Visual",
             node_type=NodeType.GENERATION,
             agent_class="VisualizerAgent",
             dependencies=["lorekeeper_analysis", "character_development", "plot_analysis"],
@@ -234,9 +235,9 @@ class VisualizerNode(WorkflowNode):
         )
     
     async def execute(self, state: Dict[str, Any], params: Dict[str, Any] = None) -> Dict[str, Any]:
-        """Genera prompts visuales basados en el análisis"""
+        """Genera prompts visuales basados en el analisis"""
         try:
-            # Tomar datos de análisis previos
+            # Tomar datos de analisis previos
             worldbuilding = state.get('analysis_results', {}).get('worldbuilding', {})
             characters = state.get('analysis_results', {}).get('character_development', {})
             plot = state.get('analysis_results', {}).get('plot_analysis', {})
@@ -290,7 +291,7 @@ class QualityAssuranceNode(WorkflowNode):
         try:
             manuscript = state.get('manuscript', '')
             
-            # Consolidar todos los análisis previos
+            # Consolidar todos los analisis previos
             all_analyses = state.get('analysis_results', {})
             
             quality_report = {
@@ -326,7 +327,7 @@ class QualityAssuranceNode(WorkflowNode):
             }
 
 class WorkflowGraph:
-    """Grafo de flujo de trabajo que define la lógica de ejecución"""
+    """Grafo de flujo de trabajo que define la logica de ejecucion"""
     
     def __init__(self):
         self.logger = logging.getLogger(__name__)
@@ -379,7 +380,7 @@ class WorkflowGraph:
             if node_id in completed_nodes:
                 continue
             
-            # Verificar si todas las dependencias están completadas
+            # Verificar si todas las dependencias estan completadas
             if all(dep in completed_nodes for dep in dependencies):
                 executable.append(node_id)
         
@@ -417,7 +418,7 @@ class WorkflowGraph:
         return self.nodes.get(node_id)
     
     def validate_graph(self) -> bool:
-        """Valida que el grafo sea válido (no tenga ciclos, etc.)"""
+        """Valida que el grafo sea valido (no tenga ciclos, etc.)"""
         try:
             # Verificar ciclos usando DFS
             visited = set()

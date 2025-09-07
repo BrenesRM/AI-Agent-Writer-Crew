@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 # orchestrator/decision_engine.py
 """
 Motor de decisiones para el flujo de trabajo.
-Determina qué acciones ejecutar basado en el estado actual y las reglas de negocio.
+Determina que acciones ejecutar basado en el estado actual y las reglas de negocio.
 """
 
 import logging
@@ -26,7 +27,7 @@ class ActionType(Enum):
 
 @dataclass
 class Action:
-    """Representación de una acción a ejecutar"""
+    """Representacion de una accion a ejecutar"""
     id: str
     type: str
     agent: str
@@ -41,7 +42,7 @@ class Action:
             self.params = {}
 
 class DecisionEngine:
-    """Motor de decisiones que determina qué acciones ejecutar"""
+    """Motor de decisiones que determina que acciones ejecutar"""
     
     def __init__(self):
         self.logger = logging.getLogger(__name__)
@@ -56,7 +57,7 @@ class DecisionEngine:
             'quality_assurance': ['style_refinement', 'plot_analysis']
         }
         
-        # Definir reglas de ejecución
+        # Definir reglas de ejecucion
         self.parallel_groups = [
             ['lorekeeper_analysis', 'character_development', 'style_refinement'],
             ['plot_analysis'],
@@ -67,7 +68,7 @@ class DecisionEngine:
     
     async def get_next_actions(self, state: Dict[str, Any]) -> List[Dict[str, Any]]:
         """
-        Determina las próximas acciones a ejecutar basado en el estado actual
+        Determina las proximas acciones a ejecutar basado en el estado actual
         """
         try:
             completed_nodes = set(state.get('completed_nodes', []))
@@ -77,7 +78,7 @@ class DecisionEngine:
             # Determinar acciones disponibles
             available_actions = self._get_available_actions(completed_nodes, failed_nodes)
             
-            # Aplicar reglas de decisión
+            # Aplicar reglas de decision
             selected_actions = await self._apply_decision_rules(
                 available_actions, state, iteration
             )
@@ -90,7 +91,7 @@ class DecisionEngine:
             return optimized_actions
             
         except Exception as e:
-            self.logger.error(f"Error determinando próximas acciones: {str(e)}")
+            self.logger.error(f"Error determinando proximas acciones: {str(e)}")
             return []
     
     def _get_available_actions(
@@ -103,11 +104,11 @@ class DecisionEngine:
         available = []
         
         for action_id, dependencies in self.action_dependencies.items():
-            # Saltar si ya está completado
+            # Saltar si ya esta completado
             if action_id in completed_nodes:
                 continue
             
-            # Verificar si las dependencias están satisfechas
+            # Verificar si las dependencias estan satisfechas
             deps_satisfied = all(dep in completed_nodes for dep in dependencies)
             
             if deps_satisfied:
@@ -122,7 +123,7 @@ class DecisionEngine:
     def _create_action(self, action_id: str, is_retry: bool = False) -> Action:
         """Crea un objeto Action basado en el ID"""
         
-        # Configuraciones específicas por tipo de acción
+        # Configuraciones especificas por tipo de accion
         action_configs = {
             'lorekeeper_analysis': {
                 'agent': 'LorekeeperAgent',
@@ -189,15 +190,15 @@ class DecisionEngine:
         state: Dict[str, Any],
         iteration: int
     ) -> List[Action]:
-        """Aplica reglas de decisión para filtrar y priorizar acciones"""
+        """Aplica reglas de decision para filtrar y priorizar acciones"""
         
         selected_actions = []
         
-        # Regla 1: Siempre ejecutar acciones críticas si están disponibles
+        # Regla 1: Siempre ejecutar acciones criticas si estan disponibles
         critical_actions = [a for a in available_actions if a.priority == ActionPriority.CRITICAL]
         selected_actions.extend(critical_actions)
         
-        # Regla 2: En iteraciones tempranas, priorizar análisis base
+        # Regla 2: En iteraciones tempranas, priorizar analisis base
         if iteration <= 1:
             early_actions = [
                 a for a in available_actions 
@@ -207,7 +208,7 @@ class DecisionEngine:
             selected_actions.extend(early_actions)
         
         # Regla 3: Ejecutar acciones de alta prioridad si hay recursos
-        if len(selected_actions) < 3:  # Límite de acciones concurrentes
+        if len(selected_actions) < 3:  # Limite de acciones concurrentes
             high_priority_actions = [
                 a for a in available_actions 
                 if a.priority == ActionPriority.HIGH and a not in selected_actions
@@ -224,7 +225,7 @@ class DecisionEngine:
         
         # Regla 5: Evitar sobrecargar el sistema en iteraciones avanzadas
         if iteration >= 3:
-            # Reducir número de acciones concurrentes
+            # Reducir numero de acciones concurrentes
             selected_actions = selected_actions[:2]
         
         # Regla 6: Aplicar filtros basados en estado del sistema
@@ -241,7 +242,7 @@ class DecisionEngine:
         
         filtered_actions = []
         
-        # Obtener información del estado
+        # Obtener informacion del estado
         analysis_results = state.get('analysis_results', {})
         error_log = state.get('error_log', [])
         processing_status = state.get('processing_status', 'initialized')
@@ -249,7 +250,7 @@ class DecisionEngine:
         for action in actions:
             include_action = True
             
-            # Filtro 1: Evitar acciones que dependen de análisis fallidos
+            # Filtro 1: Evitar acciones que dependen de analisis fallidos
             if action.dependencies:
                 for dep in action.dependencies:
                     dep_errors = [e for e in error_log if e.get('node_id') == dep]
@@ -258,19 +259,19 @@ class DecisionEngine:
                         self.logger.warning(f"Saltando {action.id} debido a errores en dependencia {dep}")
                         break
             
-            # Filtro 2: No ejecutar generación visual si falta análisis base
+            # Filtro 2: No ejecutar generacion visual si falta analisis base
             if action.type == 'visual_generation':
                 required_analyses = ['worldbuilding', 'character_development']
                 if not all(analysis in analysis_results for analysis in required_analyses):
                     include_action = False
-                    self.logger.info("Saltando generación visual - análisis base incompleto")
+                    self.logger.info("Saltando generacion visual - analisis base incompleto")
             
-            # Filtro 3: Solo ejecutar QA si hay suficiente análisis completado
+            # Filtro 3: Solo ejecutar QA si hay suficiente analisis completado
             if action.type == 'quality_assurance':
                 completed_analyses = len(analysis_results)
                 if completed_analyses < 2:
                     include_action = False
-                    self.logger.info("Saltando QA - análisis insuficiente")
+                    self.logger.info("Saltando QA - analisis insuficiente")
             
             # Filtro 4: Limitar acciones costosas si hay muchos errores
             recent_errors = [e for e in error_log if e.get('iteration', 0) >= state.get('iteration', 0) - 1]
@@ -288,7 +289,7 @@ class DecisionEngine:
         actions: List[Action], 
         state: Dict[str, Any]
     ) -> List[Dict[str, Any]]:
-        """Optimiza el orden de ejecución y paralelismo"""
+        """Optimiza el orden de ejecucion y paralelismo"""
         
         # Convertir a formato de diccionario
         action_dicts = []
@@ -309,7 +310,7 @@ class DecisionEngine:
             }
             action_dicts.append(action_dict)
         
-        # Aplicar optimizaciones específicas
+        # Aplicar optimizaciones especificas
         optimized = self._apply_execution_optimizations(action_dicts, state)
         
         return optimized
@@ -319,30 +320,30 @@ class DecisionEngine:
         actions: List[Dict[str, Any]], 
         state: Dict[str, Any]
     ) -> List[Dict[str, Any]]:
-        """Aplica optimizaciones específicas al orden de ejecución"""
+        """Aplica optimizaciones especificas al orden de ejecucion"""
         
-        # Optimización 1: Ejecutar análisis paralelos primero
+        # Optimizacion 1: Ejecutar analisis paralelos primero
         parallel_analyses = [a for a in actions if a.get('parallel', True) and 'analysis' in a['type']]
         sequential_actions = [a for a in actions if not a.get('parallel', True)]
         other_actions = [a for a in actions if a not in parallel_analyses and a not in sequential_actions]
         
-        # Optimización 2: Balancear carga basada en duración estimada
+        # Optimizacion 2: Balancear carga basada en duracion estimada
         if len(parallel_analyses) > 3:
-            # Dividir en grupos balanceados por duración
+            # Dividir en grupos balanceados por duracion
             parallel_analyses.sort(key=lambda x: x['estimated_duration'])
-            # Mantener solo los más eficientes si hay muchos
+            # Mantener solo los mas eficientes si hay muchos
             parallel_analyses = parallel_analyses[:3]
         
-        # Optimización 3: Priorizar acciones que desbloquean otras
+        # Optimizacion 3: Priorizar acciones que desbloquean otras
         high_dependency_actions = []
         for action in sequential_actions + other_actions:
             action_type = action['type']
-            # Contar cuántas otras acciones dependen de esta
+            # Contar cuantas otras acciones dependen de esta
             dependents = sum(1 for other in actions if action_type in other.get('dependencies', []))
             if dependents > 0:
                 high_dependency_actions.append((action, dependents))
         
-        # Ordenar por número de dependientes
+        # Ordenar por numero de dependientes
         high_dependency_actions.sort(key=lambda x: x[1], reverse=True)
         prioritized_sequential = [action for action, _ in high_dependency_actions]
         
@@ -358,15 +359,15 @@ class DecisionEngine:
         return optimized
     
     async def is_workflow_complete(self, state: Dict[str, Any]) -> bool:
-        """Determina si el workflow está completo"""
+        """Determina si el workflow esta completo"""
         
         completed_nodes = set(state.get('completed_nodes', []))
         failed_nodes = set(state.get('failed_nodes', []))
         
-        # Nodos mínimos requeridos para completar
+        # Nodos minimos requeridos para completar
         minimum_required = {'lorekeeper_analysis', 'character_development', 'quality_assurance'}
         
-        # Verificar si los nodos mínimos están completados
+        # Verificar si los nodos minimos estan completados
         minimum_satisfied = minimum_required.issubset(completed_nodes)
         
         if not minimum_satisfied:
@@ -375,10 +376,10 @@ class DecisionEngine:
         # Verificar si hay acciones disponibles
         available_actions = self._get_available_actions(completed_nodes, failed_nodes)
         
-        # El workflow está completo si:
-        # 1. Los nodos mínimos están completados
-        # 2. No hay más acciones disponibles de alta prioridad
-        # 3. O si tenemos buena cobertura de análisis
+        # El workflow esta completo si:
+        # 1. Los nodos minimos estan completados
+        # 2. No hay mas acciones disponibles de alta prioridad
+        # 3. O si tenemos buena cobertura de analisis
         
         high_priority_available = [
             a for a in available_actions 
@@ -404,7 +405,7 @@ class DecisionEngine:
         failed_nodes = set(state.get('failed_nodes', []))
         total_nodes = len(self.action_dependencies)
         
-        # Calcular métricas de completitud
+        # Calcular metricas de completitud
         completion_percentage = len(completed_nodes) / total_nodes * 100
         failure_rate = len(failed_nodes) / total_nodes * 100
         
@@ -430,12 +431,12 @@ class DecisionEngine:
         }
     
     def _is_minimum_requirements_satisfied(self, completed_nodes: Set[str]) -> bool:
-        """Verifica si se satisfacen los requisitos mínimos"""
+        """Verifica si se satisfacen los requisitos minimos"""
         minimum_required = {'lorekeeper_analysis', 'character_development', 'quality_assurance'}
         return minimum_required.issubset(completed_nodes)
     
     def _assess_completion_quality(self, state: Dict[str, Any]) -> str:
-        """Evalúa la calidad de la completitud del workflow"""
+        """Evalua la calidad de la completitud del workflow"""
         
         completed_nodes = set(state.get('completed_nodes', []))
         analysis_results = state.get('analysis_results', {})

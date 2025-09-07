@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # agents/tools/rag_tool.py
 import logging
 from typing import Dict, Any, Optional, List
@@ -26,15 +27,38 @@ class RAGTool(BaseTool):
     """
     args_schema: type[BaseModel] = RAGToolInput
     
+    # Define as class attributes for Pydantic v2 compatibility
+    rag_manager: Any = None
+    logger: Any = None
+    
     def __init__(self, **data):
         super().__init__(**data)
-        self.rag_manager = RAGManager()
-        self.logger = logging.getLogger(__name__)
+        # Initialize RAG manager after parent initialization
+        if self.rag_manager is None:
+            self._initialize_rag()
+    
+    def _initialize_rag(self):
+        """Initialize RAG manager after object creation"""
+        try:
+            self.rag_manager = RAGManager()
+            self.logger = logging.getLogger(__name__)
+        except Exception as e:
+            self.logger = logging.getLogger(__name__)
+            self.logger.error(f"Failed to initialize RAG manager: {e}")
+            self.rag_manager = None
     
     def _run(self, query: str, doc_type: Optional[str] = None, k: int = 5) -> str:
         """Ejecuta una consulta en el sistema RAG"""
         try:
-            self.logger.info(f"Consultando RAG: {query}")
+            # Ensure RAG manager is initialized
+            if self.rag_manager is None:
+                self._initialize_rag()
+                
+            if self.rag_manager is None:
+                return f"Error: Sistema RAG no disponible para la consulta: {query}"
+            
+            if self.logger:
+                self.logger.info(f"Consultando RAG: {query}")
             
             result = self.rag_manager.query(query, k=k, doc_type=doc_type)
             
@@ -49,5 +73,6 @@ class RAGTool(BaseTool):
             return response
             
         except Exception as e:
-            self.logger.error(f"Error en consulta RAG: {str(e)}")
+            if self.logger:
+                self.logger.error(f"Error en consulta RAG: {str(e)}")
             return f"Error consultando la base de conocimiento: {str(e)}"

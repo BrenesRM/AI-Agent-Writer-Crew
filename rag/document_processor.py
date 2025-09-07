@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import json
 import logging
@@ -20,7 +21,7 @@ class ProcessedDocument:
     doc_type: str
 
 class DocumentProcessor:
-    """Procesador de documentos con soporte para múltiples formatos"""
+    """Procesador de documentos con soporte para multiples formatos"""
     
     def __init__(self, chunk_size: int = 1000, chunk_overlap: int = 200):
         self.chunk_size = chunk_size
@@ -34,7 +35,7 @@ class DocumentProcessor:
         self.logger = logging.getLogger(__name__)
     
     def process_document(self, file_path: str) -> List[ProcessedDocument]:
-        """Procesa un documento según su extensión"""
+        """Procesa un documento segun su extension"""
         file_path = Path(file_path)
         
         if not file_path.exists():

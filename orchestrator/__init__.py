@@ -1,15 +1,16 @@
+# -*- coding: utf-8 -*-
 # orchestrator/__init__.py
 """
-Sistema de Orquestación LangGraph para el sistema multi-agente de novelas.
+Sistema de Orquestacion LangGraph para el sistema multi-agente de novelas.
 
-Este módulo implementa la orquestación completa del flujo de trabajo usando LangGraph,
-coordinando la ejecución de múltiples agentes especializados en análisis y mejora
+Este modulo implementa la orquestacion completa del flujo de trabajo usando LangGraph,
+coordinando la ejecucion de multiples agentes especializados en analisis y mejora
 de manuscritos narrativos.
 
 Componentes principales:
 - NovelCoordinator: Coordinador principal del sistema
-- WorkflowGraph: Definición del grafo de flujo de trabajo
-- StateManager: Gestión del estado entre iteraciones
+- WorkflowGraph: Definicion del grafo de flujo de trabajo
+- StateManager: Gestion del estado entre iteraciones
 - IterationController: Control de ciclos iterativos
 - DecisionEngine: Motor de decisiones para el flujo
 """

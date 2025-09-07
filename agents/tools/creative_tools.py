@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # agents/tools/creative_tools.py
 import random
 import logging
@@ -18,32 +19,46 @@ class IdeaGenerator(BaseTool):
     """
     args_schema: type[BaseModel] = IdeaGeneratorInput
     
+    # Define as class attributes for Pydantic v2 compatibility
+    character_elements: Dict[str, List[str]] = {}
+    plot_elements: Dict[str, List[str]] = {}
+    setting_elements: Dict[str, List[str]] = {}
+    
     def __init__(self, **data):
         super().__init__(**data)
-        
+        # Initialize after parent initialization
+        if not self.character_elements:
+            self._initialize_elements()
+    
+    def _initialize_elements(self):
+        """Initialize the creative elements after object creation"""
         # Bancos de datos para generación de ideas
         self.character_elements = {
-            'professions': ['mago', 'guerrero', 'mercader', 'ladrón', 'noble', 'artesano', 'cazador', 'sanador', 'escriba', 'soldado'],
-            'traits': ['valiente', 'astuto', 'leal', 'ambicioso', 'misterioso', 'carismático', 'testarudo', 'compasivo', 'calculador', 'impulsivo'],
-            'backgrounds': ['huérfano', 'exiliado', 'heredero perdido', 'ex-soldado', 'forastero', 'refugiado', 'desertor', 'autodidacta'],
-            'motivations': ['venganza', 'redención', 'poder', 'conocimiento', 'amor', 'supervivencia', 'justicia', 'libertad', 'familia', 'honor']
+            'professions': ['mago', 'guerrero', 'mercader', 'ladron', 'noble', 'artesano', 'cazador', 'sanador', 'escriba', 'soldado'],
+            'traits': ['valiente', 'astuto', 'leal', 'ambicioso', 'misterioso', 'carismatico', 'testarudo', 'compasivo', 'calculador', 'impulsivo'],
+            'backgrounds': ['huerfano', 'exiliado', 'heredero perdido', 'ex-soldado', 'forastero', 'refugiado', 'desertor', 'autodidacta'],
+            'motivations': ['venganza', 'redencion', 'poder', 'conocimiento', 'amor', 'supervivencia', 'justicia', 'libertad', 'familia', 'honor']
         }
         
         self.plot_elements = {
-            'conflicts': ['traición', 'guerra', 'conspiración', 'maldición', 'invasión', 'rebelión', 'búsqueda', 'rescate', 'supervivencia', 'secreto familiar'],
-            'twists': ['aliado es enemigo', 'enemigo es aliado', 'profecía malinterpretada', 'identidad oculta', 'poder heredado', 'sacrificio necesario'],
-            'obstacles': ['ejército enemigo', 'traidor interno', 'barrera mágica', 'tiempo limitado', 'recursos escasos', 'dilema moral']
+            'conflicts': ['traicion', 'guerra', 'conspiracion', 'maldicion', 'invasion', 'rebelion', 'busqueda', 'rescate', 'supervivencia', 'secreto familiar'],
+            'twists': ['aliado es enemigo', 'enemigo es aliado', 'profecia malinterpretada', 'identidad oculta', 'poder heredado', 'sacrificio necesario'],
+            'obstacles': ['ejercito enemigo', 'traidor interno', 'barrera magica', 'tiempo limitado', 'recursos escasos', 'dilema moral']
         }
         
         self.setting_elements = {
-            'locations': ['reino montañoso', 'ciudad flotante', 'bosque encantado', 'desierto mágico', 'isla misteriosa', 'fortaleza antigua', 'ciudad subterránea'],
-            'environments': ['perpetuo invierno', 'lluvias eternas', 'niebla constante', 'auroras mágicas', 'cristales flotantes', 'ruinas antiguas'],
-            'societies': ['reino feudal', 'república mercantil', 'tribu nómada', 'imperio mágico', 'ciudad-estado', 'confederación']
+            'locations': ['reino montanoso', 'ciudad flotante', 'bosque encantado', 'desierto magico', 'isla misteriosa', 'fortaleza antigua', 'ciudad subterranea'],
+            'environments': ['perpetuo invierno', 'lluvias eternas', 'niebla constante', 'auroras magicas', 'cristales flotantes', 'ruinas antiguas'],
+            'societies': ['reino feudal', 'republica mercantil', 'tribu nomada', 'imperio magico', 'ciudad-estado', 'confederacion']
         }
     
     def _run(self, context: str, idea_type: str = "general", quantity: int = 5) -> str:
         """Genera ideas creativas basadas en el contexto y tipo especificado"""
         try:
+            # Ensure elements are initialized
+            if not self.character_elements:
+                self._initialize_elements()
+                
             ideas = []
             context_words = context.lower().split()
             
@@ -82,8 +97,7 @@ class IdeaGenerator(BaseTool):
             motivation = random.choice(self.character_elements['motivations'])
             
             # Adaptar al contexto
-            context_influence = ""
-            if any(word in context_words for word in ['mágico', 'magia', 'hechizo']):
+            if any(word in context_words for word in ['magico', 'magia', 'hechizo']):
                 if random.random() > 0.5:
                     profession = random.choice(['mago', 'hechicero', 'alquimista'])
             
@@ -116,9 +130,9 @@ class IdeaGenerator(BaseTool):
             
             # Adaptar al contexto
             if 'personajes' in context_words:
-                idea += f", enfocada en el desarrollo de múltiples personajes"
+                idea += f", enfocada en el desarrollo de multiples personajes"
             if 'magia' in context_words:
-                idea += f", con elementos mágicos como catalizador"
+                idea += f", con elementos magicos como catalizador"
                 
             ideas.append(idea)
         
@@ -139,7 +153,7 @@ class IdeaGenerator(BaseTool):
             if 'antiguo' in context_words:
                 idea += f", con ruinas y vestigios de civilizaciones pasadas"
             if 'conflicto' in context_words:
-                idea += f", en estado de tensión o guerra"
+                idea += f", en estado de tension o guerra"
                 
             ideas.append(idea)
         
@@ -155,7 +169,7 @@ class IdeaGenerator(BaseTool):
             "Conflicto temporal: eventos del pasado amenazan el presente",
             "Conflicto moral: el bien mayor requiere sacrificar algo valioso",
             "Conflicto de poder: diferentes facciones buscan dominio",
-            "Conflicto existencial: cuestionamiento de propósito y destino",
+            "Conflicto existencial: cuestionamiento de proposito y destino",
             "Conflicto cultural: choques entre diferentes formas de vida",
             "Conflicto generacional: viejas tradiciones vs. nuevas ideas"
         ]
@@ -195,8 +209,8 @@ class IdeaGenerator(BaseTool):
 
 class VisualPromptGeneratorInput(BaseModel):
     scene_description: str = Field(..., description="Descripción de la escena a convertir en prompt visual")
-    style: str = Field("cinematográfico", description="Estilo visual: 'cinematográfico', 'artístico', 'realista', 'fantasía'")
-    detail_level: str = Field("medio", description="Nivel de detalle: 'básico', 'medio', 'detallado'")
+    style: str = Field("cinematografico", description="Estilo visual: 'cinematografico', 'artistico', 'realista', 'fantasia'")
+    detail_level: str = Field("medio", description="Nivel de detalle: 'basico', 'medio', 'detallado'")
 
 class VisualPromptGenerator(BaseTool):
     name: str = "Generador de Prompts Visuales"
@@ -206,32 +220,46 @@ class VisualPromptGenerator(BaseTool):
     """
     args_schema: type[BaseModel] = VisualPromptGeneratorInput
     
+    # Define as class attributes for Pydantic v2 compatibility
+    camera_angles: List[str] = []
+    lighting_styles: List[str] = []
+    color_palettes: List[str] = []
+    movement_types: List[str] = []
+    
     def __init__(self, **data):
         super().__init__(**data)
-        
+        if not self.camera_angles:
+            self._initialize_elements()
+    
+    def _initialize_elements(self):
+        """Initialize visual elements after object creation"""
         self.camera_angles = [
             "plano general", "plano medio", "primer plano", "plano detalle",
-            "plano cenital", "contrapicado", "picado", "plano holandés"
+            "plano cenital", "contrapicado", "picado", "plano holandes"
         ]
         
         self.lighting_styles = [
-            "iluminación dramática", "luz natural", "contraluz", "luz dorada",
-            "iluminación de tres puntos", "luz de luna", "luz de antorcha", "luz mágica"
+            "iluminacion dramatica", "luz natural", "contraluz", "luz dorada",
+            "iluminacion de tres puntos", "luz de luna", "luz de antorcha", "luz magica"
         ]
         
         self.color_palettes = [
-            "paleta cálida", "tonos fríos", "colores desaturados", "alto contraste",
-            "monocromático", "colores vibrantes", "tonos tierra", "paleta mágica"
+            "paleta calida", "tonos frios", "colores desaturados", "alto contraste",
+            "monocromatico", "colores vibrantes", "tonos tierra", "paleta magica"
         ]
         
         self.movement_types = [
-            "cámara estática", "movimiento suave de cámara", "zoom lento",
+            "camara estatica", "movimiento suave de camara", "zoom lento",
             "paneo horizontal", "paneo vertical", "travelling", "plano secuencia"
         ]
     
-    def _run(self, scene_description: str, style: str = "cinematográfico", detail_level: str = "medio") -> str:
+    def _run(self, scene_description: str, style: str = "cinematografico", detail_level: str = "medio") -> str:
         """Genera prompts visuales para video AI"""
         try:
+            # Ensure elements are initialized
+            if not self.camera_angles:
+                self._initialize_elements()
+                
             # Analizar la escena para extraer elementos clave
             elements = self._extract_visual_elements(scene_description)
             
@@ -288,15 +316,15 @@ class VisualPromptGenerator(BaseTool):
         location_keywords = {
             'bosque': 'bosque encantado',
             'castillo': 'castillo medieval',
-            'ciudad': 'ciudad fantástica',
-            'montaña': 'paisaje montañoso',
-            'mar': 'vista oceánica',
+            'ciudad': 'ciudad fantastica',
+            'montana': 'paisaje montanoso',
+            'mar': 'vista oceanica',
             'cueva': 'cueva misteriosa',
             'torre': 'torre antigua',
-            'sala': 'gran salón'
+            'sala': 'gran salon'
         }
         
-        location = 'escenario genérico'
+        location = 'escenario generico'
         for keyword, full_location in location_keywords.items():
             if keyword in desc_lower:
                 location = full_location
@@ -307,11 +335,11 @@ class VisualPromptGenerator(BaseTool):
         mood_keywords = {
             'oscur': 'atmosfera oscura y misteriosa',
             'brillant': 'ambiente luminoso y esperanzador',
-            'trist': 'ambiente melancólico',
+            'trist': 'ambiente melancolico',
             'alegr': 'ambiente festivo',
             'tenebroso': 'ambiente siniestro',
-            'mágico': 'ambiente mágico y fantasioso',
-            'épico': 'ambiente épico y grandioso'
+            'magico': 'ambiente magico y fantasioso',
+            'epico': 'ambiente epico y grandioso'
         }
         
         mood = 'ambiente neutro'
@@ -323,16 +351,16 @@ class VisualPromptGenerator(BaseTool):
         
         # Identificar acción
         action_keywords = {
-            'corrió': 'movimiento dinámico',
-            'luchó': 'escena de combate',
-            'voló': 'secuencia de vuelo',
-            'cayó': 'caída dramática',
-            'saltó': 'acción acrobática',
-            'gritó': 'momento emocional intenso',
-            'miró': 'momento contemplativo'
+            'corrio': 'movimiento dinamico',
+            'lucho': 'escena de combate',
+            'volo': 'secuencia de vuelo',
+            'cayo': 'caida dramatica',
+            'salto': 'accion acrobatica',
+            'grito': 'momento emocional intenso',
+            'miro': 'momento contemplativo'
         }
         
-        action = 'escena estática'
+        action = 'escena estatica'
         for keyword, action_desc in action_keywords.items():
             if keyword in desc_lower:
                 action = action_desc
@@ -350,7 +378,7 @@ class VisualPromptGenerator(BaseTool):
         base = f"{character_part} en {location_part}, {mood_part}"
         
         # Añadir calidad y estilo base
-        base += ", alta calidad, renderizado detallado, estilo cinematográfico"
+        base += ", alta calidad, renderizado detallado, estilo cinematografico"
         
         return base
     
@@ -364,31 +392,31 @@ class VisualPromptGenerator(BaseTool):
         color_palette = random.choice(self.color_palettes)
         movement = random.choice(self.movement_types)
         
-        if style == "cinematográfico":
+        if style == "cinematografico":
             details.extend([camera_angle, lighting, movement])
             if detail_level in ["medio", "detallado"]:
                 details.append(color_palette)
                 details.append("profundidad de campo")
-        elif style == "artístico":
+        elif style == "artistico":
             details.extend([lighting, color_palette])
             if detail_level in ["medio", "detallado"]:
-                details.append("estilo pictórico")
-                details.append("textura artística")
+                details.append("estilo pictorico")
+                details.append("textura artistica")
         elif style == "realista":
-            details.extend(["iluminación natural", "colores realistas"])
+            details.extend(["iluminacion natural", "colores realistas"])
             if detail_level in ["medio", "detallado"]:
                 details.append("texturas fotorrealistas")
-        elif style == "fantasía":
-            details.extend(["iluminación mágica", "colores fantásticos"])
+        elif style == "fantasia":
+            details.extend(["iluminacion magica", "colores fantasticos"])
             if detail_level in ["medio", "detallado"]:
-                details.append("efectos mágicos")
-                details.append("atmósfera sobrenatural")
+                details.append("efectos magicos")
+                details.append("atmosfera sobrenatural")
         
         if detail_level == "detallado":
             details.extend([
-                "ultra alta definición",
-                "efectos de partículas",
-                "renderizado volumétrico"
+                "ultra alta definicion",
+                "efectos de particulas",
+                "renderizado volumetrico"
             ])
         
         return ", ".join(details)
@@ -398,12 +426,12 @@ class VisualPromptGenerator(BaseTool):
         variations = []
         
         # Variación 1: Diferente ángulo de cámara
-        alt_camera = random.choice([a for a in self.camera_angles])
+        alt_camera = random.choice(self.camera_angles)
         var1 = base_prompt + f", {alt_camera}, {technical_details}"
         variations.append(var1)
         
         # Variación 2: Diferente iluminación
-        alt_lighting = random.choice([l for l in self.lighting_styles])
+        alt_lighting = random.choice(self.lighting_styles)
         var2 = base_prompt + f", {alt_lighting}, {technical_details}"
         variations.append(var2)
         

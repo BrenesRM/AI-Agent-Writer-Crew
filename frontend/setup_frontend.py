@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-Script de configuración del frontend Streamlit
+Script de configuracion del frontend Streamlit
 Crea la estructura completa del frontend y archivos necesarios
 """
 
@@ -42,7 +43,7 @@ def create_frontend_structure():
         print(f"📄 Creado: {init_file}")
 
 def create_streamlit_config():
-    """Crea archivo de configuración de Streamlit"""
+    """Crea archivo de configuracion de Streamlit"""
     
     config_content = """
 [global]
@@ -77,16 +78,16 @@ level = "info"
     print("📄 Creado: .streamlit/config.toml")
 
 def create_requirements_frontend():
-    """Crea requirements específicos del frontend"""
+    """Crea requirements especificos del frontend"""
     
     frontend_requirements = """
-# Frontend específico
+# Frontend especifico
 streamlit>=1.28.0
 streamlit-option-menu>=0.3.6
 streamlit-aggrid>=0.3.4
 streamlit-authenticator>=0.2.3
 
-# Visualización
+# Visualizacion
 plotly>=5.17.0
 altair>=5.1.2
 matplotlib>=3.8.0
@@ -131,9 +132,9 @@ pip install -r requirements_frontend.txt -q
 # Variables de entorno
 export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 
-# Lanzar aplicación
+# Lanzar aplicacion
 echo "🌟 Lanzando interfaz web..."
-echo "📱 La aplicación estará disponible en: http://localhost:8501"
+echo "📱 La aplicacion estara disponible en: http://localhost:8501"
 echo "🛑 Presiona Ctrl+C para detener"
 
 streamlit run frontend/app.py
@@ -148,7 +149,7 @@ streamlit run frontend/app.py
     print("📄 Creado: launch.sh (ejecutable)")
 
 def create_docker_setup():
-    """Crea configuración Docker para el frontend"""
+    """Crea configuracion Docker para el frontend"""
     
     dockerfile_content = """
 # Dockerfile para Sistema Multi-Agente de Novelas
@@ -157,7 +158,7 @@ FROM python:3.11-slim
 # Metadatos
 LABEL maintainer="Novel System"
 LABEL version="1.0.0"
-LABEL description="Sistema Multi-Agente para Creación de Novelas"
+LABEL description="Sistema Multi-Agente para Creacion de Novelas"
 
 # Variables de entorno
 ENV PYTHONUNBUFFERED=1
@@ -183,7 +184,7 @@ COPY requirements.txt requirements_frontend.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install --no-cache-dir -r requirements_frontend.txt
 
-# Copiar código de la aplicación
+# Copiar codigo de la aplicacion
 COPY . .
 
 # Crear directorios necesarios
@@ -241,7 +242,7 @@ volumes:
     print("📄 Creado: docker-compose.yml")
 
 def create_testing_setup():
-    """Crea configuración para pruebas del frontend"""
+    """Crea configuracion para pruebas del frontend"""
     
     test_content = """
 import pytest
@@ -250,24 +251,24 @@ from streamlit.testing.v1 import AppTest
 import sys
 from pathlib import Path
 
-# Añadir directorio raíz al path
+# Añadir directorio raiz al path
 sys.path.append(str(Path(__file__).parent.parent))
 
 class TestFrontendApp:
-    """Pruebas para la aplicación frontend"""
+    """Pruebas para la aplicacion frontend"""
     
     def test_app_loads(self):
-        \"\"\"Prueba que la aplicación carga correctamente\"\"\"
+        \"\"\"Prueba que la aplicacion carga correctamente\"\"\"
         at = AppTest.from_file("frontend/app.py")
         at.run()
         assert not at.exception
     
     def test_sidebar_navigation(self):
-        \"\"\"Prueba la navegación del sidebar\"\"\"
+        \"\"\"Prueba la navegacion del sidebar\"\"\"
         at = AppTest.from_file("frontend/app.py")
         at.run()
         
-        # Verificar que existen las opciones de navegación
+        # Verificar que existen las opciones de navegacion
         radio_options = at.sidebar.radio[0].options
         expected_pages = ["upload", "manuscript", "monitor", "results", "visual"]
         
@@ -275,15 +276,15 @@ class TestFrontendApp:
             assert page in radio_options
     
     def test_manuscript_editor_functionality(self):
-        \"\"\"Prueba funcionalidad básica del editor\"\"\"
+        \"\"\"Prueba funcionalidad basica del editor\"\"\"
         at = AppTest.from_file("frontend/app.py")
         at.run()
         
-        # Seleccionar página de manuscrito
+        # Seleccionar pagina de manuscrito
         at.sidebar.radio[0].set_value("manuscript")
         at.run()
         
-        # Verificar que el editor está presente
+        # Verificar que el editor esta presente
         assert len(at.text_area) > 0
     
     def test_upload_page_functionality(self):
@@ -291,7 +292,7 @@ class TestFrontendApp:
         at = AppTest.from_file("frontend/app.py") 
         at.run()
         
-        # Seleccionar página de upload
+        # Seleccionar pagina de upload
         at.sidebar.radio[0].set_value("upload")
         at.run()
         
@@ -302,11 +303,11 @@ class TestComponents:
     \"\"\"Pruebas para componentes individuales\"\"\"
     
     def test_metrics_component(self):
-        \"\"\"Prueba componente de métricas\"\"\"
+        \"\"\"Prueba componente de metricas\"\"\"
         from frontend.components.metrics import render_metrics_card
         
-        # Esta prueba requeriría un entorno Streamlit activo
-        # En implementación real, usar mocking o AppTest
+        # Esta prueba requeriria un entorno Streamlit activo
+        # En implementacion real, usar mocking o AppTest
         pass
     
     def test_progress_component(self):
@@ -314,7 +315,7 @@ class TestComponents:
         from frontend.components.progress import render_progress_tracker
         
         steps = ["Paso 1", "Paso 2", "Paso 3"]
-        # Prueba lógica del componente
+        # Prueba logica del componente
         assert len(steps) == 3
 
 if __name__ == "__main__":
@@ -327,78 +328,78 @@ if __name__ == "__main__":
     print("📄 Creado: tests/test_frontend.py")
 
 def create_documentation():
-    """Crea documentación del frontend"""
+    """Crea documentacion del frontend"""
     
     docs_content = """
-# 📖 Documentación del Frontend
+# 📖 Documentacion del Frontend
 
 ## Estructura del Frontend
 
 ```
 frontend/
-├── app.py                 # Aplicación principal Streamlit
-├── pages/                 # Páginas de la aplicación
-│   ├── upload_docs.py     # Gestión de documentos RAG
+├── app.py                 # Aplicacion principal Streamlit
+├── pages/                 # Paginas de la aplicacion
+│   ├── upload_docs.py     # Gestion de documentos RAG
 │   ├── manuscript_editor.py # Editor de manuscrito
 │   ├── agent_monitor.py   # Monitor de agentes
-│   ├── results_viewer.py  # Visualización de resultados
+│   ├── results_viewer.py  # Visualizacion de resultados
 │   └── visual_prompts.py  # Generador de prompts visuales
 ├── components/            # Componentes reutilizables
 │   ├── sidebar.py         # Componente de sidebar
-│   ├── metrics.py         # Componentes de métricas
+│   ├── metrics.py         # Componentes de metricas
 │   ├── progress.py        # Componentes de progreso
 │   └── alerts.py          # Componentes de alertas
-├── static/                # Archivos estáticos
+├── static/                # Archivos estaticos
 │   └── custom.css         # Estilos personalizados
 ├── utils/                 # Utilidades del frontend
 │   ├── formatters.py      # Formateadores de datos
 │   └── validators.py      # Validadores
-└── config/                # Configuración específica
+└── config/                # Configuracion especifica
 ```
 
-## Características Principales
+## Caracteristicas Principales
 
-### 🚀 Aplicación Principal (app.py)
-- Configuración centralizada de Streamlit
-- Gestión de estado de sesión
-- Navegación entre páginas
-- Inicialización de sistemas (RAG, Agentes)
+### 🚀 Aplicacion Principal (app.py)
+- Configuracion centralizada de Streamlit
+- Gestion de estado de sesion
+- Navegacion entre paginas
+- Inicializacion de sistemas (RAG, Agentes)
 
-### 📄 Páginas Especializadas
+### 📄 Paginas Especializadas
 
 #### 📚 Upload Documents (upload_docs.py)
-- Subida de múltiples formatos (PDF, DOCX, TXT, MD, JSON, XLSX)
-- Procesamiento y vectorización automática
-- Estadísticas de la biblioteca de conocimiento
-- Búsqueda semántica en documentos
+- Subida de multiples formatos (PDF, DOCX, TXT, MD, JSON, XLSX)
+- Procesamiento y vectorizacion automatica
+- Estadisticas de la biblioteca de conocimiento
+- Busqueda semantica en documentos
 
 #### ✍️ Manuscript Editor (manuscript_editor.py)
-- Editor de texto integrado con estadísticas en tiempo real
-- Plantillas de inicio por género
+- Editor de texto integrado con estadisticas en tiempo real
+- Plantillas de inicio por genero
 - Procesamiento con agentes especializados
 - Historial de versiones y borradores
-- Configuración personalizable por género y audiencia
+- Configuracion personalizable por genero y audiencia
 
 #### 🤖 Agent Monitor (agent_monitor.py)
 - Estado en tiempo real de todos los agentes
-- Métricas de rendimiento y estadísticas
-- Configuración avanzada de parámetros
-- Logs de actividad y diagnósticos
+- Metricas de rendimiento y estadisticas
+- Configuracion avanzada de parametros
+- Logs de actividad y diagnosticos
 - Visualizaciones de performance
 
 #### 📊 Results Viewer (results_viewer.py)
-- Visualización completa de resultados de análisis
-- Gráficos interactivos con Plotly
+- Visualizacion completa de resultados de analisis
+- Graficos interactivos con Plotly
 - Recomendaciones priorizadas
-- Exportación de reportes en múltiples formatos
-- Análisis comparativo de métricas
+- Exportacion de reportes en multiples formatos
+- Analisis comparativo de metricas
 
 #### 🎬 Visual Prompts (visual_prompts.py)
-- Generación de prompts para IA de video
-- Configuración cinematográfica avanzada
+- Generacion de prompts para IA de video
+- Configuracion cinematografica avanzada
 - Biblioteca de estilos de directores famosos
-- Galería de prompts guardados
-- Optimización para diferentes herramientas de IA
+- Galeria de prompts guardados
+- Optimizacion para diferentes herramientas de IA
 
 ### 🧩 Componentes Reutilizables
 
@@ -406,10 +407,10 @@ frontend/
 ```python
 from frontend.components.metrics import render_metrics_card, render_score_gauge
 
-# Métrica básica
+# Metrica basica
 render_metrics_card("Documentos", 45, delta="+5", help_text="Documentos en RAG")
 
-# Gauge de puntuación
+# Gauge de puntuacion
 render_score_gauge(8.5, "Calidad General", max_score=10)
 ```
 
@@ -418,7 +419,7 @@ render_score_gauge(8.5, "Calidad General", max_score=10)
 from frontend.components.progress import render_progress_tracker, animated_progress_bar
 
 # Tracker de pasos
-steps = ["Análisis", "Procesamiento", "Resultados"]
+steps = ["Analisis", "Procesamiento", "Resultados"]
 render_progress_tracker(steps, current_step=1)
 
 # Barra animada
@@ -429,27 +430,27 @@ animated_progress_bar("Procesando manuscrito", duration=5)
 ```python
 from frontend.components.alerts import render_alert, render_toast
 
-# Alerta estática
+# Alerta estatica
 render_alert("Procesamiento completado", "success")
 
-# Notificación temporal
+# Notificacion temporal
 render_toast("Manuscrito guardado", duration=3)
 ```
 
-## Configuración
+## Configuracion
 
 ### Streamlit Config (.streamlit/config.toml)
 - Tema personalizado con colores del sistema
-- Puerto y configuración de servidor
+- Puerto y configuracion de servidor
 - Optimizaciones de rendimiento
 
 ### Variables de Entorno
 ```bash
-# Configuración de la aplicación
+# Configuracion de la aplicacion
 STREAMLIT_SERVER_PORT=8501
 PYTHONPATH=/path/to/project
 
-# Configuración del sistema
+# Configuracion del sistema
 LOG_LEVEL=INFO
 PROJECT_NAME="Multi-Agent Novel System"
 ```
@@ -464,7 +465,7 @@ source novel_env/bin/activate
 # Instalar dependencias frontend
 pip install -r requirements_frontend.txt
 
-# Lanzar aplicación
+# Lanzar aplicacion
 streamlit run frontend/app.py
 ```
 
@@ -498,12 +499,12 @@ pytest tests/test_frontend.py -v
 ```
 
 ### Tipos de Pruebas
-- **Pruebas de integración**: Verifican que la app carga correctamente
+- **Pruebas de integracion**: Verifican que la app carga correctamente
 - **Pruebas de componentes**: Validan funcionalidad individual
-- **Pruebas de navegación**: Comprueban el flujo entre páginas
-- **Pruebas de validación**: Verifican entrada de datos
+- **Pruebas de navegacion**: Comprueban el flujo entre paginas
+- **Pruebas de validacion**: Verifican entrada de datos
 
-## Personalización
+## Personalizacion
 
 ### Estilos CSS (static/custom.css)
 - Tema personalizado coherente con la marca
@@ -512,12 +513,12 @@ pytest tests/test_frontend.py -v
 - Estilos para diferentes tipos de contenido
 
 ### Extensiones
-El sistema está diseñado para ser extensible:
+El sistema esta diseñado para ser extensible:
 
-1. **Nuevas Páginas**: Añadir archivos en `pages/` y actualizar navegación
+1. **Nuevas Paginas**: Añadir archivos en `pages/` y actualizar navegacion
 2. **Componentes Custom**: Crear en `components/` siguiendo patrones existentes  
 3. **Integraciones**: Añadir conectores a servicios externos
-4. **Temas**: Modificar configuración de Streamlit y CSS
+4. **Temas**: Modificar configuracion de Streamlit y CSS
 
 ## Arquitectura de Estado
 
@@ -526,37 +527,37 @@ El sistema está diseñado para ser extensible:
 # Estados principales
 st.session_state.initialized       # Sistema inicializado
 st.session_state.manuscript       # Texto del manuscrito
-st.session_state.analysis_results # Resultados de análisis
-st.session_state.rag_stats       # Estadísticas RAG
+st.session_state.analysis_results # Resultados de analisis
+st.session_state.rag_stats       # Estadisticas RAG
 st.session_state.visual_prompts  # Prompts visuales
 st.session_state.processing      # Estado de procesamiento
 ```
 
 ### Flujo de Datos
-1. **Inicialización**: Carga de sistemas RAG y Agentes
+1. **Inicializacion**: Carga de sistemas RAG y Agentes
 2. **Ingesta**: Documentos → RAG Manager → Vector Store
-3. **Edición**: Manuscrito → Session State → Validación
+3. **Edicion**: Manuscrito → Session State → Validacion
 4. **Procesamiento**: Manuscrito → Agent Manager → Resultados
-5. **Visualización**: Resultados → Componentes → UI
+5. **Visualizacion**: Resultados → Componentes → UI
 
-## Mejores Prácticas
+## Mejores Practicas
 
 ### Performance
 - Lazy loading de componentes pesados
 - Cache de datos frecuentemente accedidos
-- Optimización de re-renders con claves únicas
-- Gestión eficiente de session state
+- Optimizacion de re-renders con claves unicas
+- Gestion eficiente de session state
 
 ### UX/UI
 - Feedback inmediato para acciones de usuario
 - Estados de carga claros y informativos
-- Navegación intuitiva y consistente
+- Navegacion intuitiva y consistente
 - Responsive design para diferentes pantallas
 
 ### Mantenibilidad
-- Separación clara de responsabilidades
+- Separacion clara de responsabilidades
 - Componentes reutilizables y modulares
-- Documentación inline de funciones complejas
+- Documentacion inline de funciones complejas
 - Manejo robusto de errores y edge cases
 """
     
@@ -566,7 +567,7 @@ st.session_state.processing      # Estado de procesamiento
     print("📄 Creado: docs/FRONTEND.md")
 
 def main():
-    """Función principal de configuración"""
+    """Funcion principal de configuracion"""
     
     print("🎨 Configurando Frontend del Sistema Multi-Agente para Novelas")
     print("=" * 60)
@@ -576,11 +577,11 @@ def main():
         create_frontend_structure()
         print()
         
-        # Configuración Streamlit
+        # Configuracion Streamlit
         create_streamlit_config()
         print()
         
-        # Requirements específicos
+        # Requirements especificos
         create_requirements_frontend()
         print()
         
@@ -597,24 +598,24 @@ def main():
         create_testing_setup()
         print()
         
-        # Documentación
+        # Documentacion
         Path("docs").mkdir(exist_ok=True)
         create_documentation()
         print()
         
         print("=" * 60)
-        print("✅ CONFIGURACIÓN DEL FRONTEND COMPLETADA")
+        print("✅ CONFIGURACION DEL FRONTEND COMPLETADA")
         print()
-        print("🚀 Próximos pasos:")
+        print("🚀 Proximos pasos:")
         print("1. Activar entorno: source novel_env/bin/activate")
         print("2. Instalar dependencias: pip install -r requirements_frontend.txt")
-        print("3. Lanzar aplicación: ./launch.sh")
+        print("3. Lanzar aplicacion: ./launch.sh")
         print("4. Abrir navegador: http://localhost:8501")
         print()
-        print("📚 Documentación disponible en: docs/FRONTEND.md")
+        print("📚 Documentacion disponible en: docs/FRONTEND.md")
         
     except Exception as e:
-        print(f"❌ Error durante la configuración: {str(e)}")
+        print(f"❌ Error durante la configuracion: {str(e)}")
         sys.exit(1)
 
 if __name__ == "__main__":

@@ -1,0 +1,73 @@
+# Git and version control
+.git
+.gitignore
+.gitattributes
+
+# Python cache and environment
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+novel_env/
+venv/
+env/
+.env.local
+.env.development
+.env.test
+.env.production
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Documentation and development files
+README.md
+*.md
+docs/
+tests/
+.pytest_cache/
+
+# Large model files (these should be volume mounted)
+llm_local/models/*.gguf
+llm_local/models/*.bin
+
+# Temporary and log files (unless needed)
+*.tmp
+*.temp
+*.log
+
+# Build and distribution
+build/
+dist/
+*.egg-info/
+
+# Node.js (if any frontend dependencies)
+node_modules/
+npm-debug.log*
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+
+# Ansible files
+inventory.yml
+setup_project.yml
+installation.sh

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # agents/crews/__init__.py
 from .lorekeeper import LorekeeperAgent
 from .character_developer import CharacterDeveloperAgent
@@ -33,7 +34,7 @@ from crewai import Agent
 from pathlib import Path
 import sys
 
-# Añadir el directorio raíz al path
+# Añadir el directorio raiz al path
 project_root = Path(__file__).parent.parent.parent
 sys.path.append(str(project_root))
 
@@ -63,7 +64,7 @@ class BaseNovelAgent:
         
     def create_agent(self, role: str, goal: str, backstory: str, 
                     specific_tools: List = None) -> Agent:
-        """Crea un agente CrewAI con configuración base"""
+        """Crea un agente CrewAI con configuracion base"""
         
         all_tools = self.common_tools.copy()
         if specific_tools:
@@ -79,7 +80,7 @@ class BaseNovelAgent:
             memory=True,
             allow_delegation=False,
             max_iter=3,
-            max_execution_time=300  # 5 minutos máximo por tarea
+            max_execution_time=300  # 5 minutos maximo por tarea
         )
 
 
@@ -96,32 +97,32 @@ class LorekeeperAgent(BaseNovelAgent):
     
     def _create_lorekeeper(self) -> Agent:
         return self.create_agent(
-            role="Lorekeeper - Guardián del Conocimiento",
+            role="Lorekeeper - Guardian del Conocimiento",
             goal="""Mantener la coherencia y consistencia del mundo narrativo, 
-            asegurando que todos los elementos de lore, reglas mágicas, geografía, 
-            historia y mitología se mantengan coherentes a lo largo de la historia.""",
-            backstory="""Eres un erudito meticuloso con décadas de experiencia catalogando 
-            y organizando el conocimiento de mundos fantásticos. Tu obsesión por los detalles 
-            y la consistencia te ha convertido en el guardián definitivo del lore narrativo. 
+            asegurando que todos los elementos de lore, reglas magicas, geografia, 
+            historia y mitologia se mantengan coherentes a lo largo de la historia.""",
+            backstory="""Eres un erudito meticuloso con decadas de experiencia catalogando 
+            y organizando el conocimiento de mundos fantasticos. Tu obsesion por los detalles 
+            y la consistencia te ha convertido en el guardian definitivo del lore narrativo. 
             
-            Conoces cada ley mágica, cada linaje noble, cada evento histórico y cada tradición 
-            cultural. Tu trabajo es esencial para crear mundos que se sientan auténticos y 
-            vividos, donde cada detalle tiene su lugar y propósito.
+            Conoces cada ley magica, cada linaje noble, cada evento historico y cada tradicion 
+            cultural. Tu trabajo es esencial para crear mundos que se sientan autenticos y 
+            vividos, donde cada detalle tiene su lugar y proposito.
             
-            Siempre consultas los documentos de referencia antes de hacer cualquier afirmación 
+            Siempre consultas los documentos de referencia antes de hacer cualquier afirmacion 
             sobre el mundo, y mantienes un registro mental de todas las reglas establecidas."""
         )
     
     def analyze_worldbuilding(self, manuscript: str) -> Dict[str, Any]:
-        """Analiza la construcción del mundo en el manuscrito"""
+        """Analiza la construccion del mundo en el manuscrito"""
         task_description = f"""
-        Analiza el siguiente manuscrito enfocándote en los elementos de worldbuilding:
+        Analiza el siguiente manuscrito enfocandote en los elementos de worldbuilding:
         
         MANUSCRITO:
         {manuscript}
         
         TAREAS A REALIZAR:
-        1. Usa la herramienta RAG para consultar información relevante sobre el mundo
+        1. Usa la herramienta RAG para consultar informacion relevante sobre el mundo
         2. Identifica todos los elementos de lore presentes (magia, razas, lugares, historia)
         3. Verifica consistencia interna usando el verificador de consistencia
         4. Detecta posibles contradicciones o inconsistencias
@@ -129,12 +130,12 @@ class LorekeeperAgent(BaseNovelAgent):
         
         FORMATO DE SALIDA:
         - Elementos de lore identificados
-        - Verificación de consistencia
+        - Verificacion de consistencia
         - Contradicciones encontradas
         - Recomendaciones para mejorar la coherencia
         """
         
-        # Aquí se ejecutaría la tarea del agente
+        # Aqui se ejecutaria la tarea del agente
         return {"task": task_description, "agent": "lorekeeper"}
     
     def validate_rules(self, text: str, rule_type: str = "magic") -> str:
@@ -145,7 +146,7 @@ class LorekeeperAgent(BaseNovelAgent):
         {text}
         
         Consulta la base de conocimiento para verificar reglas establecidas previamente
-        y asegúrate de que no haya violaciones a la consistencia del mundo.
+        y asegurate de que no haya violaciones a la consistencia del mundo.
         """
         
         return task_description
@@ -166,18 +167,18 @@ class CharacterDeveloperAgent(BaseNovelAgent):
         return self.create_agent(
             role="Character Developer - Arquitecto de Personajes",
             goal="""Crear personajes complejos, tridimensionales y convincentes. 
-            Desarrollar arcos narrativos significativos, relaciones auténticas y 
-            evolución character realista a lo largo de la historia.""",
-            backstory="""Eres un psicólogo narrativo especializado en la creación y 
-            desarrollo de personajes memorables. Tu formación combina psicología humana, 
-            teoría literaria y técnicas de escritura creativa.
+            Desarrollar arcos narrativos significativos, relaciones autenticas y 
+            evolucion character realista a lo largo de la historia.""",
+            backstory="""Eres un psicologo narrativo especializado en la creacion y 
+            desarrollo de personajes memorables. Tu formacion combina psicologia humana, 
+            teoria literaria y tecnicas de escritura creativa.
             
             Entiendes que los grandes personajes son aquellos que sienten reales, con 
-            motivaciones claras, flaws auténticos y crecimiento genuino. Cada personaje 
-            que tocas cobra vida propia, convirtiéndose en algo más que palabras en una página.
+            motivaciones claras, flaws autenticos y crecimiento genuino. Cada personaje 
+            que tocas cobra vida propia, convirtiendose en algo mas que palabras en una pagina.
             
             Tu especialidad es encontrar la humanidad en cada personaje, sin importar 
-            cuán fantástica sea su naturaleza. Creas arcos de desarrollo que resuenan 
+            cuan fantastica sea su naturaleza. Creas arcos de desarrollo que resuenan 
             emocionalmente con los lectores y drive the story forward."""
         )
     
@@ -191,18 +192,18 @@ class CharacterDeveloperAgent(BaseNovelAgent):
         
         TAREAS A REALIZAR:
         1. Usa el analizador de personajes para identificar todos los personajes presentes
-        2. Consulta la base RAG para obtener información previa sobre estos personajes
-        3. Evalúa la profundidad y desarrollo de cada personaje
+        2. Consulta la base RAG para obtener informacion previa sobre estos personajes
+        3. Evalua la profundidad y desarrollo de cada personaje
         4. Identifica oportunidades para arcos de crecimiento
         5. Sugiere mejoras en motivaciones, conflictos internos y relaciones
         6. Genera ideas creativas para enriquecer a los personajes secundarios
         
         FORMATO DE SALIDA:
-        - Análisis de personajes existentes
+        - Analisis de personajes existentes
         - Arcos de desarrollo sugeridos
         - Mejoras en motivaciones y conflictos
         - Sugerencias para personajes secundarios
-        - Plan de evolución character
+        - Plan de evolucion character
         """
         
         return {"task": task_description, "agent": "character_developer"}
@@ -237,17 +238,17 @@ class PlotWeaverAgent(BaseNovelAgent):
             role="Plot Weaver - Maestro de la Narrativa",
             goal="""Diseñar tramas cautivadoras y bien estructuradas. Organizar eventos 
             narrativos de manera que maximicen el impacto emocional y mantengan el 
-            engagement del lector. Balancear tensión, ritmo y revelaciones.""",
+            engagement del lector. Balancear tension, ritmo y revelaciones.""",
             backstory="""Eres un maestro arquitecto de historias con un entendimiento 
-            profundo de la estructura narrativa clásica y moderna. Has estudiado las 
+            profundo de la estructura narrativa clasica y moderna. Has estudiado las 
             obras de los grandes narradores y entiendes los patrones que hacen que una 
             historia sea inolvidable.
             
-            Tu especialidad es tejer múltiples hilos narrativos en una tapestry coherente 
-            y emocionante. Sabes cuándo acelerar el ritmo, cuándo permitir momentos de 
-            respiro, y cómo colocar revelaciones para máximo impacto.
+            Tu especialidad es tejer multiples hilos narrativos en una tapestry coherente 
+            y emocionante. Sabes cuando acelerar el ritmo, cuando permitir momentos de 
+            respiro, y como colocar revelaciones para maximo impacto.
             
-            Entiendes que cada escena debe servir un propósito: avanzar la trama, 
+            Entiendes que cada escena debe servir un proposito: avanzar la trama, 
             desarrollar personajes, o enriquecer el mundo. No toleras escenas innecesarias, 
             pero tampoco sacrificas momentos importantes por el sake de la eficiencia."""
         )
@@ -264,14 +265,14 @@ class PlotWeaverAgent(BaseNovelAgent):
         1. Usa el analizador de trama para evaluar la estructura narrativa
         2. Usa el analizador de ritmo para evaluar el pacing
         3. Identifica los puntos clave de la trama (setup, inciting incident, plot points, climax, resolution)
-        4. Evalúa la progresión y escalamiento de conflictos
-        5. Identifica subtramas y su integración con la trama principal
+        4. Evalua la progresion y escalamiento de conflictos
+        5. Identifica subtramas y su integracion con la trama principal
         6. Sugiere mejoras estructurales y de ritmo
         
         FORMATO DE SALIDA:
-        - Análisis de estructura narrativa
-        - Evaluación del ritmo y pacing
-        - Identificación de puntos débiles en la trama
+        - Analisis de estructura narrativa
+        - Evaluacion del ritmo y pacing
+        - Identificacion de puntos debiles en la trama
         - Sugerencias de mejora estructural
         - Recomendaciones para subtramas
         """
@@ -279,9 +280,9 @@ class PlotWeaverAgent(BaseNovelAgent):
         return {"task": task_description, "agent": "plot_weaver"}
     
     def suggest_plot_improvements(self, current_plot: str, issues: List[str]) -> str:
-        """Sugiere mejoras específicas para la trama"""
+        """Sugiere mejoras especificas para la trama"""
         task_description = f"""
-        Basándote en los siguientes problemas identificados en la trama:
+        Basandote en los siguientes problemas identificados en la trama:
         
         TRAMA ACTUAL:
         {current_plot}
@@ -289,7 +290,7 @@ class PlotWeaverAgent(BaseNovelAgent):
         PROBLEMAS IDENTIFICADOS:
         {chr(10).join([f"- {issue}" for issue in issues])}
         
-        Genera sugerencias específicas para resolver estos problemas y mejorar 
+        Genera sugerencias especificas para resolver estos problemas y mejorar 
         la estructura narrativa general.
         """
         
@@ -301,7 +302,7 @@ from .base_agent import BaseNovelAgent
 from crewai import Agent
 
 class StyleEditorAgent(BaseNovelAgent):
-    """Agente Style Editor - Crítico literario especializado en voz y estilo"""
+    """Agente Style Editor - Critico literario especializado en voz y estilo"""
     
     def __init__(self, llm=None):
         super().__init__(llm)
@@ -312,58 +313,58 @@ class StyleEditorAgent(BaseNovelAgent):
             role="Voice & Style Editor - Maestro del Estilo Literario",
             goal="""Perfeccionar la voz narrativa y el estilo de escritura para crear 
             una experiencia de lectura cohesiva y envolvente. Mantener consistencia 
-            tonal y mejorar la prosa para máximo impacto emocional.""",
-            backstory="""Eres un editor literario con décadas de experiencia refinando 
-            la prosa de autores reconocidos. Tu oído para el lenguaje es extraordinario, 
+            tonal y mejorar la prosa para maximo impacto emocional.""",
+            backstory="""Eres un editor literario con decadas de experiencia refinando 
+            la prosa de autores reconocidos. Tu oido para el lenguaje es extraordinario, 
             capaz de detectar inconsistencias tonales, problemas de flujo y oportunidades 
-            para mejoras estilísticas.
+            para mejoras estilisticas.
             
-            Entiendes que el estilo no es solo decoración - es la manera en que la 
-            historia se comunica al lector. Cada elección de palabra, cada ritmo de 
-            oración, cada decisión estilística debe servir a la historia y al tono 
+            Entiendes que el estilo no es solo decoracion - es la manera en que la 
+            historia se comunica al lector. Cada eleccion de palabra, cada ritmo de 
+            oracion, cada decision estilistica debe servir a la historia y al tono 
             general de la obra.
             
-            Tu especialidad es encontrar la voz única de cada historia y ayudar a 
-            que brille con claridad y potencia. Balanceas la creatividad artística 
+            Tu especialidad es encontrar la voz unica de cada historia y ayudar a 
+            que brille con claridad y potencia. Balanceas la creatividad artistica 
             con la claridad comunicativa."""
         )
     
     def analyze_writing_style(self, manuscript: str) -> Dict[str, Any]:
         """Analiza el estilo de escritura del manuscrito"""
         task_description = f"""
-        Realiza un análisis completo del estilo de escritura:
+        Realiza un analisis completo del estilo de escritura:
         
         MANUSCRITO:
         {manuscript}
         
         TAREAS A REALIZAR:
-        1. Usa el analizador de escritura para obtener estadísticas básicas
+        1. Usa el analizador de escritura para obtener estadisticas basicas
         2. Usa el analizador de estilo para evaluar tono y perspectiva narrativa
         3. Identifica la voz narrativa dominante y su consistencia
-        4. Evalúa la variedad y riqueza del vocabulario
+        4. Evalua la variedad y riqueza del vocabulario
         5. Analiza el flujo y ritmo de la prosa
-        6. Sugiere mejoras estilísticas específicas
+        6. Sugiere mejoras estilisticas especificas
         
         FORMATO DE SALIDA:
-        - Análisis de estadísticas de escritura
-        - Evaluación del estilo y tono
-        - Identificación de fortalezas estilísticas
-        - Áreas de mejora en el estilo
-        - Recomendaciones específicas para la prosa
+        - Analisis de estadisticas de escritura
+        - Evaluacion del estilo y tono
+        - Identificacion de fortalezas estilisticas
+        - Areas de mejora en el estilo
+        - Recomendaciones especificas para la prosa
         """
         
         return {"task": task_description, "agent": "style_editor"}
     
     def improve_prose(self, text_segment: str, target_style: str) -> str:
-        """Mejora un segmento específico de prosa"""
+        """Mejora un segmento especifico de prosa"""
         task_description = f"""
         Mejora este segmento de prosa hacia un estilo {target_style}:
         
         TEXTO ORIGINAL:
         {text_segment}
         
-        Proporciona una versión mejorada que mantenga el significado pero 
-        mejore la fluidez, impacto emocional y coherencia estilística.
+        Proporciona una version mejorada que mantenga el significado pero 
+        mejore la fluidez, impacto emocional y coherencia estilistica.
         """
         
         return task_description
@@ -374,7 +375,7 @@ from .base_agent import BaseNovelAgent
 from crewai import Agent
 
 class VisualizerAgent(BaseNovelAgent):
-    """Agente Visualizer - Especialista en prompts cinematográficos"""
+    """Agente Visualizer - Especialista en prompts cinematograficos"""
     
     def __init__(self, llm=None):
         super().__init__(llm)
@@ -382,61 +383,61 @@ class VisualizerAgent(BaseNovelAgent):
     
     def _create_visualizer(self) -> Agent:
         return self.create_agent(
-            role="Visualizer - Director Cinematográfico Virtual",
+            role="Visualizer - Director Cinematografico Virtual",
             goal="""Convertir escenas narrativas en prompts visuales detallados 
-            para generación de video AI. Crear descripciones cinematográficas que 
+            para generacion de video AI. Crear descripciones cinematograficas que 
             capturen la esencia visual y emocional de cada escena.""",
-            backstory="""Eres un director de fotografía y visualizador conceptual con 
-            experiencia en cine épico y fantasía. Tu visión combina técnica cinematográfica 
-            avanzada con sensibilidad artística para traducir palabras en imágenes 
+            backstory="""Eres un director de fotografia y visualizador conceptual con 
+            experiencia en cine epico y fantasia. Tu vision combina tecnica cinematografica 
+            avanzada con sensibilidad artistica para traducir palabras en imagenes 
             poderosas.
             
-            Entiendes cómo los ángulos de cámara, la iluminación, el color y la 
-            composición pueden amplificar el impacto emocional de una escena. Tu 
+            Entiendes como los angulos de camara, la iluminacion, el color y la 
+            composicion pueden amplificar el impacto emocional de una escena. Tu 
             especialidad es crear prompts que resulten en videos que no solo muestren 
-            la acción, sino que transmitan la atmósfera y el sentimiento de la historia.
+            la accion, sino que transmitan la atmosfera y el sentimiento de la historia.
             
             Tienes un ojo excepcional para los detalles visuales que hacen que una 
-            escena cobre vida: la manera en que la luz filtra a través de las hojas, 
-            el polvo que flota en un rayo de sol, la expresión exacta en el rostro 
+            escena cobre vida: la manera en que la luz filtra a traves de las hojas, 
+            el polvo que flota en un rayo de sol, la expresion exacta en el rostro 
             de un personaje."""
         )
     
     def create_visual_prompts(self, manuscript: str) -> Dict[str, Any]:
         """Crea prompts visuales para las escenas clave del manuscrito"""
         task_description = f"""
-        Crea prompts visuales cinematográficos para las escenas clave:
+        Crea prompts visuales cinematograficos para las escenas clave:
         
         MANUSCRITO:
         {manuscript}
         
         TAREAS A REALIZAR:
-        1. Identifica las 5-7 escenas más visualmente impactantes
+        1. Identifica las 5-7 escenas mas visualmente impactantes
         2. Para cada escena, usa el generador de prompts visuales
-        3. Crea variaciones con diferentes estilos cinematográficos
-        4. Incluye detalles técnicos específicos (ángulos, iluminación, movimiento)
-        5. Optimiza para generación de video AI
+        3. Crea variaciones con diferentes estilos cinematograficos
+        4. Incluye detalles tecnicos especificos (angulos, iluminacion, movimiento)
+        5. Optimiza para generacion de video AI
         
         FORMATO DE SALIDA:
         - Lista de escenas clave identificadas
         - Prompt principal para cada escena
-        - Variaciones estilísticas
-        - Detalles técnicos cinematográficos
-        - Recomendaciones de post-producción
+        - Variaciones estilisticas
+        - Detalles tecnicos cinematograficos
+        - Recomendaciones de post-produccion
         """
         
         return {"task": task_description, "agent": "visualizer"}
     
     def optimize_scene_for_video(self, scene_description: str, duration: str = "30s") -> str:
-        """Optimiza una escena específica para video AI"""
+        """Optimiza una escena especifica para video AI"""
         task_description = f"""
-        Optimiza esta escena para generación de video de {duration}:
+        Optimiza esta escena para generacion de video de {duration}:
         
         ESCENA:
         {scene_description}
         
         Crea un prompt optimizado que funcione bien con herramientas de video AI, 
-        considerando limitaciones técnicas y mejores prácticas.
+        considerando limitaciones tecnicas y mejores practicas.
         """
         
         return task_description
@@ -447,7 +448,7 @@ from .base_agent import BaseNovelAgent
 from crewai import Agent
 
 class ResearcherAgent(BaseNovelAgent):
-    """Agente Researcher - Especialista en investigación y referencias"""
+    """Agente Researcher - Especialista en investigacion y referencias"""
     
     def __init__(self, llm=None):
         super().__init__(llm)
@@ -456,44 +457,44 @@ class ResearcherAgent(BaseNovelAgent):
     def _create_researcher(self) -> Agent:
         return self.create_agent(
             role="Researcher - Investigador y Verificador de Referencias",
-            goal="""Buscar y verificar información histórica, cultural, científica 
-            y geográfica para enriquecer la historia con detalles auténticos y 
-            bien fundamentados. Asegurar precisión en referencias reales.""",
-            backstory="""Eres un investigador académico con expertise en múltiples 
-            disciplinas: historia, antropología, geografía, ciencias y mitología 
-            comparada. Tu pasión es encontrar los detalles que hacen que una historia 
-            fantástica se sienta auténtica y bien fundamentada.
+            goal="""Buscar y verificar informacion historica, cultural, cientifica 
+            y geografica para enriquecer la historia con detalles autenticos y 
+            bien fundamentados. Asegurar precision en referencias reales.""",
+            backstory="""Eres un investigador academico con expertise en multiples 
+            disciplinas: historia, antropologia, geografia, ciencias y mitologia 
+            comparada. Tu pasion es encontrar los detalles que hacen que una historia 
+            fantastica se sienta autentica y bien fundamentada.
             
-            Aunque trabajas con ficción, entiendes que los mejores mundos fantásticos 
-            están construidos sobre fundamentos sólidos de conocimiento real. Tu 
+            Aunque trabajas con ficcion, entiendes que los mejores mundos fantasticos 
+            estan construidos sobre fundamentos solidos de conocimiento real. Tu 
             trabajo es encontrar esos puntos de anclaje que hacen que lo imposible 
             se sienta posible.
             
             Tu biblioteca mental es vasta, pero siempre verificas y consultas fuentes 
-            para asegurar la precisión. Tienes un talento especial para encontrar 
-            conexiones fascinantes entre diferentes culturas y períodos históricos."""
+            para asegurar la precision. Tienes un talento especial para encontrar 
+            conexiones fascinantes entre diferentes culturas y periodos historicos."""
         )
     
     def research_context(self, topic: str, story_context: str) -> Dict[str, Any]:
-        """Investiga un tema específico en el contexto de la historia"""
+        """Investiga un tema especifico en el contexto de la historia"""
         task_description = f"""
-        Investiga información sobre el tema: {topic}
+        Investiga informacion sobre el tema: {topic}
         
         CONTEXTO DE LA HISTORIA:
         {story_context}
         
         TAREAS A REALIZAR:
-        1. Consulta la base RAG para información relevante disponible
-        2. Identifica aspectos históricos, culturales o científicos relacionados
+        1. Consulta la base RAG para informacion relevante disponible
+        2. Identifica aspectos historicos, culturales o cientificos relacionados
         3. Encuentra paralelos en el mundo real que puedan enriquecer la narrativa
-        4. Sugiere detalles auténticos que puedan añadirse a la historia
+        4. Sugiere detalles autenticos que puedan añadirse a la historia
         5. Verifica la consistencia con el mundo ya establecido
         
         FORMATO DE SALIDA:
-        - Información encontrada en la base de datos
-        - Referencias históricas/culturales relevantes
+        - Informacion encontrada en la base de datos
+        - Referencias historicas/culturales relevantes
         - Sugerencias para enriquecer la narrativa
-        - Verificación de consistencia
+        - Verificacion de consistencia
         """
         
         return {"task": task_description, "agent": "researcher"}
@@ -520,20 +521,20 @@ class ContinuityAuditorAgent(BaseNovelAgent):
             producciones complejas. Tu mente funciona como una base de datos viviente, 
             capaz de recordar y cross-referenciar cada detalle mencionado en una historia.
             
-            Tu obsesión por la consistencia viene de entender que los lectores notan 
-            las inconsistencias, y que estas pueden romper la inmersión en la historia. 
+            Tu obsesion por la consistencia viene de entender que los lectores notan 
+            las inconsistencias, y que estas pueden romper la inmersion en la historia. 
             Un personaje que cambia de color de ojos, una fecha que no cuadra, o una 
-            regla mágica que se viola sin explicación - nada escapa a tu atención.
+            regla magica que se viola sin explicacion - nada escapa a tu atencion.
             
-            Trabajas sistemáticamente, creando timelines detallados, profiles de 
+            Trabajas sistematicamente, creando timelines detallados, profiles de 
             personajes y registros de reglas del mundo. Tu trabajo es invisible cuando 
-            está bien hecho, pero esencial para la credibilidad de la narrativa."""
+            esta bien hecho, pero esencial para la credibilidad de la narrativa."""
         )
     
     def audit_continuity(self, manuscript: str, reference_materials: str = "") -> Dict[str, Any]:
         """Audita la continuidad del manuscrito completo"""
         task_description = f"""
-        Realiza una auditoría completa de continuidad:
+        Realiza una auditoria completa de continuidad:
         
         MANUSCRITO:
         {manuscript}
@@ -543,9 +544,9 @@ class ContinuityAuditorAgent(BaseNovelAgent):
         
         TAREAS A REALIZAR:
         1. Usa el verificador de consistencia para detectar contradicciones
-        2. Verifica consistencia de personajes (descripción física, personalidad, habilidades)
+        2. Verifica consistencia de personajes (descripcion fisica, personalidad, habilidades)
         3. Audita la timeline y secuencia de eventos
-        4. Verifica reglas del mundo y su aplicación consistente
+        4. Verifica reglas del mundo y su aplicacion consistente
         5. Identifica discrepancias con materiales de referencia
         6. Crea un reporte detallado de problemas encontrados
         
@@ -554,7 +555,7 @@ class ContinuityAuditorAgent(BaseNovelAgent):
         - Inconsistencias de personajes detectadas
         - Problemas de timeline identificados
         - Violaciones a reglas del mundo
-        - Recomendaciones para corrección
+        - Recomendaciones para correccion
         """
         
         return {"task": task_description, "agent": "continuity_auditor"}
@@ -577,15 +578,15 @@ class BetaReaderAgent(BaseNovelAgent):
             goal="""Simular la experiencia de diferentes tipos de lectores target, 
             proporcionando feedback desde perspectivas variadas sobre engagement, 
             claridad, ritmo y appeal emocional de la historia.""",
-            backstory="""Eres un lector voraz con la habilidad única de adoptar diferentes 
+            backstory="""Eres un lector voraz con la habilidad unica de adoptar diferentes 
             perspectivas de lectura. Puedes leer como un adolescente buscando aventura, 
-            como un adulto buscando profundidad emocional, o como un crítico literario 
-            buscando excelencia técnica.
+            como un adulto buscando profundidad emocional, o como un critico literario 
+            buscando excelencia tecnica.
             
-            Tu valor radica en tu empatía lectora - puedes anticipar qué partes van 
-            a enganchar a los lectores, qué secciones pueden resultar confusas, y 
-            dónde la historia puede perder momentum. Has leído miles de historias 
-            en múltiples géneros y entiendes qué funciona y qué no.
+            Tu valor radica en tu empatia lectora - puedes anticipar que partes van 
+            a enganchar a los lectores, que secciones pueden resultar confusas, y 
+            donde la historia puede perder momentum. Has leido miles de historias 
+            en multiples generos y entiendes que funciona y que no.
             
             Tu feedback es directo pero constructivo, siempre enfocado en mejorar 
             la experiencia del lector final."""
@@ -594,7 +595,7 @@ class BetaReaderAgent(BaseNovelAgent):
     def provide_reader_feedback(self, manuscript: str, target_audience: str = "general") -> Dict[str, Any]:
         """Proporciona feedback desde la perspectiva del lector target"""
         task_description = f"""
-        Lee y evalúa este manuscrito desde la perspectiva de {target_audience}:
+        Lee y evalua este manuscrito desde la perspectiva de {target_audience}:
         
         MANUSCRITO:
         {manuscript}
@@ -602,17 +603,17 @@ class BetaReaderAgent(BaseNovelAgent):
         AUDIENCIA TARGET: {target_audience}
         
         TAREAS A REALIZAR:
-        1. Evalúa el engagement general y puntos donde puede perderse la atención
-        2. Identifica momentos confusos o que requieren clarificación
-        3. Analiza el appeal emocional y conexión con personajes
-        4. Evalúa el ritmo desde la perspectiva del lector
-        5. Sugiere mejoras para aumentar el appeal al público objetivo
+        1. Evalua el engagement general y puntos donde puede perderse la atencion
+        2. Identifica momentos confusos o que requieren clarificacion
+        3. Analiza el appeal emocional y conexion con personajes
+        4. Evalua el ritmo desde la perspectiva del lector
+        5. Sugiere mejoras para aumentar el appeal al publico objetivo
         
         FORMATO DE SALIDA:
-        - Evaluación general de engagement
-        - Puntos de confusión identificados
-        - Análisis de conexión emocional
-        - Sugerencias de mejora específicas
+        - Evaluacion general de engagement
+        - Puntos de confusion identificados
+        - Analisis de conexion emocional
+        - Sugerencias de mejora especificas
         - Rating general como lector target
         """
         
@@ -634,21 +635,21 @@ class PacingSpecialistAgent(BaseNovelAgent):
         return self.create_agent(
             role="Pacing Specialist - Maestro del Ritmo Narrativo",
             goal="""Optimizar el ritmo y flujo de la narrativa para mantener el 
-            engagement del lector. Balancear momentos de tensión, acción, reflexión 
-            y descanso para crear una experiencia de lectura dinámica.""",
+            engagement del lector. Balancear momentos de tension, accion, reflexion 
+            y descanso para crear una experiencia de lectura dinamica.""",
             backstory="""Eres un especialista en ritmo narrativo con un entendimiento 
-            intuitivo de cómo los lectores experimentan el tiempo en las historias. 
-            Tu expertise viene de años analizando qué hace que algunos libros sean 
+            intuitivo de como los lectores experimentan el tiempo en las historias. 
+            Tu expertise viene de años analizando que hace que algunos libros sean 
             'page-turners' imposibles de dejar.
             
-            Entiendes que el pacing es como la respiración de una historia - debe 
-            fluir naturalmente, con momentos de aceleración y descanso que se sienten 
-            orgánicos. Tu trabajo es encontrar el ritmo único de cada historia y 
-            optimizarlo para máximo impacto.
+            Entiendes que el pacing es como la respiracion de una historia - debe 
+            fluir naturalmente, con momentos de aceleracion y descanso que se sienten 
+            organicos. Tu trabajo es encontrar el ritmo unico de cada historia y 
+            optimizarlo para maximo impacto.
             
             Tienes una sensibilidad especial para detectar cuando una escena se 
-            alarga demasiado, cuando la acción necesita un respiro, o cuando el 
-            momentum está por perderse."""
+            alarga demasiado, cuando la accion necesita un respiro, o cuando el 
+            momentum esta por perderse."""
         )
     
     def analyze_pacing(self, manuscript: str) -> Dict[str, Any]:
@@ -661,17 +662,17 @@ class PacingSpecialistAgent(BaseNovelAgent):
         
         TAREAS A REALIZAR:
         1. Usa el analizador de ritmo para evaluar la estructura de pacing
-        2. Identifica momentos de alta tensión vs. momentos de respiro
-        3. Evalúa la transición entre diferentes tipos de escenas
-        4. Detecta secciones que pueden beneficiarse de aceleración o desaceleración
-        5. Sugiere ajustes específicos para optimizar el flow narrativo
+        2. Identifica momentos de alta tension vs. momentos de respiro
+        3. Evalua la transicion entre diferentes tipos de escenas
+        4. Detecta secciones que pueden beneficiarse de aceleracion o desaceleracion
+        5. Sugiere ajustes especificos para optimizar el flow narrativo
         
         FORMATO DE SALIDA:
-        - Análisis detallado del ritmo actual
-        - Identificación de puntos críticos de pacing
-        - Balance entre acción, tensión y reflexión
-        - Sugerencias específicas de mejora
-        - Recomendaciones de restructuración si es necesario
+        - Analisis detallado del ritmo actual
+        - Identificacion de puntos criticos de pacing
+        - Balance entre accion, tension y reflexion
+        - Sugerencias especificas de mejora
+        - Recomendaciones de restructuracion si es necesario
         """
         
         return {"task": task_description, "agent": "pacing_specialist"}
@@ -691,43 +692,43 @@ class ProofreaderAgent(BaseNovelAgent):
     def _create_proofreader(self) -> Agent:
         return self.create_agent(
             role="Proofreader - Guardian de la Calidad Final",
-            goal="""Realizar la corrección final del manuscrito, eliminando errores 
-            gramaticales, ortográficos, de puntuación y formateo. Asegurar que el 
-            texto final sea impecable desde el punto de vista técnico.""",
-            backstory="""Eres un corrector profesional con décadas de experiencia 
-            puliendo manuscritos para publicación. Tu ojo entrenado puede detectar 
+            goal="""Realizar la correccion final del manuscrito, eliminando errores 
+            gramaticales, ortograficos, de puntuacion y formateo. Asegurar que el 
+            texto final sea impecable desde el punto de vista tecnico.""",
+            backstory="""Eres un corrector profesional con decadas de experiencia 
+            puliendo manuscritos para publicacion. Tu ojo entrenado puede detectar 
             errores que otros pasan por alto, desde typos obvios hasta inconsistencias 
-            sutiles en el uso de mayúsculas o puntuación.
+            sutiles en el uso de mayusculas o puntuacion.
             
-            Entiendes que tu trabajo es el último filtro antes de que el texto llegue 
-            a los lectores. Un error gramatical puede distraer de la historia más 
+            Entiendes que tu trabajo es el ultimo filtro antes de que el texto llegue 
+            a los lectores. Un error gramatical puede distraer de la historia mas 
             hermosa, y una inconsistencia en el formateo puede afectar la experiencia 
             de lectura.
             
             Tu enfoque es meticuloso pero respetuoso del estilo del autor. Corriges 
-            errores objetivos pero preservas las decisiones estilísticas intencionales."""
+            errores objetivos pero preservas las decisiones estilisticas intencionales."""
         )
     
     def proofread_manuscript(self, manuscript: str) -> Dict[str, Any]:
-        """Realiza corrección final del manuscrito"""
+        """Realiza correccion final del manuscrito"""
         task_description = f"""
-        Realiza una corrección completa del manuscrito:
+        Realiza una correccion completa del manuscrito:
         
         MANUSCRITO:
         {manuscript}
         
         TAREAS A REALIZAR:
-        1. Revisar ortografía y gramática
-        2. Verificar puntuación y uso de mayúsculas
+        1. Revisar ortografia y gramatica
+        2. Verificar puntuacion y uso de mayusculas
         3. Asegurar consistencia en formateo
         4. Detectar frases mal construidas o ambiguas
         5. Verificar coherencia en tiempo verbal y perspectiva
-        6. Proporcionar versión corregida con explicaciones
+        6. Proporcionar version corregida con explicaciones
         
         FORMATO DE SALIDA:
         - Lista de errores encontrados y corregidos
-        - Explicación de correcciones importantes
-        - Versión final corregida
+        - Explicacion de correcciones importantes
+        - Version final corregida
         - Sugerencias de mejora menor
         """
         
@@ -749,25 +750,25 @@ class InnovationScoutAgent(BaseNovelAgent):
         return self.create_agent(
             role="Innovation Scout - Explorador de Fronteras Creativas",
             goal="""Identificar oportunidades para giros creativos originales, 
-            combinaciones de géneros innovadoras y elementos narrativos únicos 
+            combinaciones de generos innovadoras y elementos narrativos unicos 
             que hagan la historia memorable y distintiva.""",
             backstory="""Eres un visionario creativo con un talento especial para 
             ver posibilidades que otros pasan por alto. Tu mente conecta ideas 
             aparentemente dispares para crear combinaciones fascinantes y originales.
             
-            Has estudiado narrativas de todas las culturas y épocas, siempre buscando 
-            patrones únicos y enfoques innovadores. Tu especialidad es tomar elementos 
+            Has estudiado narrativas de todas las culturas y epocas, siempre buscando 
+            patrones unicos y enfoques innovadores. Tu especialidad es tomar elementos 
             familiares y combinarlos de maneras que se sienten tanto sorprendentes 
             como inevitables.
             
             No innov as por el sake de ser diferente - cada sugerencia creativa que 
-            haces sirve a la historia y emerge orgánicamente del material existente. 
-            Tu goal es elevar la narrativa más allá de lo convencional sin sacrificar 
+            haces sirve a la historia y emerge organicamente del material existente. 
+            Tu goal es elevar la narrativa mas alla de lo convencional sin sacrificar 
             coherencia o emotional truth."""
         )
     
     def scout_creative_opportunities(self, manuscript: str) -> Dict[str, Any]:
-        """Identifica oportunidades para innovación creativa"""
+        """Identifica oportunidades para innovacion creativa"""
         task_description = f"""
         Explora oportunidades creativas en el manuscrito:
         
@@ -775,18 +776,18 @@ class InnovationScoutAgent(BaseNovelAgent):
         {manuscript}
         
         TAREAS A REALIZAR:
-        1. Identifica elementos convencionales que podrían beneficiarse de un twist
+        1. Identifica elementos convencionales que podrian beneficiarse de un twist
         2. Usa el generador de ideas para explorar posibilidades creativas
-        3. Busca oportunidades para combinaciones de género únicas
-        4. Sugiere giros narrativos que emerjan orgánicamente de la historia
+        3. Busca oportunidades para combinaciones de genero unicas
+        4. Sugiere giros narrativos que emerjan organicamente de la historia
         5. Propone elementos innovadores que mantengan coherencia con el mundo
         
         FORMATO DE SALIDA:
-        - Oportunidades de innovación identificadas
+        - Oportunidades de innovacion identificadas
         - Sugerencias de giros creativos
-        - Ideas para combinaciones de género
-        - Propuestas de elementos únicos
-        - Evaluación de viabilidad y coherencia
+        - Ideas para combinaciones de genero
+        - Propuestas de elementos unicos
+        - Evaluacion de viabilidad y coherencia
         """
         
         return {"task": task_description, "agent": "innovation_scout"}

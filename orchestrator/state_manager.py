@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 # orchestrator/state_manager.py
 """
-Gestión del estado entre iteraciones del flujo de trabajo.
+Gestion del estado entre iteraciones del flujo de trabajo.
 Mantiene el estado persistente y gestiona las transiciones de estado.
 """
 
@@ -23,7 +24,7 @@ class StateManager:
         self.logger = logging.getLogger(__name__)
         self.current_state = {}
         self.state_history = []
-        self.max_history = 50  # Máximo de estados en historial
+        self.max_history = 50  # Maximo de estados en historial
         
         self.logger.info(f"StateManager inicializado - Storage: {self.storage_path}")
     
@@ -34,7 +35,7 @@ class StateManager:
         session_id: str
     ) -> Dict[str, Any]:
         """
-        Inicializa el estado para una nueva sesión de procesamiento
+        Inicializa el estado para una nueva sesion de procesamiento
         """
         try:
             initial_state = {
@@ -66,7 +67,7 @@ class StateManager:
             self.current_state = initial_state
             self._add_to_history(initial_state)
             
-            self.logger.info(f"Estado inicializado para sesión: {session_id}")
+            self.logger.info(f"Estado inicializado para sesion: {session_id}")
             return initial_state
             
         except Exception as e:
@@ -86,7 +87,7 @@ class StateManager:
             # Crear nuevo estado basado en el actual
             new_state = current_state.copy()
             
-            # Actualizar iteración
+            # Actualizar iteracion
             if iteration is not None:
                 new_state['iteration'] = iteration
             
@@ -110,7 +111,7 @@ class StateManager:
                     if node_id and node_id not in new_state['completed_nodes']:
                         new_state['completed_nodes'].append(node_id)
                     
-                    # Integrar resultados del análisis
+                    # Integrar resultados del analisis
                     await self._integrate_analysis_results(new_state, result)
                     
                 elif result.get('status') == 'failed':
@@ -140,7 +141,7 @@ class StateManager:
             self.current_state = new_state
             self._add_to_history(new_state)
             
-            self.logger.info(f"Estado actualizado - Iteración: {new_state['iteration']}")
+            self.logger.info(f"Estado actualizado - Iteracion: {new_state['iteration']}")
             return new_state
             
         except Exception as e:
@@ -152,7 +153,7 @@ class StateManager:
         state: Dict[str, Any], 
         result: Dict[str, Any]
     ) -> None:
-        """Integra los resultados de análisis en el estado"""
+        """Integra los resultados de analisis en el estado"""
         
         result_data = result.get('result', {})
         node_id = result_data.get('node_id')
@@ -160,7 +161,7 @@ class StateManager:
         if not node_id:
             return
         
-        # Mapear resultados por tipo de análisis
+        # Mapear resultados por tipo de analisis
         analysis_mapping = {
             'lorekeeper_analysis': 'worldbuilding',
             'character_development': 'character_development', 
@@ -206,12 +207,12 @@ class StateManager:
             state['processing_status'] = 'initialized'
     
     async def _consolidate_recommendations(self, state: Dict[str, Any]) -> None:
-        """Consolida recomendaciones de todos los análisis"""
+        """Consolida recomendaciones de todos los analisis"""
         
         all_recommendations = []
         analysis_results = state.get('analysis_results', {})
         
-        # Recopilar recomendaciones de cada análisis
+        # Recopilar recomendaciones de cada analisis
         for category, data in analysis_results.items():
             if isinstance(data, dict) and 'recommendations' in data:
                 category_recommendations = data['recommendations']
@@ -239,9 +240,9 @@ class StateManager:
         state['consolidated_recommendations'] = consolidated[:10]  # Top 10 recomendaciones
     
     def _calculate_priority(self, category: str, recommendation: str) -> int:
-        """Calcula la prioridad de una recomendación"""
+        """Calcula la prioridad de una recomendacion"""
         
-        # Prioridades por categoría
+        # Prioridades por categoria
         category_priorities = {
             'quality_assurance': 100,
             'plot_structure': 90,
@@ -286,7 +287,7 @@ class StateManager:
             with open(backup_file, 'wb') as f:
                 pickle.dump(state, f)
             
-            # Limpiar archivos antiguos (más de 7 días)
+            # Limpiar archivos antiguos (mas de 7 dias)
             await self._cleanup_old_files()
             
         except Exception as e:
@@ -304,7 +305,7 @@ class StateManager:
                     state = json.load(f)
                 
                 self.current_state = state
-                self.logger.info(f"Estado cargado para sesión: {session_id}")
+                self.logger.info(f"Estado cargado para sesion: {session_id}")
                 return state
             else:
                 # Intentar cargar desde backup
@@ -317,7 +318,7 @@ class StateManager:
                     self.logger.info(f"Estado cargado desde backup: {session_id}")
                     return state
                 else:
-                    self.logger.warning(f"No se encontró estado para sesión: {session_id}")
+                    self.logger.warning(f"No se encontro estado para sesion: {session_id}")
                     return None
         
         except Exception as e:
@@ -344,7 +345,7 @@ class StateManager:
         
         self.state_history.append(history_entry)
         
-        # Mantener solo los últimos estados
+        # Mantener solo los ultimos estados
         if len(self.state_history) > self.max_history:
             self.state_history = self.state_history[-self.max_history:]
     
@@ -381,7 +382,7 @@ class StateManager:
         }
     
     def get_session_summary(self, session_id: str) -> Dict[str, Any]:
-        """Obtiene un resumen de una sesión específica"""
+        """Obtiene un resumen de una sesion especifica"""
         
         if self.current_state and self.current_state.get('session_id') == session_id:
             state = self.current_state

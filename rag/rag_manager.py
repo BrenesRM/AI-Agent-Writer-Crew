@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import logging
 from typing import List, Dict, Any, Optional
 from pathlib import Path
@@ -107,7 +108,7 @@ class RAGManager:
             }
     
     def get_stats(self) -> Dict[str, Any]:
-        """Obtiene estadísticas del sistema RAG"""
+        """Obtiene estadisticas del sistema RAG"""
         return self.vector_store.get_collection_stats()
     
     def remove_document(self, file_path: str) -> bool:

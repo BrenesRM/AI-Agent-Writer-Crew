@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import logging
 from typing import Dict, Any, Optional, List
 import os
@@ -22,7 +23,7 @@ class LlamaManager:
         self.logger = logging.getLogger(__name__)
         
         if not LLAMA_CPP_AVAILABLE:
-            raise ImportError("llama-cpp-python no está instalado. Instálalo con: pip install llama-cpp-python")
+            raise ImportError("llama-cpp-python no esta instalado. Instalalo con: pip install llama-cpp-python")
         
         self._load_model()
     
@@ -51,7 +52,7 @@ class LlamaManager:
                 temperature: Optional[float] = None) -> str:
         """Genera texto usando el modelo local"""
         if not self.model:
-            raise RuntimeError("El modelo no está cargado")
+            raise RuntimeError("El modelo no esta cargado")
         
         try:
             max_tokens = max_tokens or self.max_tokens
@@ -85,7 +86,7 @@ Respuesta basada en el contexto:"""
     
     def chat_completion(self, messages: List[Dict[str, str]]) -> str:
         """Simula completado de chat estilo OpenAI"""
-        # Convertir mensajes a prompt único
+        # Convertir mensajes a prompt unico
         prompt = ""
         for message in messages:
             role = message.get("role", "user")

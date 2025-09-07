@@ -1,0 +1,91 @@
+services:
+  # Main AI Agent Writer application
+  ai-writer:
+    build: .
+    container_name: ai-writer-crew
+    volumes:
+      - ./data:/app/data
+      - ./outputs:/app/outputs
+      - ./logs:/app/logs
+      - ./llm_local/models:/app/llm_local/models
+      - ./.env:/app/.env
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+      - PYTHONIOENCODING=utf-8
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+    ports:
+      - "8501:8501"  # Streamlit frontend
+      - "7860:7860"  # Gradio alternative
+    networks:
+      - ai-writer-network
+    command: python -c "print('Use specific service commands or run interactively')"
+
+  # Streamlit Frontend Service
+  frontend-streamlit:
+    build: .
+    container_name: ai-writer-frontend-streamlit
+    volumes:
+      - ./data:/app/data
+      - ./outputs:/app/outputs
+      - ./logs:/app/logs
+      - ./.env:/app/.env
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+      - PYTHONIOENCODING=utf-8
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+    ports:
+      - "8501:8501"
+    networks:
+      - ai-writer-network
+    depends_on:
+      - ai-writer
+    command: streamlit run frontend/app.py --server.address 0.0.0.0 --server.port 8501
+
+  # RAG System Service
+  rag-service:
+    build: .
+    container_name: ai-writer-rag
+    volumes:
+      - ./data:/app/data
+      - ./rag:/app/rag
+      - ./.env:/app/.env
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+      - PYTHONIOENCODING=utf-8
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+    networks:
+      - ai-writer-network
+    command: python -c "from rag.rag_manager import RAGManager; print('RAG Service ready')"
+
+  # Agent Testing Service
+  agent-test:
+    build: .
+    container_name: ai-writer-agents
+    volumes:
+      - ./data:/app/data
+      - ./outputs:/app/outputs
+      - ./agents:/app/agents
+      - ./.env:/app/.env
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+      - PYTHONIOENCODING=utf-8
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+    networks:
+      - ai-writer-network
+    command: python agents/test_agents.py
+
+networks:
+  ai-writer-network:
+    driver: bridge
+
+volumes:
+  models_volume:
+    driver: local

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # agents/tools/analysis_tools.py
 import re
 import logging
@@ -15,7 +16,7 @@ class ConsistencyChecker(BaseTool):
     Verifica la consistencia interna de un texto narrativo:
     - Detecta contradicciones en nombres y descripciones
     - Verifica continuidad temporal
-    - Identifica inconsistencias en características de personajes
+    - Identifica inconsistencias en caracteristicas de personajes
     """
     args_schema: type[BaseModel] = ConsistencyCheckerInput
     
@@ -25,7 +26,7 @@ class ConsistencyChecker(BaseTool):
             issues = []
             
             # Extraer nombres de personajes y lugares
-            names = re.findall(r'\b[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*\b', text)
+            names = re.findall(r'\b[A-ZAEIOUÑ][a-zaeiouñ]+(?:\s+[A-ZAEIOUÑ][a-zaeiouñ]+)*\b', text)
             
             # Buscar variaciones en nombres (posibles inconsistencias)
             name_variations = {}
@@ -43,18 +44,18 @@ class ConsistencyChecker(BaseTool):
                     issues.append(f"- {main_name} vs {', '.join(variations)}")
             
             # Verificar marcadores temporales
-            time_markers = re.findall(r'\b(ayer|hoy|mañana|hace\s+\w+|después\s+de\s+\w+|antes\s+de\s+\w+)\b', text.lower())
+            time_markers = re.findall(r'\b(ayer|hoy|mañana|hace\s+\w+|despues\s+de\s+\w+|antes\s+de\s+\w+)\b', text.lower())
             if len(set(time_markers)) > 5:
-                issues.append("ADVERTENCIA: Múltiples marcadores temporales - verificar cronología")
+                issues.append("ADVERTENCIA: Multiples marcadores temporales - verificar cronologia")
             
-            # Buscar contradictions en descripción física
+            # Buscar contradictions en descripcion fisica
             physical_descriptions = re.findall(r'(ojos\s+\w+|cabello\s+\w+|pelo\s+\w+|altura\s+\w+)', text.lower())
             if len(physical_descriptions) > len(set(physical_descriptions)):
-                issues.append("POSIBLE INCONSISTENCIA: Descripciones físicas repetidas o contradictorias")
+                issues.append("POSIBLE INCONSISTENCIA: Descripciones fisicas repetidas o contradictorias")
             
             # Comparar con texto de referencia si se proporciona
             if reference_text:
-                ref_names = set(re.findall(r'\b[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*\b', reference_text))
+                ref_names = set(re.findall(r'\b[A-ZAEIOUÑ][a-zaeiouñ]+(?:\s+[A-ZAEIOUÑ][a-zaeiouñ]+)*\b', reference_text))
                 text_names = set(names)
                 
                 new_names = text_names - ref_names
@@ -68,7 +69,7 @@ class ConsistencyChecker(BaseTool):
             if not issues:
                 return "✅ No se detectaron inconsistencias evidentes en el texto."
             else:
-                return "🔍 VERIFICACIÓN DE CONSISTENCIA:\n\n" + "\n".join(issues)
+                return "🔍 VERIFICACION DE CONSISTENCIA:\n\n" + "\n".join(issues)
                 
         except Exception as e:
             return f"Error verificando consistencia: {str(e)}"
@@ -80,30 +81,30 @@ class PacingAnalyzer(BaseTool):
     name: str = "Analizador de Ritmo"
     description: str = """
     Analiza el ritmo y flujo narrativo del texto:
-    - Identifica variación en longitud de párrafos y oraciones
-    - Detecta momentos de acción vs. reflexión
-    - Evalúa el balance narrativo
+    - Identifica variacion en longitud de parrafos y oraciones
+    - Detecta momentos de accion vs. reflexion
+    - Evalua el balance narrativo
     """
     args_schema: type[BaseModel] = PacingAnalyzerInput
     
     def _run(self, text: str) -> str:
         """Analiza el ritmo narrativo del texto"""
         try:
-            # Dividir en párrafos
+            # Dividir en parrafos
             paragraphs = [p.strip() for p in text.split('\n\n') if p.strip()]
             
             if not paragraphs:
-                return "❌ No se pudieron identificar párrafos en el texto."
+                return "❌ No se pudieron identificar parrafos en el texto."
             
-            # Análisis de longitud de párrafos
+            # Analisis de longitud de parrafos
             paragraph_lengths = [len(p.split()) for p in paragraphs]
             avg_paragraph_length = sum(paragraph_lengths) / len(paragraph_lengths)
             
-            # Variación en longitud de párrafos
+            # Variacion en longitud de parrafos
             length_variation = max(paragraph_lengths) - min(paragraph_lengths)
             
-            # Detectar párrafos de acción (oraciones cortas, verbos dinámicos)
-            action_keywords = ['corrió', 'saltó', 'gritó', 'atacó', 'luchó', 'escapó', 'golpeó', 'disparó']
+            # Detectar parrafos de accion (oraciones cortas, verbos dinamicos)
+            action_keywords = ['corrio', 'salto', 'grito', 'ataco', 'lucho', 'escapo', 'golpeo', 'disparo']
             action_paragraphs = []
             
             for i, p in enumerate(paragraphs):
@@ -114,8 +115,8 @@ class PacingAnalyzer(BaseTool):
                 if avg_sentence_length < 12 or action_words > 0:
                     action_paragraphs.append(i + 1)
             
-            # Detectar párrafos reflexivos (oraciones largas, palabras introspectivas)
-            reflection_keywords = ['pensó', 'reflexionó', 'recordó', 'sintió', 'consideró', 'meditó']
+            # Detectar parrafos reflexivos (oraciones largas, palabras introspectivas)
+            reflection_keywords = ['penso', 'reflexiono', 'recordo', 'sintio', 'considero', 'medito']
             reflective_paragraphs = []
             
             for i, p in enumerate(paragraphs):
@@ -128,36 +129,36 @@ class PacingAnalyzer(BaseTool):
             
             # Evaluar el ritmo general
             if length_variation < 20:
-                rhythm_assessment = "Ritmo uniforme - considera variar la longitud de párrafos"
+                rhythm_assessment = "Ritmo uniforme - considera variar la longitud de parrafos"
             elif length_variation > 100:
                 rhythm_assessment = "Ritmo muy variable - buen dinamismo narrativo"
             else:
                 rhythm_assessment = "Ritmo balanceado"
             
-            analysis = f"""ANÁLISIS DE RITMO NARRATIVO:
+            analysis = f"""ANALISIS DE RITMO NARRATIVO:
             
 📏 ESTRUCTURA:
-- Total de párrafos: {len(paragraphs)}
-- Longitud promedio: {avg_paragraph_length:.1f} palabras por párrafo
-- Variación de longitud: {length_variation} palabras
-- Párrafo más corto: {min(paragraph_lengths)} palabras
-- Párrafo más largo: {max(paragraph_lengths)} palabras
+- Total de parrafos: {len(paragraphs)}
+- Longitud promedio: {avg_paragraph_length:.1f} palabras por parrafo
+- Variacion de longitud: {length_variation} palabras
+- Parrafo mas corto: {min(paragraph_lengths)} palabras
+- Parrafo mas largo: {max(paragraph_lengths)} palabras
 
-⚡ MOMENTOS DE ACCIÓN:
-- Párrafos identificados: {action_paragraphs if action_paragraphs else 'Ninguno detectado'}
+⚡ MOMENTOS DE ACCION:
+- Parrafos identificados: {action_paragraphs if action_paragraphs else 'Ninguno detectado'}
 - Porcentaje: {len(action_paragraphs) / len(paragraphs) * 100:.1f}%
 
 🤔 MOMENTOS REFLEXIVOS:
-- Párrafos identificados: {reflective_paragraphs if reflective_paragraphs else 'Ninguno detectado'}
+- Parrafos identificados: {reflective_paragraphs if reflective_paragraphs else 'Ninguno detectado'}
 - Porcentaje: {len(reflective_paragraphs) / len(paragraphs) * 100:.1f}%
 
-🎯 EVALUACIÓN DEL RITMO:
+🎯 EVALUACION DEL RITMO:
 - {rhythm_assessment}
-- Balance acción/reflexión: {'Equilibrado' if abs(len(action_paragraphs) - len(reflective_paragraphs)) <= 2 else 'Desbalanceado hacia ' + ('acción' if len(action_paragraphs) > len(reflective_paragraphs) else 'reflexión')}
+- Balance accion/reflexion: {'Equilibrado' if abs(len(action_paragraphs) - len(reflective_paragraphs)) <= 2 else 'Desbalanceado hacia ' + ('accion' if len(action_paragraphs) > len(reflective_paragraphs) else 'reflexion')}
 
 💡 RECOMENDACIONES:
-- {'Añadir más momentos de acción para dinamismo' if len(action_paragraphs) < len(paragraphs) * 0.2 else ''}
-- {'Incluir más momentos reflexivos para profundidad' if len(reflective_paragraphs) < len(paragraphs) * 0.2 else ''}
+- {'Añadir mas momentos de accion para dinamismo' if len(action_paragraphs) < len(paragraphs) * 0.2 else ''}
+- {'Incluir mas momentos reflexivos para profundidad' if len(reflective_paragraphs) < len(paragraphs) * 0.2 else ''}
 - {'✓ Buen equilibrio narrativo' if abs(len(action_paragraphs) - len(reflective_paragraphs)) <= 2 else ''}
 """
             return analysis
@@ -172,9 +173,9 @@ class PlotAnalyzer(BaseTool):
     name: str = "Analizador de Trama"
     description: str = """
     Analiza la estructura narrativa y elementos de la trama:
-    - Identifica puntos de la trama (exposición, conflicto, clímax, resolución)
+    - Identifica puntos de la trama (exposicion, conflicto, climax, resolucion)
     - Detecta subtramas
-    - Evalúa la progresión narrativa
+    - Evalua la progresion narrativa
     """
     args_schema: type[BaseModel] = PlotAnalyzerInput
     
@@ -185,27 +186,27 @@ class PlotAnalyzer(BaseTool):
             paragraphs = [p.strip() for p in text.split('\n\n') if p.strip()]
             total_length = len(text.split())
             
-            # Detectar elementos de exposición (típicamente al inicio)
-            exposition_markers = ['había una vez', 'en un reino', 'hace mucho tiempo', 'era una vez']
+            # Detectar elementos de exposicion (tipicamente al inicio)
+            exposition_markers = ['habia una vez', 'en un reino', 'hace mucho tiempo', 'era una vez']
             has_exposition = any(marker in text.lower() for marker in exposition_markers)
             
-            # Detectar conflicto/tensión
+            # Detectar conflicto/tension
             conflict_markers = ['pero', 'sin embargo', 'repentinamente', 'de pronto', 'amenaza', 'peligro', 'problema']
             conflict_count = sum(1 for marker in conflict_markers if marker in text.lower())
             
-            # Detectar clímax (palabras intensas, típicamente en la parte media-final)
-            climax_markers = ['batalla', 'lucha', 'enfrentamiento', 'decisión', 'momento crucial', 'todo dependía']
+            # Detectar climax (palabras intensas, tipicamente en la parte media-final)
+            climax_markers = ['batalla', 'lucha', 'enfrentamiento', 'decision', 'momento crucial', 'todo dependia']
             climax_indicators = sum(1 for marker in climax_markers if marker in text.lower())
             
-            # Detectar resolución
-            resolution_markers = ['finalmente', 'al final', 'por último', 'así fue como', 'desde entonces']
+            # Detectar resolucion
+            resolution_markers = ['finalmente', 'al final', 'por ultimo', 'asi fue como', 'desde entonces']
             has_resolution = any(marker in text.lower() for marker in resolution_markers)
             
-            # Analizar progresión temporal
-            time_progression = len(re.findall(r'\b(luego|después|más tarde|entonces|posteriormente)\b', text.lower()))
+            # Analizar progresion temporal
+            time_progression = len(re.findall(r'\b(luego|despues|mas tarde|entonces|posteriormente)\b', text.lower()))
             
             # Detectar posibles subtramas (cambios de enfoque o personajes)
-            character_names = list(set(re.findall(r'\b[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+\b', text)))
+            character_names = list(set(re.findall(r'\b[A-ZAEIOUÑ][a-zaeiouñ]+\b', text)))
             subplot_potential = len(character_names) > 3
             
             # Evaluar estructura general
@@ -214,9 +215,9 @@ class PlotAnalyzer(BaseTool):
             
             if has_exposition:
                 structure_score += 1
-                structure_feedback.append("✓ Exposición presente")
+                structure_feedback.append("✓ Exposicion presente")
             else:
-                structure_feedback.append("⚠ Exposición no clara")
+                structure_feedback.append("⚠ Exposicion no clara")
             
             if conflict_count > 0:
                 structure_score += 1
@@ -228,24 +229,24 @@ class PlotAnalyzer(BaseTool):
                 structure_score += 1
                 structure_feedback.append("✓ Momentos de intensidad presentes")
             else:
-                structure_feedback.append("⚠ Clímax no evidente")
+                structure_feedback.append("⚠ Climax no evidente")
                 
             if has_resolution:
                 structure_score += 1
-                structure_feedback.append("✓ Resolución identificada")
+                structure_feedback.append("✓ Resolucion identificada")
             else:
-                structure_feedback.append("⚠ Resolución incompleta")
+                structure_feedback.append("⚠ Resolucion incompleta")
             
-            analysis = f"""ANÁLISIS DE TRAMA:
+            analysis = f"""ANALISIS DE TRAMA:
             
 📖 ESTRUCTURA NARRATIVA:
-- Puntuación estructural: {structure_score}/4
+- Puntuacion estructural: {structure_score}/4
 {chr(10).join([f"- {feedback}" for feedback in structure_feedback])}
 
-🔥 ELEMENTOS DE TENSIÓN:
+🔥 ELEMENTOS DE TENSION:
 - Marcadores de conflicto: {conflict_count}
-- Indicadores de clímax: {climax_indicators}
-- Progresión temporal: {time_progression} transiciones
+- Indicadores de climax: {climax_indicators}
+- Progresion temporal: {time_progression} transiciones
 
 👥 COMPLEJIDAD NARRATIVA:
 - Personajes principales: {len(character_names)}
@@ -253,17 +254,17 @@ class PlotAnalyzer(BaseTool):
 
 ⏳ FLUJO TEMPORAL:
 - Transiciones temporales: {time_progression}
-- Progresión: {'Fluida' if time_progression > 3 else 'Estática'}
+- Progresion: {'Fluida' if time_progression > 3 else 'Estatica'}
 
-🎭 EVALUACIÓN GENERAL:
-- Estructura: {'Sólida' if structure_score >= 3 else 'En desarrollo' if structure_score >= 2 else 'Necesita trabajo'}
+🎭 EVALUACION GENERAL:
+- Estructura: {'Solida' if structure_score >= 3 else 'En desarrollo' if structure_score >= 2 else 'Necesita trabajo'}
 - Complejidad: {'Alta' if len(character_names) > 5 else 'Media' if len(character_names) > 2 else 'Simple'}
-- Tensión narrativa: {'Adecuada' if conflict_count > 2 else 'Insuficiente'}
+- Tension narrativa: {'Adecuada' if conflict_count > 2 else 'Insuficiente'}
 
 💡 SUGERENCIAS:
-- {'Desarrollar más el conflicto central' if conflict_count < 2 else ''}
-- {'Clarificar el momento climático' if climax_indicators == 0 else ''}
-- {'Fortalecer la resolución' if not has_resolution else ''}
+- {'Desarrollar mas el conflicto central' if conflict_count < 2 else ''}
+- {'Clarificar el momento climatico' if climax_indicators == 0 else ''}
+- {'Fortalecer la resolucion' if not has_resolution else ''}
 - {'Considerar subtramas para enriquecer la narrativa' if not subplot_potential else ''}
 """
             return analysis

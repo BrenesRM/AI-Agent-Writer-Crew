@@ -1,11 +1,12 @@
+# -*- coding: utf-8 -*-
 st.markdown(f"- **Caracteres:** {char_count:,}")
-            st.markdown(f"- **Párrafos:** {paragraph_count}")
+            st.markdown(f"- **Parrafos:** {paragraph_count}")
             st.markdown(f"- **Tiempo de lectura:** ~{max(1, word_count // 250)} min")
     
     with col2:
-        st.markdown("**🎯 Resumen de Análisis:**")
+        st.markdown("**🎯 Resumen de Analisis:**")
         st.markdown(f"- **Fases analizadas:** {len(results)}")
-        st.markdown(f"- **Fecha del análisis:** {datetime.now().strftime('%d/%m/%Y %H:%M')}")
+        st.markdown(f"- **Fecha del analisis:** {datetime.now().strftime('%d/%m/%Y %H:%M')}")
         st.markdown(f"- **Estado:** {'✅ Completado' if results else '⏳ Pendiente'}")
         
         # Nivel de calidad general
@@ -17,8 +18,8 @@ st.markdown(f"- **Caracteres:** {char_count:,}")
             st.error("🔧 **Calidad:** Necesita trabajo significativo")
 
 def render_detailed_analysis_tab():
-    """Tab de análisis detallado por fase"""
-    st.subheader("🔍 Análisis Detallado por Fase")
+    """Tab de analisis detallado por fase"""
+    st.subheader("🔍 Analisis Detallado por Fase")
     
     results = st.session_state.analysis_results
     
@@ -32,47 +33,47 @@ def render_detailed_analysis_tab():
         'character': '👥 Desarrollo de Personajes',
         'plot': '📖 Estructura Narrativa',
         'style': '✨ Refinamiento de Estilo',
-        'visual': '🎬 Generación Visual',
+        'visual': '🎬 Generacion Visual',
         'quality': '🔍 Control de Calidad'
     }
     
     available_phases = [phase for phase in phase_options.keys() if phase in results]
     
     if not available_phases:
-        st.warning("No hay fases de análisis completadas.")
+        st.warning("No hay fases de analisis completadas.")
         return
     
     selected_phase = st.selectbox(
-        "Selecciona la fase para análisis detallado:",
+        "Selecciona la fase para analisis detallado:",
         options=available_phases,
         format_func=lambda x: phase_options[x]
     )
     
     phase_data = results[selected_phase]
     
-    # Mostrar análisis detallado de la fase seleccionada
+    # Mostrar analisis detallado de la fase seleccionada
     render_phase_detailed_analysis(selected_phase, phase_data, phase_options[selected_phase])
 
 def render_phase_detailed_analysis(phase_id, phase_data, phase_name):
-    """Renderiza análisis detallado de una fase específica"""
+    """Renderiza analisis detallado de una fase especifica"""
     
     st.markdown(f"## {phase_name}")
     
-    # Puntuación principal
+    # Puntuacion principal
     score = phase_data.get('score', 0)
     score_color = "success" if score >= 8 else "warning" if score >= 6 else "error"
     
     if score_color == "success":
-        st.success(f"🌟 **Puntuación General: {score:.1f}/10** - Excelente")
+        st.success(f"🌟 **Puntuacion General: {score:.1f}/10** - Excelente")
     elif score_color == "warning":
-        st.warning(f"📈 **Puntuación General: {score:.1f}/10** - Buena, con margen de mejora")
+        st.warning(f"📈 **Puntuacion General: {score:.1f}/10** - Buena, con margen de mejora")
     else:
-        st.error(f"🔧 **Puntuación General: {score:.1f}/10** - Necesita atención")
+        st.error(f"🔧 **Puntuacion General: {score:.1f}/10** - Necesita atencion")
     
-    # Métricas detalladas si están disponibles
+    # Metricas detalladas si estan disponibles
     if 'details' in phase_data:
         st.markdown("---")
-        st.subheader("📊 Métricas Detalladas")
+        st.subheader("📊 Metricas Detalladas")
         
         details = phase_data['details']
         cols = st.columns(len(details))
@@ -82,8 +83,8 @@ def render_phase_detailed_analysis(phase_id, phase_data, phase_name):
                 metric_name = metric.replace('_', ' ').title()
                 st.metric(metric_name, f"{value:.1f}")
     
-    # Crear tabs para organizar la información
-    detail_tabs = st.tabs(["✅ Fortalezas", "💡 Sugerencias", "🔧 Mejoras", "📈 Análisis Profundo"])
+    # Crear tabs para organizar la informacion
+    detail_tabs = st.tabs(["✅ Fortalezas", "💡 Sugerencias", "🔧 Mejoras", "📈 Analisis Profundo"])
     
     with detail_tabs[0]:
         strengths = phase_data.get('strengths', [])
@@ -92,7 +93,7 @@ def render_phase_detailed_analysis(phase_id, phase_data, phase_name):
             for i, strength in enumerate(strengths, 1):
                 st.markdown(f"{i}. ✅ {strength}")
         else:
-            st.info("No se identificaron fortalezas específicas en esta fase.")
+            st.info("No se identificaron fortalezas especificas en esta fase.")
     
     with detail_tabs[1]:
         suggestions = phase_data.get('suggestions', [])
@@ -101,39 +102,39 @@ def render_phase_detailed_analysis(phase_id, phase_data, phase_name):
             for i, suggestion in enumerate(suggestions, 1):
                 st.markdown(f"{i}. 💡 {suggestion}")
                 
-                # Botón para aplicar sugerencia (simulado)
+                # Boton para aplicar sugerencia (simulado)
                 if st.button(f"🔄 Aplicar sugerencia {i}", key=f"apply_sugg_{phase_id}_{i}"):
                     st.success(f"✅ Sugerencia {i} marcada para aplicar")
         else:
-            st.info("No hay sugerencias específicas para esta fase.")
+            st.info("No hay sugerencias especificas para esta fase.")
     
     with detail_tabs[2]:
         improvements = phase_data.get('improvements', [])
         if improvements:
-            st.markdown("**🔧 Áreas de Mejora Identificadas:**")
+            st.markdown("**🔧 Areas de Mejora Identificadas:**")
             for i, improvement in enumerate(improvements, 1):
                 priority = ["🔴 Alta", "🟡 Media", "🟢 Baja"][i % 3]  # Simular prioridades
                 st.markdown(f"{i}. {priority} {improvement}")
         else:
-            st.info("No se identificaron áreas específicas de mejora.")
+            st.info("No se identificaron areas especificas de mejora.")
     
     with detail_tabs[3]:
-        # Análisis más profundo específico por fase
+        # Analisis mas profundo especifico por fase
         render_deep_analysis(phase_id, phase_data)
 
 def render_deep_analysis(phase_id, phase_data):
-    """Renderiza análisis profundo específico por fase"""
+    """Renderiza analisis profundo especifico por fase"""
     
     if phase_id == "worldbuilding":
-        st.markdown("**🏰 Análisis de Worldbuilding:**")
+        st.markdown("**🏰 Analisis de Worldbuilding:**")
         
         # Elementos del mundo
         world_elements = {
-            "Sistema de Magia": {"score": 8.5, "description": "Cristales como conductores mágicos - concepto sólido"},
-            "Geografía": {"score": 7.2, "description": "Reino de Aethermoor mencionado, necesita más detalles"},
+            "Sistema de Magia": {"score": 8.5, "description": "Cristales como conductores magicos - concepto solido"},
+            "Geografia": {"score": 7.2, "description": "Reino de Aethermoor mencionado, necesita mas detalles"},
             "Historia": {"score": 8.8, "description": "Torre de Marfil y grimorio crean historia intrigante"},
             "Culturas": {"score": 6.5, "description": "Aspectos culturales poco desarrollados"},
-            "Política": {"score": 6.0, "description": "Estructura política del reino no definida"}
+            "Politica": {"score": 6.0, "description": "Estructura politica del reino no definida"}
         }
         
         for element, data in world_elements.items():
@@ -144,13 +145,13 @@ def render_deep_analysis(phase_id, phase_data):
                 st.markdown(f"📝 {data['description']}")
     
     elif phase_id == "character":
-        st.markdown("**👥 Análisis de Personajes:**")
+        st.markdown("**👥 Analisis de Personajes:**")
         
-        # Análisis de personaje principal
+        # Analisis de personaje principal
         character_analysis = {
             "Lyra Stormwind": {
                 "Desarrollo": 7.5,
-                "Motivación": 8.2,
+                "Motivacion": 8.2,
                 "Conflicto Interno": 6.8,
                 "Arco Narrativo": 7.0,
                 "Originalidad": 7.8
@@ -164,21 +165,21 @@ def render_deep_analysis(phase_id, phase_data):
                 with cols[i]:
                     st.metric(metric, f"{score:.1f}")
         
-        # Recomendaciones específicas
-        st.markdown("**🎯 Recomendaciones Específicas:**")
+        # Recomendaciones especificas
+        st.markdown("**🎯 Recomendaciones Especificas:**")
         st.markdown("- Desarrollar el trasfondo personal de Lyra")
         st.markdown("- Añadir un conflicto interno relacionado con el poder")
-        st.markdown("- Crear personajes secundarios que desafíen sus creencias")
+        st.markdown("- Crear personajes secundarios que desafien sus creencias")
     
     elif phase_id == "plot":
-        st.markdown("**📖 Análisis de Estructura Narrativa:**")
+        st.markdown("**📖 Analisis de Estructura Narrativa:**")
         
         # Elementos de la trama
         plot_elements = [
             {"element": "Hook Inicial", "strength": "Muy fuerte", "score": 9.2, "comment": "El descubrimiento del grimorio es intrigante"},
-            {"element": "Inciting Incident", "strength": "Fuerte", "score": 8.7, "comment": "Clara transición hacia el conflicto principal"},
-            {"element": "Escalada", "strength": "Prometedora", "score": 8.0, "comment": "Guerra entre luz y sombras es épica"},
-            {"element": "Stakes", "strength": "Altas", "score": 8.5, "comment": "El equilibrio del mundo está en juego"}
+            {"element": "Inciting Incident", "strength": "Fuerte", "score": 8.7, "comment": "Clara transicion hacia el conflicto principal"},
+            {"element": "Escalada", "strength": "Prometedora", "score": 8.0, "comment": "Guerra entre luz y sombras es epica"},
+            {"element": "Stakes", "strength": "Altas", "score": 8.5, "comment": "El equilibrio del mundo esta en juego"}
         ]
         
         for element in plot_elements:
@@ -191,19 +192,19 @@ def render_deep_analysis(phase_id, phase_data):
                 st.markdown(f"💬 {element['comment']}")
 
 def render_metrics_tab():
-    """Tab de métricas y gráficos"""
-    st.subheader("📊 Métricas y Visualizaciones")
+    """Tab de metricas y graficos"""
+    st.subheader("📊 Metricas y Visualizaciones")
     
     results = st.session_state.analysis_results
     
     if not results:
-        st.info("No hay métricas disponibles.")
+        st.info("No hay metricas disponibles.")
         return
     
-    # Gráfico radar de puntuaciones
+    # Grafico radar de puntuaciones
     st.markdown("### 🎯 Perfil de Puntuaciones")
     
-    # Preparar datos para gráfico radar
+    # Preparar datos para grafico radar
     categories = []
     scores = []
     
@@ -220,7 +221,7 @@ def render_metrics_tab():
         categories.append(phase_names_map.get(phase_id, phase_id.title()))
         scores.append(phase_data.get('score', 0))
     
-    # Crear gráfico radar
+    # Crear grafico radar
     fig = go.Figure()
     
     fig.add_trace(go.Scatterpolar(
@@ -232,7 +233,7 @@ def render_metrics_tab():
         fillcolor='rgba(99, 110, 250, 0.25)'
     ))
     
-    # Añadir línea objetivo (score 8.0)
+    # Añadir linea objetivo (score 8.0)
     fig.add_trace(go.Scatterpolar(
         r=[8.0] * len(categories),
         theta=categories,
@@ -247,43 +248,43 @@ def render_metrics_tab():
                 visible=True,
                 range=[0, 10]
             )),
-        title="Perfil de Rendimiento por Área",
+        title="Perfil de Rendimiento por Area",
         height=500
     )
     
     st.plotly_chart(fig, use_container_width=True)
     
-    # Métricas comparativas
+    # Metricas comparativas
     st.markdown("---")
-    st.markdown("### 📈 Análisis Comparativo")
+    st.markdown("### 📈 Analisis Comparativo")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        # Distribución de puntuaciones
+        # Distribucion de puntuaciones
         fig = px.histogram(
             x=scores,
             nbins=5,
-            title="Distribución de Puntuaciones",
-            labels={'x': 'Puntuación', 'y': 'Frecuencia'},
+            title="Distribucion de Puntuaciones",
+            labels={'x': 'Puntuacion', 'y': 'Frecuencia'},
             color_discrete_sequence=['#636EFA']
         )
         fig.update_layout(height=300)
         st.plotly_chart(fig, use_container_width=True)
     
     with col2:
-        # Gráfico de progreso hacia objetivos
+        # Grafico de progreso hacia objetivos
         progress_data = []
         for category, score in zip(categories, scores):
             progress = min(score / 8.0 * 100, 100)
-            progress_data.append({'Área': category, 'Progreso (%)': progress})
+            progress_data.append({'Area': category, 'Progreso (%)': progress})
         
         df_progress = pd.DataFrame(progress_data)
         
         fig = px.bar(
             df_progress,
             x='Progreso (%)',
-            y='Área',
+            y='Area',
             orientation='h',
             title="Progreso hacia Objetivos (8.0)",
             color='Progreso (%)',
@@ -292,11 +293,11 @@ def render_metrics_tab():
         fig.update_layout(height=300)
         st.plotly_chart(fig, use_container_width=True)
     
-    # Tabla de métricas detalladas
+    # Tabla de metricas detalladas
     st.markdown("---")
-    st.markdown("### 📋 Tabla de Métricas Detalladas")
+    st.markdown("### 📋 Tabla de Metricas Detalladas")
     
-    # Crear tabla con métricas detalladas
+    # Crear tabla con metricas detalladas
     detailed_metrics = []
     
     for phase_id, phase_data in results.items():
@@ -306,13 +307,13 @@ def render_metrics_tab():
         strengths_count = len(phase_data.get('strengths', []))
         improvements_count = len(phase_data.get('improvements', []))
         
-        # Calcular métricas derivadas
+        # Calcular metricas derivadas
         completeness = min((suggestions_count + strengths_count + improvements_count) / 10 * 100, 100)
         priority = "Alta" if score < 6 else "Media" if score < 8 else "Baja"
         
         detailed_metrics.append({
             'Fase': phase_name,
-            'Puntuación': f"{score:.1f}/10",
+            'Puntuacion': f"{score:.1f}/10",
             'Sugerencias': suggestions_count,
             'Fortalezas': strengths_count,
             'Mejoras': improvements_count,
@@ -324,9 +325,9 @@ def render_metrics_tab():
     df_metrics = pd.DataFrame(detailed_metrics)
     st.dataframe(df_metrics, use_container_width=True)
     
-    # Insights automáticos
+    # Insights automaticos
     st.markdown("---")
-    st.markdown("### 🤖 Insights Automáticos")
+    st.markdown("### 🤖 Insights Automaticos")
     
     # Calcular insights
     avg_score = sum(scores) / len(scores) if scores else 0
@@ -339,10 +340,10 @@ def render_metrics_tab():
         st.info(f"📊 **Promedio General:** {avg_score:.1f}/10")
     
     with col2:
-        st.success(f"🌟 **Área Más Fuerte:** {best_area}")
+        st.success(f"🌟 **Area Mas Fuerte:** {best_area}")
     
     with col3:
-        st.warning(f"🎯 **Área de Enfoque:** {worst_area}")
+        st.warning(f"🎯 **Area de Enfoque:** {worst_area}")
 
 def render_recommendations_tab():
     """Tab de recomendaciones consolidadas"""
@@ -397,7 +398,7 @@ def render_recommendations_tab():
         render_all_recommendations(all_suggestions, all_improvements)
 
 def determine_priority(score):
-    """Determina la prioridad basada en la puntuación"""
+    """Determina la prioridad basada en la puntuacion"""
     if score < 6:
         return "Alta"
     elif score < 8:
@@ -406,7 +407,7 @@ def determine_priority(score):
         return "Baja"
 
 def render_priority_recommendations(recommendations, priority):
-    """Renderiza recomendaciones de una prioridad específica"""
+    """Renderiza recomendaciones de una prioridad especifica"""
     
     filtered_recs = [rec for rec in recommendations if rec['priority'] == priority]
     
@@ -421,11 +422,11 @@ def render_priority_recommendations(recommendations, priority):
     
     for i, rec in enumerate(filtered_recs, 1):
         with st.expander(f"{icon} {rec['phase']} - {rec['text'][:50]}..."):
-            st.markdown(f"**Área:** {rec['phase']}")
-            st.markdown(f"**Puntuación Actual:** {rec['score']:.1f}/10")
-            st.markdown(f"**Recomendación:** {rec['text']}")
+            st.markdown(f"**Area:** {rec['phase']}")
+            st.markdown(f"**Puntuacion Actual:** {rec['score']:.1f}/10")
+            st.markdown(f"**Recomendacion:** {rec['text']}")
             
-            # Botones de acción
+            # Botones de accion
             col1, col2, col3 = st.columns(3)
             
             with col1:
@@ -433,12 +434,12 @@ def render_priority_recommendations(recommendations, priority):
                     st.success("✅ Marcada como aplicada")
             
             with col2:
-                if st.button("💾 Guardar para Después", key=f"save_{priority}_{i}"):
+                if st.button("💾 Guardar para Despues", key=f"save_{priority}_{i}"):
                     st.info("💾 Guardada en lista pendiente")
             
             with col3:
                 if st.button("❌ Descartar", key=f"dismiss_{priority}_{i}"):
-                    st.warning("❌ Recomendación descartada")
+                    st.warning("❌ Recomendacion descartada")
 
 def render_all_recommendations(suggestions, improvements):
     """Renderiza todas las recomendaciones organizadas"""
@@ -449,7 +450,7 @@ def render_all_recommendations(suggestions, improvements):
         st.markdown("### 💡 Sugerencias de Mejora")
         
         if suggestions:
-            # Ordenar por puntuación (menor primero = mayor prioridad)
+            # Ordenar por puntuacion (menor primero = mayor prioridad)
             sorted_suggestions = sorted(suggestions, key=lambda x: x['score'])
             
             for i, sugg in enumerate(sorted_suggestions, 1):
@@ -459,7 +460,7 @@ def render_all_recommendations(suggestions, improvements):
             st.info("No hay sugerencias disponibles.")
     
     with col2:
-        st.markdown("### 🔧 Áreas de Mejora")
+        st.markdown("### 🔧 Areas de Mejora")
         
         if improvements:
             sorted_improvements = sorted(improvements, key=lambda x: x['score'])
@@ -468,30 +469,30 @@ def render_all_recommendations(suggestions, improvements):
                 priority_color = get_priority_color(imp['priority'])
                 st.markdown(f"{i}. {priority_color} **{imp['phase']}**: {imp['text']}")
         else:
-            st.info("No hay mejoras específicas identificadas.")
+            st.info("No hay mejoras especificas identificadas.")
     
-    # Plan de acción recomendado
+    # Plan de accion recomendado
     st.markdown("---")
-    st.markdown("### 📅 Plan de Acción Sugerido")
+    st.markdown("### 📅 Plan de Accion Sugerido")
     
     # Generar plan basado en prioridades
     high_priority_items = [item for item in suggestions + improvements if item['priority'] == 'Alta']
     medium_priority_items = [item for item in suggestions + improvements if item['priority'] == 'Media']
     
     if high_priority_items:
-        st.markdown("**🔥 Fase 1 - Correcciones Críticas (1-2 días):**")
-        for item in high_priority_items[:3]:  # Máximo 3 elementos
+        st.markdown("**🔥 Fase 1 - Correcciones Criticas (1-2 dias):**")
+        for item in high_priority_items[:3]:  # Maximo 3 elementos
             st.markdown(f"- {item['text']}")
     
     if medium_priority_items:
-        st.markdown("**📈 Fase 2 - Mejoras Incrementales (3-5 días):**")
-        for item in medium_priority_items[:4]:  # Máximo 4 elementos
+        st.markdown("**📈 Fase 2 - Mejoras Incrementales (3-5 dias):**")
+        for item in medium_priority_items[:4]:  # Maximo 4 elementos
             st.markdown(f"- {item['text']}")
     
     st.markdown("**🟢 Fase 3 - Pulido Final (tiempo disponible):**")
-    st.markdown("- Revisión general de estilo y consistencia")
-    st.markdown("- Optimización de descripciones y diálogos")
-    st.markdown("- Verificación final de continuidad")
+    st.markdown("- Revision general de estilo y consistencia")
+    st.markdown("- Optimizacion de descripciones y dialogos")
+    st.markdown("- Verificacion final de continuidad")
 
 def get_priority_color(priority):
     """Retorna el emoji/color correspondiente a la prioridad"""
@@ -500,7 +501,7 @@ def get_priority_color(priority):
 
 def render_reports_tab():
     """Tab de reportes exportables"""
-    st.subheader("📄 Reportes y Exportación")
+    st.subheader("📄 Reportes y Exportacion")
     
     results = st.session_state.analysis_results
     
@@ -513,22 +514,22 @@ def render_reports_tab():
     
     report_types = {
         "Reporte Completo": {
-            "description": "Análisis completo con todas las métricas, sugerencias y recomendaciones",
+            "description": "Analisis completo con todas las metricas, sugerencias y recomendaciones",
             "format": ["PDF", "DOCX", "HTML"],
-            "estimated_pages": "15-20 páginas"
+            "estimated_pages": "15-20 paginas"
         },
         "Resumen Ejecutivo": {
             "description": "Resumen condensado con puntuaciones principales y top 10 recomendaciones",
             "format": ["PDF", "DOCX"],
-            "estimated_pages": "3-5 páginas"
+            "estimated_pages": "3-5 paginas"
         },
         "Plan de Mejoras": {
             "description": "Lista priorizada de acciones con timeline sugerido",
             "format": ["PDF", "Excel", "CSV"],
-            "estimated_pages": "2-3 páginas"
+            "estimated_pages": "2-3 paginas"
         },
-        "Métricas Detalladas": {
-            "description": "Gráficos y tablas con todas las métricas numéricas",
+        "Metricas Detalladas": {
+            "description": "Graficos y tablas con todas las metricas numericas",
             "format": ["Excel", "CSV", "JSON"],
             "estimated_pages": "Datos estructurados"
         }
@@ -539,8 +540,8 @@ def render_reports_tab():
             col1, col2 = st.columns([2, 1])
             
             with col1:
-                st.markdown(f"**Descripción:** {report_info['description']}")
-                st.markdown(f"**Extensión:** {report_info['estimated_pages']}")
+                st.markdown(f"**Descripcion:** {report_info['description']}")
+                st.markdown(f"**Extension:** {report_info['estimated_pages']}")
                 st.markdown(f"**Formatos:** {', '.join(report_info['format'])}")
             
             with col2:
@@ -553,7 +554,7 @@ def render_reports_tab():
                 if st.button(f"📥 Generar {report_name}", key=f"gen_{report_name}"):
                     generate_report(report_name, selected_format, results)
     
-    # Opciones avanzadas de exportación
+    # Opciones avanzadas de exportacion
     st.markdown("---")
     st.markdown("### ⚙️ Opciones Avanzadas")
     
@@ -567,16 +568,16 @@ def render_reports_tab():
         )
         
         include_graphs = st.checkbox(
-            "Incluir gráficos y visualizaciones",
+            "Incluir graficos y visualizaciones",
             value=True,
-            help="Incluye gráficos de métricas en el reporte"
+            help="Incluye graficos de metricas en el reporte"
         )
     
     with col2:
         anonymize_content = st.checkbox(
             "Anonimizar contenido",
             value=False,
-            help="Reemplaza nombres y detalles específicos por marcadores genéricos"
+            help="Reemplaza nombres y detalles especificos por marcadores genericos"
         )
         
         compress_output = st.checkbox(
@@ -585,35 +586,35 @@ def render_reports_tab():
             help="Crea un archivo ZIP con todos los reportes"
         )
     
-    # Programar reportes automáticos
+    # Programar reportes automaticos
     st.markdown("---")
-    st.markdown("### 📅 Reportes Automáticos")
+    st.markdown("### 📅 Reportes Automaticos")
     
-    st.info("💡 **Próximamente**: Configura reportes automáticos que se generen después de cada análisis.")
+    st.info("💡 **Proximamente**: Configura reportes automaticos que se generen despues de cada analisis.")
     
     auto_report_settings = {
-        "frequency": st.selectbox("Frecuencia:", ["Después de cada análisis", "Diario", "Semanal", "Mensual"], disabled=True),
+        "frequency": st.selectbox("Frecuencia:", ["Despues de cada analisis", "Diario", "Semanal", "Mensual"], disabled=True),
         "format": st.selectbox("Formato preferido:", ["PDF", "DOCX", "HTML"], disabled=True),
-        "email": st.text_input("Email para envío:", placeholder="tu@email.com", disabled=True)
+        "email": st.text_input("Email para envio:", placeholder="tu@email.com", disabled=True)
     }
     
-    if st.button("💾 Configurar Reportes Automáticos", disabled=True):
-        st.info("🚧 Función en desarrollo")
+    if st.button("💾 Configurar Reportes Automaticos", disabled=True):
+        st.info("🚧 Funcion en desarrollo")
 
 def generate_report(report_name, format_type, results):
-    """Simula la generación de un reporte"""
+    """Simula la generacion de un reporte"""
     
-    # Simular tiempo de generación
+    # Simular tiempo de generacion
     with st.spinner(f"Generando {report_name} en formato {format_type}..."):
         import time
         time.sleep(2)  # Simular procesamiento
         
-        # Información del reporte generado
+        # Informacion del reporte generado
         file_size = {
             "Reporte Completo": "2.3 MB",
             "Resumen Ejecutivo": "856 KB", 
             "Plan de Mejoras": "234 KB",
-            "Métricas Detalladas": "145 KB"
+            "Metricas Detalladas": "145 KB"
         }.get(report_name, "1 MB")
         
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -624,7 +625,7 @@ def generate_report(report_name, format_type, results):
         
         st.success(f"✅ {report_name} generado exitosamente!")
         
-        # Mostrar información del archivo
+        # Mostrar informacion del archivo
         col1, col2, col3 = st.columns(3)
         
         with col1:
@@ -634,9 +635,9 @@ def generate_report(report_name, format_type, results):
             st.metric("Tamaño", file_size)
         
         with col3:
-            st.metric("Páginas", "15" if "Completo" in report_name else "5")
+            st.metric("Paginas", "15" if "Completo" in report_name else "5")
         
-        # Botón de descarga simulado
+        # Boton de descarga simulado
         st.download_button(
             label=f"📥 Descargar {report_name}",
             data=report_content,
@@ -652,7 +653,7 @@ def generate_report_content(report_name, results):
 Generado: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
 
 ## Resumen Ejecutivo
-Este reporte contiene el análisis detallado del manuscrito procesado por el Sistema Multi-Agente.
+Este reporte contiene el analisis detallado del manuscrito procesado por el Sistema Multi-Agente.
 
 ### Puntuaciones Principales:
 """
@@ -681,7 +682,7 @@ Fecha: {datetime.now().strftime('%d/%m/%Y')}
     return content
 
 def get_mime_type(format_type):
-    """Retorna el tipo MIME según el formato"""
+    """Retorna el tipo MIME segun el formato"""
     mime_types = {
         "PDF": "application/pdf",
         "DOCX": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -698,17 +699,17 @@ from datetime import datetime, timedelta
 import json
 
 def render_results_page():
-    """Renderiza la página de visualización de resultados"""
+    """Renderiza la pagina de visualizacion de resultados"""
     
-    st.header("📊 Resultados del Análisis")
+    st.header("📊 Resultados del Analisis")
     st.markdown("*Visualiza y explora los resultados del procesamiento de tu manuscrito*")
     
     # Verificar si hay resultados disponibles
     if not st.session_state.analysis_results:
-        st.info("📭 No hay resultados de análisis disponibles. Ve al **Editor de Manuscrito** y procesa tu manuscrito primero.")
+        st.info("📭 No hay resultados de analisis disponibles. Ve al **Editor de Manuscrito** y procesa tu manuscrito primero.")
         
-        # Botón para generar resultados de demostración
-        if st.button("🎭 Generar Resultados de Demostración"):
+        # Boton para generar resultados de demostracion
+        if st.button("🎭 Generar Resultados de Demostracion"):
             generate_demo_results()
             st.rerun()
         
@@ -717,8 +718,8 @@ def render_results_page():
     # Tabs principales
     tab1, tab2, tab3, tab4, tab5 = st.tabs([
         "📈 Resumen General",
-        "🔍 Análisis Detallado", 
-        "📊 Métricas y Gráficos",
+        "🔍 Analisis Detallado", 
+        "📊 Metricas y Graficos",
         "💡 Recomendaciones",
         "📄 Reportes"
     ])
@@ -739,13 +740,13 @@ def render_results_page():
         render_reports_tab()
 
 def generate_demo_results():
-    """Genera resultados de demostración"""
+    """Genera resultados de demostracion"""
     demo_manuscript = """
-    En el reino de Aethermoor, donde la magia fluye como ríos de luz dorada a través de cristales ancestrales, 
-    la joven maga Lyra Stormwind descubrió que su destino estaba escrito en runas que solo ella podía leer.
+    En el reino de Aethermoor, donde la magia fluye como rios de luz dorada a traves de cristales ancestrales, 
+    la joven maga Lyra Stormwind descubrio que su destino estaba escrito en runas que solo ella podia leer.
     
-    El día que encontró el grimorio perdido de Arcanum Infinitus en las ruinas de la Torre de Marfil, 
-    no sabía que estaba por desencadenar una guerra que cambiaría para siempre el equilibrio entre 
+    El dia que encontro el grimorio perdido de Arcanum Infinitus en las ruinas de la Torre de Marfil, 
+    no sabia que estaba por desencadenar una guerra que cambiaria para siempre el equilibrio entre 
     la luz y las sombras del mundo conocido.
     """
     
@@ -757,18 +758,18 @@ def generate_demo_results():
             "score": 8.2,
             "suggestions": [
                 "El sistema de magia basado en cristales es coherente, pero considera especificar las limitaciones",
-                "Excelente descripción de Aethermoor. Podrías añadir detalles sobre el clima/geografía",
-                "La Torre de Marfil tiene potencial narrativo. Desarrolla más su historia"
+                "Excelente descripcion de Aethermoor. Podrias añadir detalles sobre el clima/geografia",
+                "La Torre de Marfil tiene potencial narrativo. Desarrolla mas su historia"
             ],
             "strengths": [
-                "Mitología sólida y bien establecida",
-                "Elementos mágicos únicos e interesantes", 
+                "Mitologia solida y bien establecida",
+                "Elementos magicos unicos e interesantes", 
                 "Coherencia en las reglas del mundo"
             ],
             "improvements": [
-                "Expandir la geografía política del reino",
+                "Expandir la geografia politica del reino",
                 "Definir mejor las consecuencias del uso de magia",
-                "Añadir más detalles culturales/sociales"
+                "Añadir mas detalles culturales/sociales"
             ],
             "details": {
                 "consistency_score": 9.1,
@@ -780,19 +781,19 @@ def generate_demo_results():
         "character": {
             "score": 7.5,
             "suggestions": [
-                "Lyra es una protagonista prometedora. Desarrolla más sus miedos/debilidades internas",
-                "Su motivación está clara, pero podrías añadir conflictos emocionales más profundos",
-                "Considera crear un mentor o aliado que desafíe sus perspectivas"
+                "Lyra es una protagonista prometedora. Desarrolla mas sus miedos/debilidades internas",
+                "Su motivacion esta clara, pero podrias añadir conflictos emocionales mas profundos",
+                "Considera crear un mentor o aliado que desafie sus perspectivas"
             ],
             "strengths": [
                 "Protagonista con potencial de crecimiento",
-                "Motivación clara y comprensible",
+                "Motivacion clara y comprensible",
                 "Personalidad distintiva"
             ],
             "improvements": [
-                "Añadir flaws más complejos",
+                "Añadir flaws mas complejos",
                 "Desarrollar relationships interpersonales",
-                "Crear arco de transformación más definido"
+                "Crear arco de transformacion mas definido"
             ],
             "details": {
                 "development_score": 7.2,
@@ -805,16 +806,16 @@ def generate_demo_results():
             "score": 8.7,
             "suggestions": [
                 "El inciting incident (encontrar el grimorio) es efectivo y intrigante",
-                "La escalada hacia la guerra es prometedora. Asegúrate de mantener el ritmo",
-                "Considera añadir obstáculos más personales además de los externos"
+                "La escalada hacia la guerra es prometedora. Asegurate de mantener el ritmo",
+                "Considera añadir obstaculos mas personales ademas de los externos"
             ],
             "strengths": [
                 "Hook inicial muy efectivo",
                 "Stakes claros y elevados",
-                "Potential para múltiples plot threads"
+                "Potential para multiples plot threads"
             ],
             "improvements": [
-                "Desarrollar más los antagonistas",
+                "Desarrollar mas los antagonistas",
                 "Añadir subplots que enriquezcan la trama principal",
                 "Planificar mejor los plot twists"
             ],
@@ -829,9 +830,9 @@ def generate_demo_results():
 
 def render_summary_tab():
     """Tab de resumen general"""
-    st.subheader("📈 Resumen General del Análisis")
+    st.subheader("📈 Resumen General del Analisis")
     
-    # Métricas principales
+    # Metricas principales
     results = st.session_state.analysis_results
     
     # Calcular score promedio
@@ -845,12 +846,12 @@ def render_summary_tab():
     total_strengths = sum(len(phase.get('strengths', [])) for phase in results.values())
     total_improvements = sum(len(phase.get('improvements', [])) for phase in results.values())
     
-    # Mostrar métricas principales
+    # Mostrar metricas principales
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
         score_color = "🟢" if avg_score >= 8 else "🟡" if avg_score >= 6 else "🔴"
-        st.metric("Puntuación General", f"{avg_score:.1f}/10", help="Promedio de todas las fases analizadas")
+        st.metric("Puntuacion General", f"{avg_score:.1f}/10", help="Promedio de todas las fases analizadas")
         st.markdown(f"<center>{score_color}</center>", unsafe_allow_html=True)
     
     with col2:
@@ -860,9 +861,9 @@ def render_summary_tab():
         st.metric("Fortalezas Identificadas", total_strengths, help="Aspectos positivos encontrados")
     
     with col4:
-        st.metric("Áreas de Mejora", total_improvements, help="Aspectos a mejorar identificados")
+        st.metric("Areas de Mejora", total_improvements, help="Aspectos a mejorar identificados")
     
-    # Gráfico de puntuaciones por fase
+    # Grafico de puntuaciones por fase
     st.markdown("---")
     st.subheader("📊 Puntuaciones por Fase")
     
@@ -876,7 +877,7 @@ def render_summary_tab():
             phase_names.append(phase_id.replace('_', ' ').title())
             phase_scores.append(score)
             
-            # Color según puntuación
+            # Color segun puntuacion
             if score >= 8:
                 phase_colors.append('#2E8B57')  # Verde
             elif score >= 6:
@@ -884,7 +885,7 @@ def render_summary_tab():
             else:
                 phase_colors.append('#DC143C')  # Rojo
         
-        # Crear gráfico de barras
+        # Crear grafico de barras
         fig = go.Figure([go.Bar(
             x=phase_names,
             y=phase_scores,
@@ -894,8 +895,8 @@ def render_summary_tab():
         )])
         
         fig.update_layout(
-            title="Puntuación por Fase de Análisis",
-            yaxis_title="Puntuación (0-10)",
+            title="Puntuacion por Fase de Analisis",
+            yaxis_title="Puntuacion (0-10)",
             yaxis=dict(range=[0, 10]),
             height=400,
             showlegend=False
@@ -915,5 +916,5 @@ def render_summary_tab():
             char_count = len(st.session_state.manuscript)
             paragraph_count = len([p for p in st.session_state.manuscript.split('\n\n') if p.strip()])
             
-            st.markdown("**📊 Estadísticas del Texto:**")
+            st.markdown("**📊 Estadisticas del Texto:**")
             st.markdown(f"- **Palabras:** {word_count:,}")

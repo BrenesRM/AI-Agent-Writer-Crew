@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # agents/tools/writing_tools.py
 import re
 import logging
@@ -25,18 +26,18 @@ class WritingAnalyzerInput(BaseModel):
 class WritingAnalyzer(BaseTool):
     name: str = "Analizador de Escritura"
     description: str = """
-    Analiza un texto narrativo y proporciona estadísticas detalladas:
-    - Conteo de palabras, párrafos, oraciones
+    Analiza un texto narrativo y proporciona estadisticas detalladas:
+    - Conteo de palabras, parrafos, oraciones
     - Longitud promedio de oraciones
-    - Diversidad léxica
-    - Análisis de legibilidad
+    - Diversidad lexica
+    - Analisis de legibilidad
     """
     args_schema: type[BaseModel] = WritingAnalyzerInput
     
     def _run(self, text: str) -> str:
-        """Analiza las características generales de un texto"""
+        """Analiza las caracteristicas generales de un texto"""
         try:
-            # Estadísticas básicas
+            # Estadisticas basicas
             words = len(text.split())
             sentences = len(nltk.sent_tokenize(text))
             paragraphs = len([p for p in text.split('\n\n') if p.strip()])
@@ -45,30 +46,30 @@ class WritingAnalyzer(BaseTool):
             # Longitud promedio de oraciones
             avg_sentence_length = words / max(sentences, 1)
             
-            # Diversidad léxica
+            # Diversidad lexica
             unique_words = len(set(word.lower() for word in text.split()))
             lexical_diversity = unique_words / max(words, 1)
             
-            # Palabras más frecuentes
+            # Palabras mas frecuentes
             word_counts = Counter(word.lower().strip('.,!?;:"()[]') for word in text.split())
             most_common = word_counts.most_common(5)
             
-            analysis = f"""ANÁLISIS DE ESCRITURA:
+            analysis = f"""ANALISIS DE ESCRITURA:
             
-📊 ESTADÍSTICAS BÁSICAS:
+📊 ESTADISTICAS BASICAS:
 - Palabras: {words:,}
 - Oraciones: {sentences:,}
-- Párrafos: {paragraphs:,}
+- Parrafos: {paragraphs:,}
 - Caracteres: {characters:,}
 
-📏 MÉTRICAS DE ESTILO:
-- Longitud promedio de oración: {avg_sentence_length:.1f} palabras
-- Diversidad léxica: {lexical_diversity:.2%}
+📏 METRICAS DE ESTILO:
+- Longitud promedio de oracion: {avg_sentence_length:.1f} palabras
+- Diversidad lexica: {lexical_diversity:.2%}
 
-🔤 PALABRAS MÁS FRECUENTES:
+🔤 PALABRAS MAS FRECUENTES:
 {chr(10).join([f"- {word}: {count} veces" for word, count in most_common])}
 
-📖 EVALUACIÓN:
+📖 EVALUACION:
 - Complejidad: {'Alta' if avg_sentence_length > 20 else 'Media' if avg_sentence_length > 15 else 'Baja'}
 - Variedad vocabulario: {'Rica' if lexical_diversity > 0.7 else 'Media' if lexical_diversity > 0.5 else 'Limitada'}
 """
@@ -78,14 +79,14 @@ class WritingAnalyzer(BaseTool):
             return f"Error analizando texto: {str(e)}"
 
 class StyleAnalyzerInput(BaseModel):
-    text: str = Field(..., description="Texto a analizar estilísticamente")
+    text: str = Field(..., description="Texto a analizar estilisticamente")
 
 class StyleAnalyzer(BaseTool):
     name: str = "Analizador de Estilo"
     description: str = """
     Analiza el estilo narrativo de un texto:
     - Tono y sentimiento
-    - Uso de diálogos
+    - Uso de dialogos
     - Perspectiva narrativa
     - Tiempo verbal dominante
     """
@@ -96,16 +97,16 @@ class StyleAnalyzer(BaseTool):
         try:
             blob = TextBlob(text)
             
-            # Análisis de sentimientos
+            # Analisis de sentimientos
             sentiment = blob.sentiment
             
-            # Detectar diálogos
+            # Detectar dialogos
             dialogue_count = len(re.findall(r'["\'].*?["\']', text))
             dialogue_percentage = (dialogue_count * 100) / max(len(text.split()), 1)
             
             # Detectar perspectiva narrativa
             first_person = len(re.findall(r'\b(yo|me|mi|nosotros|nos)\b', text.lower()))
-            third_person = len(re.findall(r'\b(él|ella|ellos|ellas)\b', text.lower()))
+            third_person = len(re.findall(r'\b(el|ella|ellos|ellas)\b', text.lower()))
             
             if first_person > third_person:
                 perspective = "Primera persona"
@@ -114,8 +115,8 @@ class StyleAnalyzer(BaseTool):
             else:
                 perspective = "Mixta o indefinida"
             
-            # Análisis de tiempo verbal (simple)
-            past_tense = len(re.findall(r'\w+(ó|ía|aba|ieron|ado|ido)\b', text))
+            # Analisis de tiempo verbal (simple)
+            past_tense = len(re.findall(r'\w+(o|ia|aba|ieron|ado|ido)\b', text))
             present_tense = len(re.findall(r'\w+(a|e|o|an|en|on)\b', text))
             
             dominant_tense = "Pasado" if past_tense > present_tense else "Presente"
@@ -128,7 +129,7 @@ class StyleAnalyzer(BaseTool):
             else:
                 tone = "Neutral"
             
-            analysis = f"""ANÁLISIS DE ESTILO:
+            analysis = f"""ANALISIS DE ESTILO:
             
 🎭 TONO Y SENTIMIENTO:
 - Polaridad: {sentiment.polarity:.2f} (-1 negativo, +1 positivo)
@@ -145,13 +146,13 @@ class StyleAnalyzer(BaseTool):
 - Marcadores de pasado: {past_tense}
 - Marcadores de presente: {present_tense}
 
-💬 DIÁLOGOS:
-- Fragmentos de diálogo detectados: {dialogue_count}
-- Porcentaje estimado de diálogo: {dialogue_percentage:.1f}%
+💬 DIALOGOS:
+- Fragmentos de dialogo detectados: {dialogue_count}
+- Porcentaje estimado de dialogo: {dialogue_percentage:.1f}%
 
 📝 RECOMENDACIONES:
 - {'Considera variar la perspectiva para mayor dinamismo' if perspective == 'Mixta o indefinida' else '✓ Perspectiva narrativa consistente'}
-- {'Equilibra narración y diálogo' if dialogue_percentage < 10 or dialogue_percentage > 50 else '✓ Buen balance narración/diálogo'}
+- {'Equilibra narracion y dialogo' if dialogue_percentage < 10 or dialogue_percentage > 50 else '✓ Buen balance narracion/dialogo'}
 """
             return analysis
             
@@ -174,8 +175,8 @@ class CharacterAnalyzer(BaseTool):
     def _run(self, text: str) -> str:
         """Analiza los personajes presentes en el texto"""
         try:
-            # Extraer nombres propios (patrón simple)
-            names = re.findall(r'\b[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*\b', text)
+            # Extraer nombres propios (patron simple)
+            names = re.findall(r'\b[A-ZAEIOUÑ][a-zaeiouñ]+(?:\s+[A-ZAEIOUÑ][a-zaeiouñ]+)*\b', text)
             
             # Filtrar nombres comunes que no son personajes
             common_words = {'El', 'La', 'Los', 'Las', 'Un', 'Una', 'Por', 'Para', 'Con', 'Sin', 'Sobre', 'Desde', 'Hasta'}
@@ -187,30 +188,30 @@ class CharacterAnalyzer(BaseTool):
             # Buscar relaciones (patrones simples)
             relationships = []
             for char in character_counts.keys():
-                # Buscar patrones de relación
+                # Buscar patrones de relacion
                 if re.search(rf'{char}.*?(hermano|hermana|padre|madre|hijo|hija)', text, re.IGNORECASE):
-                    relationships.append(f"{char} - relación familiar mencionada")
+                    relationships.append(f"{char} - relacion familiar mencionada")
                 if re.search(rf'{char}.*?(amigo|amiga|enemigo|enemiga)', text, re.IGNORECASE):
-                    relationships.append(f"{char} - relación de amistad/enemistad mencionada")
-                if re.search(rf'{char}.*?(rey|reina|príncipe|princesa|lord|lady)', text, re.IGNORECASE):
+                    relationships.append(f"{char} - relacion de amistad/enemistad mencionada")
+                if re.search(rf'{char}.*?(rey|reina|principe|princesa|lord|lady)', text, re.IGNORECASE):
                     relationships.append(f"{char} - posible rol de nobleza")
             
-            analysis = f"""ANÁLISIS DE PERSONAJES:
+            analysis = f"""ANALISIS DE PERSONAJES:
             
 👥 PERSONAJES IDENTIFICADOS:
 {chr(10).join([f"- {char}: {count} menciones" for char, count in character_counts.most_common(10)])}
 
 🔗 RELACIONES DETECTADAS:
-{chr(10).join([f"- {rel}" for rel in relationships]) if relationships else "- No se detectaron relaciones explícitas"}
+{chr(10).join([f"- {rel}" for rel in relationships]) if relationships else "- No se detectaron relaciones explicitas"}
 
-📊 ESTADÍSTICAS:
-- Total de personajes únicos: {len(character_counts)}
-- Personaje más mencionado: {character_counts.most_common(1)[0][0] if character_counts else 'Ninguno'} 
-- Distribución de menciones: {'Equilibrada' if len(set(character_counts.values())) > 3 else 'Concentrada'}
+📊 ESTADISTICAS:
+- Total de personajes unicos: {len(character_counts)}
+- Personaje mas mencionado: {character_counts.most_common(1)[0][0] if character_counts else 'Ninguno'} 
+- Distribucion de menciones: {'Equilibrada' if len(set(character_counts.values())) > 3 else 'Concentrada'}
 
 💡 OBSERVACIONES:
 - {'Historia centrada en pocos personajes' if len(character_counts) < 5 else 'Historia con amplio elenco de personajes'}
-- {'Considerar desarrollar más a los personajes secundarios' if len(character_counts) > 1 and character_counts.most_common(1)[0][1] > sum(character_counts.values()) * 0.5 else '✓ Buen equilibrio entre personajes'}
+- {'Considerar desarrollar mas a los personajes secundarios' if len(character_counts) > 1 and character_counts.most_common(1)[0][1] > sum(character_counts.values()) * 0.5 else '✓ Buen equilibrio entre personajes'}
 """
             return analysis
             

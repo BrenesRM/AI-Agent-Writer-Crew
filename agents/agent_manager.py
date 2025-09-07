@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 # agents/agent_manager.py
 import logging
 from typing import Dict, Any, List, Optional
 from pathlib import Path
 import sys
 
-# Añadir el directorio raíz al path
+# Añadir el directorio raiz al path
 project_root = Path(__file__).parent.parent
 sys.path.append(str(project_root))
 
@@ -65,7 +66,7 @@ class AgentManager:
         return agents
     
     def get_agent(self, agent_name: str):
-        """Obtiene un agente específico"""
+        """Obtiene un agente especifico"""
         return self.agents.get(agent_name)
     
     def list_agents(self) -> List[str]:
@@ -73,17 +74,17 @@ class AgentManager:
         return list(self.agents.keys())
     
     def set_manuscript(self, manuscript: str):
-        """Establece el manuscrito actual para análisis"""
+        """Establece el manuscrito actual para analisis"""
         self.current_manuscript = manuscript
         self.logger.info(f"Manuscrito establecido: {len(manuscript)} caracteres")
     
     def run_analysis_phase(self, phase: str, manuscript: str = None) -> Dict[str, Any]:
-        """Ejecuta una fase específica de análisis"""
+        """Ejecuta una fase especifica de analisis"""
         
         if manuscript:
             self.set_manuscript(manuscript)
         elif not self.current_manuscript:
-            raise ValueError("No hay manuscrito establecido para análisis")
+            raise ValueError("No hay manuscrito establecido para analisis")
         
         manuscript_text = manuscript or self.current_manuscript
         results = {}
@@ -101,13 +102,13 @@ class AgentManager:
         elif phase == "quality_assurance":
             results = self._run_quality_assurance(manuscript_text)
         else:
-            raise ValueError(f"Fase de análisis desconocida: {phase}")
+            raise ValueError(f"Fase de analisis desconocida: {phase}")
         
         self.analysis_results[phase] = results
         return results
     
     def _run_worldbuilding_analysis(self, manuscript: str) -> Dict[str, Any]:
-        """Ejecuta análisis de construcción del mundo"""
+        """Ejecuta analisis de construccion del mundo"""
         results = {
             "phase": "worldbuilding",
             "timestamp": None,
@@ -116,14 +117,14 @@ class AgentManager:
         }
         
         try:
-            # Lorekeeper: Análisis de worldbuilding
+            # Lorekeeper: Analisis de worldbuilding
             lorekeeper = self.agents['lorekeeper']
             results["results"]["lore_analysis"] = lorekeeper.analyze_worldbuilding(manuscript)
             
-            # Researcher: Buscar información contextual
+            # Researcher: Buscar informacion contextual
             researcher = self.agents['researcher']
             results["results"]["research_findings"] = researcher.research_context(
-                "elementos fantásticos", manuscript[:500]
+                "elementos fantasticos", manuscript[:500]
             )
             
             # Continuity Auditor: Verificar consistencia
@@ -133,13 +134,13 @@ class AgentManager:
             self.logger.info("Fase de desarrollo de personajes completada")
             
         except Exception as e:
-            self.logger.error(f"Error en análisis de personajes: {str(e)}")
+            self.logger.error(f"Error en analisis de personajes: {str(e)}")
             results["error"] = str(e)
         
         return results
     
     def _run_plot_analysis(self, manuscript: str) -> Dict[str, Any]:
-        """Ejecuta análisis de estructura de trama"""
+        """Ejecuta analisis de estructura de trama"""
         results = {
             "phase": "plot_structure",
             "timestamp": None,
@@ -148,11 +149,11 @@ class AgentManager:
         }
         
         try:
-            # Plot Weaver: Análisis estructural
+            # Plot Weaver: Analisis estructural
             plot_weaver = self.agents['plot_weaver']
             results["results"]["plot_analysis"] = plot_weaver.analyze_plot_structure(manuscript)
             
-            # Pacing Specialist: Análisis de ritmo
+            # Pacing Specialist: Analisis de ritmo
             pacing_spec = self.agents['pacing_specialist']
             results["results"]["pacing_analysis"] = pacing_spec.analyze_pacing(manuscript)
             
@@ -160,16 +161,16 @@ class AgentManager:
             innovation = self.agents['innovation_scout']
             results["results"]["creative_opportunities"] = innovation.scout_creative_opportunities(manuscript)
             
-            self.logger.info("Fase de análisis de trama completada")
+            self.logger.info("Fase de analisis de trama completada")
             
         except Exception as e:
-            self.logger.error(f"Error en análisis de trama: {str(e)}")
+            self.logger.error(f"Error en analisis de trama: {str(e)}")
             results["error"] = str(e)
         
         return results
     
     def _run_style_analysis(self, manuscript: str) -> Dict[str, Any]:
-        """Ejecuta análisis y refinamiento de estilo"""
+        """Ejecuta analisis y refinamiento de estilo"""
         results = {
             "phase": "style_refinement",
             "timestamp": None,
@@ -178,7 +179,7 @@ class AgentManager:
         }
         
         try:
-            # Style Editor: Análisis de estilo
+            # Style Editor: Analisis de estilo
             style_editor = self.agents['style_editor']
             results["results"]["style_analysis"] = style_editor.analyze_writing_style(manuscript)
             
@@ -191,13 +192,13 @@ class AgentManager:
             self.logger.info("Fase de refinamiento de estilo completada")
             
         except Exception as e:
-            self.logger.error(f"Error en análisis de estilo: {str(e)}")
+            self.logger.error(f"Error en analisis de estilo: {str(e)}")
             results["error"] = str(e)
         
         return results
     
     def _run_visual_creation(self, manuscript: str) -> Dict[str, Any]:
-        """Ejecuta creación de elementos visuales"""
+        """Ejecuta creacion de elementos visuales"""
         results = {
             "phase": "visual_creation",
             "timestamp": None,
@@ -210,10 +211,10 @@ class AgentManager:
             visualizer = self.agents['visualizer']
             results["results"]["visual_prompts"] = visualizer.create_visual_prompts(manuscript)
             
-            self.logger.info("Fase de creación visual completada")
+            self.logger.info("Fase de creacion visual completada")
             
         except Exception as e:
-            self.logger.error(f"Error en creación visual: {str(e)}")
+            self.logger.error(f"Error en creacion visual: {str(e)}")
             results["error"] = str(e)
         
         return results
@@ -228,11 +229,11 @@ class AgentManager:
         }
         
         try:
-            # Proofreader: Corrección final
+            # Proofreader: Correccion final
             proofreader = self.agents['proofreader']
             results["results"]["proofreading"] = proofreader.proofread_manuscript(manuscript)
             
-            # Continuity Auditor: Verificación final
+            # Continuity Auditor: Verificacion final
             auditor = self.agents['continuity_auditor']
             results["results"]["final_continuity_check"] = auditor.audit_continuity(manuscript)
             
@@ -245,8 +246,8 @@ class AgentManager:
         return results
     
     def run_complete_analysis(self, manuscript: str) -> Dict[str, Any]:
-        """Ejecuta análisis completo en todas las fases"""
-        self.logger.info("Iniciando análisis completo del manuscrito")
+        """Ejecuta analisis completo en todas las fases"""
+        self.logger.info("Iniciando analisis completo del manuscrito")
         
         phases = [
             "worldbuilding",
@@ -281,11 +282,11 @@ class AgentManager:
         complete_results["summary"] = self._generate_analysis_summary(complete_results)
         complete_results["recommendations"] = self._generate_recommendations(complete_results)
         
-        self.logger.info("Análisis completo finalizado")
+        self.logger.info("Analisis completo finalizado")
         return complete_results
     
     def _generate_analysis_summary(self, results: Dict[str, Any]) -> Dict[str, Any]:
-        """Genera un resumen del análisis completo"""
+        """Genera un resumen del analisis completo"""
         summary = {
             "total_phases": len(results["phases_completed"]),
             "successful_phases": len([p for p in results["phases_results"].values() if "error" not in p]),
@@ -295,7 +296,7 @@ class AgentManager:
         
         # Analizar resultados clave (simplificado para demo)
         if "worldbuilding" in results["phases_completed"]:
-            summary["key_findings"].append("Análisis de worldbuilding completado")
+            summary["key_findings"].append("Analisis de worldbuilding completado")
         
         if "character_development" in results["phases_completed"]:
             summary["key_findings"].append("Desarrollo de personajes evaluado")
@@ -305,21 +306,21 @@ class AgentManager:
         elif summary["successful_phases"] >= 2:
             summary["overall_assessment"] = "Parcial"
         else:
-            summary["overall_assessment"] = "Requiere atención"
+            summary["overall_assessment"] = "Requiere atencion"
         
         return summary
     
     def _generate_recommendations(self, results: Dict[str, Any]) -> List[str]:
-        """Genera recomendaciones basadas en el análisis"""
+        """Genera recomendaciones basadas en el analisis"""
         recommendations = []
         
         # Recomendaciones basadas en fases completadas
         successful_phases = [p for p in results["phases_results"].values() if "error" not in p]
         
         if len(successful_phases) < 6:
-            recommendations.append("Completar todas las fases de análisis para evaluación completa")
+            recommendations.append("Completar todas las fases de analisis para evaluacion completa")
         
-        # Recomendaciones específicas (simplificado)
+        # Recomendaciones especificas (simplificado)
         if "worldbuilding" in results["phases_completed"]:
             recommendations.append("Revisar consistencia de reglas del mundo")
         
@@ -330,12 +331,12 @@ class AgentManager:
             recommendations.append("Evaluar ritmo narrativo en secciones medias")
         
         if not recommendations:
-            recommendations.append("Manuscrito procesado exitosamente - listo para siguiente iteración")
+            recommendations.append("Manuscrito procesado exitosamente - listo para siguiente iteracion")
         
         return recommendations
     
     def get_analysis_summary(self) -> Dict[str, Any]:
-        """Obtiene resumen del estado actual del análisis"""
+        """Obtiene resumen del estado actual del analisis"""
         return {
             "manuscript_set": bool(self.current_manuscript),
             "manuscript_length": len(self.current_manuscript) if self.current_manuscript else 0,
@@ -345,7 +346,7 @@ class AgentManager:
         }
     
     def reset_analysis(self):
-        """Reinicia el estado del análisis"""
+        """Reinicia el estado del analisis"""
         self.current_manuscript = ""
         self.analysis_results = {}
-        self.logger.info("Estado de análisis reiniciado")
+        self.logger.info("Estado de analisis reiniciado")

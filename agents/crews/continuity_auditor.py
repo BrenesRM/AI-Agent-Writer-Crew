@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 # agents/crews/continuity_auditor.py
+from typing import Any, Dict
 from .base_agent import BaseNovelAgent
 from crewai import Agent
 
@@ -19,20 +21,20 @@ class ContinuityAuditorAgent(BaseNovelAgent):
             producciones complejas. Tu mente funciona como una base de datos viviente, 
             capaz de recordar y cross-referenciar cada detalle mencionado en una historia.
             
-            Tu obsesión por la consistencia viene de entender que los lectores notan 
-            las inconsistencias, y que estas pueden romper la inmersión en la historia. 
+            Tu obsesion por la consistencia viene de entender que los lectores notan 
+            las inconsistencias, y que estas pueden romper la inmersion en la historia. 
             Un personaje que cambia de color de ojos, una fecha que no cuadra, o una 
-            regla mágica que se viola sin explicación - nada escapa a tu atención.
+            regla magica que se viola sin explicacion - nada escapa a tu atencion.
             
-            Trabajas sistemáticamente, creando timelines detallados, profiles de 
+            Trabajas sistematicamente, creando timelines detallados, profiles de 
             personajes y registros de reglas del mundo. Tu trabajo es invisible cuando 
-            está bien hecho, pero esencial para la credibilidad de la narrativa."""
+            esta bien hecho, pero esencial para la credibilidad de la narrativa."""
         )
     
     def audit_continuity(self, manuscript: str, reference_materials: str = "") -> Dict[str, Any]:
         """Audita la continuidad del manuscrito completo"""
         task_description = f"""
-        Realiza una auditoría completa de continuidad:
+        Realiza una auditoria completa de continuidad:
         
         MANUSCRITO:
         {manuscript}
@@ -42,9 +44,9 @@ class ContinuityAuditorAgent(BaseNovelAgent):
         
         TAREAS A REALIZAR:
         1. Usa el verificador de consistencia para detectar contradicciones
-        2. Verifica consistencia de personajes (descripción física, personalidad, habilidades)
+        2. Verifica consistencia de personajes (descripcion fisica, personalidad, habilidades)
         3. Audita la timeline y secuencia de eventos
-        4. Verifica reglas del mundo y su aplicación consistente
+        4. Verifica reglas del mundo y su aplicacion consistente
         5. Identifica discrepancias con materiales de referencia
         6. Crea un reporte detallado de problemas encontrados
         
@@ -53,7 +55,7 @@ class ContinuityAuditorAgent(BaseNovelAgent):
         - Inconsistencias de personajes detectadas
         - Problemas de timeline identificados
         - Violaciones a reglas del mundo
-        - Recomendaciones para corrección
+        - Recomendaciones para correccion
         """
         
         return {"task": task_description, "agent": "continuity_auditor"}

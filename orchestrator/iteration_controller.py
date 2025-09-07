@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 # orchestrator/iteration_controller.py
 """
 Controlador de ciclos iterativos del flujo de trabajo.
-Gestiona cuándo continuar, detener o reiniciar iteraciones.
+Gestiona cuando continuar, detener o reiniciar iteraciones.
 """
 
 import logging
@@ -51,12 +52,12 @@ class IterationController:
         iteration: int
     ) -> bool:
         """
-        Determina si el flujo de trabajo debe continuar con otra iteración
+        Determina si el flujo de trabajo debe continuar con otra iteracion
         """
         
         self.current_iteration = iteration
         
-        # Inicializar tiempo de inicio si es la primera iteración
+        # Inicializar tiempo de inicio si es la primera iteracion
         if self.start_time is None:
             self.start_time = datetime.utcnow()
         
@@ -65,10 +66,10 @@ class IterationController:
         
         if stop_reason:
             self.stop_reason = stop_reason
-            self.logger.info(f"Deteniendo iteraciones - Razón: {stop_reason.value}")
+            self.logger.info(f"Deteniendo iteraciones - Razon: {stop_reason.value}")
             return False
         
-        self.logger.info(f"Continuando con iteración {iteration + 1}")
+        self.logger.info(f"Continuando con iteracion {iteration + 1}")
         return True
     
     def _evaluate_stop_conditions(
@@ -76,9 +77,9 @@ class IterationController:
         state: Dict[str, Any], 
         iteration: int
     ) -> Optional[IterationStopReason]:
-        """Evalúa todas las condiciones de parada"""
+        """Evalua todas las condiciones de parada"""
         
-        # 1. Verificar si el usuario solicitó parada
+        # 1. Verificar si el usuario solicito parada
         if self.stop_requested:
             return IterationStopReason.USER_STOPPED
         
@@ -86,7 +87,7 @@ class IterationController:
         if self._is_timeout_reached():
             return IterationStopReason.TIMEOUT
         
-        # 3. Verificar máximo de iteraciones
+        # 3. Verificar maximo de iteraciones
         if iteration >= self.max_iterations:
             return IterationStopReason.MAX_ITERATIONS
         
@@ -109,7 +110,7 @@ class IterationController:
         return None
     
     def _is_timeout_reached(self) -> bool:
-        """Verifica si se alcanzó el timeout"""
+        """Verifica si se alcanzo el timeout"""
         if self.start_time is None:
             return False
         
@@ -124,7 +125,7 @@ class IterationController:
             'lorekeeper_analysis',
             'character_development',
             'plot_analysis',
-            'quality_assurance'  # Este es crítico
+            'quality_assurance'  # Este es critico
         ]
         
         completed_nodes = state.get('completed_nodes', [])
@@ -132,11 +133,11 @@ class IterationController:
         return all(node in completed_nodes for node in required_nodes)
     
     def _is_quality_threshold_met(self, state: Dict[str, Any]) -> bool:
-        """Verifica si se alcanzó el umbral de calidad"""
+        """Verifica si se alcanzo el umbral de calidad"""
         
         analysis_results = state.get('analysis_results', {})
         
-        # Verificar calidad específica del QA si existe
+        # Verificar calidad especifica del QA si existe
         qa_results = analysis_results.get('quality_assurance', {})
         if qa_results:
             overall_score = qa_results.get('overall_score', 0)
@@ -144,10 +145,10 @@ class IterationController:
                 quality_ratio = overall_score / 100  # Convertir a ratio
                 return quality_ratio >= self.quality_threshold
         
-        # Calcular puntuación promedio de todos los análisis
+        # Calcular puntuacion promedio de todos los analisis
         scores = []
         
-        # Recopilar puntuaciones de diferentes análisis
+        # Recopilar puntuaciones de diferentes analisis
         for category, data in analysis_results.items():
             if isinstance(data, dict):
                 # Buscar diferentes tipos de puntuaciones
@@ -173,18 +174,18 @@ class IterationController:
         return len(failed_nodes) >= self.failure_threshold
     
     def _error_threshold_exceeded(self, state: Dict[str, Any]) -> bool:
-        """Verifica si se excedió el umbral de errores"""
+        """Verifica si se excedio el umbral de errores"""
         
         error_log = state.get('error_log', [])
         
-        # Contar errores en las últimas 2 iteraciones
+        # Contar errores en las ultimas 2 iteraciones
         current_iteration = state.get('iteration', 0)
         recent_errors = [
             error for error in error_log 
             if error.get('iteration', 0) >= current_iteration - 1
         ]
         
-        # Si hay más de 5 errores en iteraciones recientes, detener
+        # Si hay mas de 5 errores en iteraciones recientes, detener
         return len(recent_errors) > 5
     
     def request_stop(self, reason: str = "User requested") -> None:
@@ -193,7 +194,7 @@ class IterationController:
         self.logger.info(f"Parada solicitada: {reason}")
     
     def reset(self) -> None:
-        """Reinicia el controlador para una nueva sesión"""
+        """Reinicia el controlador para una nueva sesion"""
         self.current_iteration = 0
         self.start_time = None
         self.stop_requested = False
@@ -236,11 +237,11 @@ class IterationController:
         }
     
     def get_performance_metrics(self, state: Dict[str, Any]) -> Dict[str, Any]:
-        """Obtiene métricas de rendimiento de las iteraciones"""
+        """Obtiene metricas de rendimiento de las iteraciones"""
         
         action_history = state.get('action_history', [])
         
-        # Calcular estadísticas por iteración
+        # Calcular estadisticas por iteracion
         iteration_stats = {}
         for action in action_history:
             iteration = action.get('iteration', 0)
@@ -258,7 +259,7 @@ class IterationController:
             elif action.get('status') == 'failed':
                 iteration_stats[iteration]['failures'] += 1
         
-        # Calcular métricas globales
+        # Calcular metricas globales
         total_actions = len(action_history)
         successful_actions = len([a for a in action_history if a.get('status') == 'completed'])
         failed_actions = len([a for a in action_history if a.get('status') == 'failed'])
@@ -281,8 +282,8 @@ class IterationController:
         
         # Solo reintentar si:
         # 1. Hay nodos fallidos
-        # 2. No hemos excedido el máximo de iteraciones
-        # 3. Los fallos no son críticos (menos del 50% de nodos)
+        # 2. No hemos excedido el maximo de iteraciones
+        # 3. Los fallos no son criticos (menos del 50% de nodos)
         
         if not failed_nodes:
             return False
@@ -293,11 +294,11 @@ class IterationController:
         total_nodes = 6
         failure_rate = len(failed_nodes) / total_nodes
         
-        # No reintentar si más del 50% de nodos fallaron
+        # No reintentar si mas del 50% de nodos fallaron
         return failure_rate <= 0.5
     
     def get_next_iteration_strategy(self, state: Dict[str, Any]) -> Dict[str, Any]:
-        """Sugiere estrategia para la próxima iteración"""
+        """Sugiere estrategia para la proxima iteracion"""
         
         completed_nodes = state.get('completed_nodes', [])
         failed_nodes = state.get('failed_nodes', [])
@@ -314,7 +315,7 @@ class IterationController:
         if self.should_retry_failed_nodes(state):
             strategy['retry_nodes'] = failed_nodes.copy()
         
-        # Identificar áreas de enfoque basadas en errores recientes
+        # Identificar areas de enfoque basadas en errores recientes
         recent_errors = [e for e in error_log if e.get('iteration', 0) >= self.current_iteration - 1]
         error_patterns = {}
         
@@ -327,12 +328,12 @@ class IterationController:
         # Sugerir optimizaciones basadas en patrones de error
         for node_id, error_count in error_patterns.items():
             if error_count > 1:
-                strategy['focus_areas'].append(f"Revisar configuración de {node_id}")
+                strategy['focus_areas'].append(f"Revisar configuracion de {node_id}")
                 strategy['optimization_suggestions'].append(
-                    f"Considerar parámetros alternativos para {node_id}"
+                    f"Considerar parametros alternativos para {node_id}"
                 )
         
-        # Sugerir salto de nodos no críticos si hay muchos fallos
+        # Sugerir salto de nodos no criticos si hay muchos fallos
         if len(failed_nodes) > 2:
             optional_nodes = ['visual_generation', 'style_refinement']
             for node in optional_nodes:

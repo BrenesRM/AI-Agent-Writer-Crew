@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import streamlit as st
 import json
 import random
@@ -5,16 +6,16 @@ from datetime import datetime
 from typing import List, Dict
 
 def render_visual_page():
-    """Renderiza la página de generación de prompts visuales"""
+    """Renderiza la pagina de generacion de prompts visuales"""
     
     st.header("🎬 Prompts Visuales para IA de Video")
-    st.markdown("*Convierte tu manuscrito en prompts cinematográficos para herramientas de IA como Runway, Pika Labs, etc.*")
+    st.markdown("*Convierte tu manuscrito en prompts cinematograficos para herramientas de IA como Runway, Pika Labs, etc.*")
     
     # Tabs principales
     tab1, tab2, tab3, tab4 = st.tabs([
         "🎨 Generador",
-        "📽️ Galería de Prompts",
-        "⚙️ Configuración",
+        "📽️ Galeria de Prompts",
+        "⚙️ Configuracion",
         "📚 Biblioteca de Estilos"
     ])
     
@@ -31,8 +32,8 @@ def render_visual_page():
         render_styles_library_tab()
 
 def render_generator_tab():
-    """Tab principal de generación de prompts"""
-    st.subheader("🎨 Generador de Prompts Cinematográficos")
+    """Tab principal de generacion de prompts"""
+    st.subheader("🎨 Generador de Prompts Cinematograficos")
     
     # Verificar si hay manuscrito
     if not st.session_state.manuscript:
@@ -42,7 +43,7 @@ def render_generator_tab():
             st.session_state.page_selector = "manuscript"
             st.rerun()
         
-        # Opción de usar manuscrito de ejemplo
+        # Opcion de usar manuscrito de ejemplo
         if st.button("🎭 Usar Manuscrito de Ejemplo"):
             st.session_state.manuscript = get_example_manuscript()
             st.success("✅ Manuscrito de ejemplo cargado")
@@ -50,64 +51,64 @@ def render_generator_tab():
         
         return
     
-    # Mostrar información del manuscrito
+    # Mostrar informacion del manuscrito
     word_count = len(st.session_state.manuscript.split())
     st.info(f"📖 Manuscrito cargado: {word_count} palabras")
     
-    # Opciones de generación
+    # Opciones de generacion
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### 🎬 Configuración de Video")
+        st.markdown("### 🎬 Configuracion de Video")
         
         video_style = st.selectbox(
-            "Estilo cinematográfico:",
+            "Estilo cinematografico:",
             [
-                "Fantasía Épica",
+                "Fantasia Epica",
                 "Drama Intimista", 
-                "Acción/Aventura",
+                "Accion/Aventura",
                 "Misterio/Thriller",
-                "Romance Cinematográfico",
-                "Horror Atmosférico",
-                "Ciencia Ficción",
+                "Romance Cinematografico",
+                "Horror Atmosferico",
+                "Ciencia Ficcion",
                 "Documental Estilizado"
             ]
         )
         
         aspect_ratio = st.selectbox(
-            "Relación de aspecto:",
-            ["16:9 (Estándar)", "21:9 (Cinemascope)", "9:16 (Vertical/TikTok)", "1:1 (Cuadrado)"]
+            "Relacion de aspecto:",
+            ["16:9 (Estandar)", "21:9 (Cinemascope)", "9:16 (Vertical/TikTok)", "1:1 (Cuadrado)"]
         )
         
         duration = st.selectbox(
-            "Duración del clip:",
+            "Duracion del clip:",
             ["3 segundos", "5 segundos", "10 segundos", "15 segundos", "30 segundos"]
         )
     
     with col2:
-        st.markdown("### 🎨 Configuración Visual")
+        st.markdown("### 🎨 Configuracion Visual")
         
         camera_style = st.selectbox(
-            "Estilo de cámara:",
+            "Estilo de camara:",
             [
                 "Plano fijo profesional",
-                "Movimiento de cámara fluido",
-                "Cámara en mano dinámico",
-                "Planos aéreos/drone",
-                "Primeros planos íntimos",
-                "Planos generales épicos"
+                "Movimiento de camara fluido",
+                "Camara en mano dinamico",
+                "Planos aereos/drone",
+                "Primeros planos intimos",
+                "Planos generales epicos"
             ]
         )
         
         lighting = st.selectbox(
-            "Iluminación:",
+            "Iluminacion:",
             [
                 "Luz natural suave",
-                "Luz dramática/contrastada", 
+                "Luz dramatica/contrastada", 
                 "Luz dorada/golden hour",
                 "Luz azul/hora azul",
                 "Luz artificial/neon",
-                "Luz mística/fantástica"
+                "Luz mistica/fantastica"
             ]
         )
         
@@ -115,29 +116,29 @@ def render_generator_tab():
             "Paleta de colores:",
             [
                 "Colores naturales/realistas",
-                "Paleta cálida (dorados/rojos)",
-                "Paleta fría (azules/verdes)",
-                "Alto contraste/dramático",
-                "Desaturado/cinematográfico",
+                "Paleta calida (dorados/rojos)",
+                "Paleta fria (azules/verdes)",
+                "Alto contraste/dramatico",
+                "Desaturado/cinematografico",
                 "Colores vibrantes/saturados"
             ]
         )
     
     # Opciones avanzadas
-    with st.expander("⚙️ Configuración Avanzada"):
+    with st.expander("⚙️ Configuracion Avanzada"):
         col1, col2 = st.columns(2)
         
         with col1:
             include_characters = st.checkbox("Incluir descripciones de personajes", value=True)
-            include_dialogue = st.checkbox("Generar prompts para diálogos", value=False)
-            include_action = st.checkbox("Enfatizar secuencias de acción", value=True)
+            include_dialogue = st.checkbox("Generar prompts para dialogos", value=False)
+            include_action = st.checkbox("Enfatizar secuencias de accion", value=True)
         
         with col2:
-            quality_level = st.selectbox("Calidad de prompt:", ["Básica", "Detallada", "Profesional"])
-            creative_liberty = st.slider("Libertad creativa:", 1, 10, 7, help="1 = Fiel al texto, 10 = Interpretación libre")
-            technical_details = st.checkbox("Incluir detalles técnicos", value=False, help="ISO, focal length, etc.")
+            quality_level = st.selectbox("Calidad de prompt:", ["Basica", "Detallada", "Profesional"])
+            creative_liberty = st.slider("Libertad creativa:", 1, 10, 7, help="1 = Fiel al texto, 10 = Interpretacion libre")
+            technical_details = st.checkbox("Incluir detalles tecnicos", value=False, help="ISO, focal length, etc.")
     
-    # Botón de generación
+    # Boton de generacion
     if st.button("🎬 Generar Prompts Visuales", type="primary", use_container_width=True):
         generate_visual_prompts(
             st.session_state.manuscript,
@@ -158,7 +159,7 @@ def render_generator_tab():
 def generate_visual_prompts(manuscript, video_style, aspect_ratio, duration, camera_style, 
                           lighting, color_palette, include_characters, include_dialogue, 
                           include_action, quality_level, creative_liberty, technical_details):
-    """Genera prompts visuales basados en el manuscrito y configuración"""
+    """Genera prompts visuales basados en el manuscrito y configuracion"""
     
     with st.spinner("🎨 Generando prompts visuales..."):
         # Simular procesamiento
@@ -191,12 +192,12 @@ def generate_visual_prompts(manuscript, video_style, aspect_ratio, duration, cam
 def extract_scenes(manuscript):
     """Extrae escenas principales del manuscrito"""
     
-    # Dividir por párrafos y filtrar escenas significativas
+    # Dividir por parrafos y filtrar escenas significativas
     paragraphs = [p.strip() for p in manuscript.split('\n\n') if p.strip()]
     
     scenes = []
     for i, paragraph in enumerate(paragraphs):
-        if len(paragraph) > 100:  # Solo párrafos sustanciales
+        if len(paragraph) > 100:  # Solo parrafos sustanciales
             scenes.append({
                 'id': i + 1,
                 'text': paragraph,
@@ -206,21 +207,21 @@ def extract_scenes(manuscript):
                 'mood': detect_mood(paragraph)
             })
     
-    return scenes[:8]  # Máximo 8 escenas para no sobrecargar
+    return scenes[:8]  # Maximo 8 escenas para no sobrecargar
 
 def detect_scene_type(text):
     """Detecta el tipo de escena basado en el contenido"""
     
-    action_keywords = ['corrió', 'saltó', 'luchó', 'atacó', 'huyó', 'persiguió']
-    dialogue_keywords = ['dijo', 'preguntó', 'gritó', 'susurró', 'respondió']
-    description_keywords = ['se veía', 'parecía', 'observó', 'contempló', 'describió']
+    action_keywords = ['corrio', 'salto', 'lucho', 'ataco', 'huyo', 'persiguio']
+    dialogue_keywords = ['dijo', 'pregunto', 'grito', 'susurro', 'respondio']
+    description_keywords = ['se veia', 'parecia', 'observo', 'contemplo', 'describio']
     
     if any(keyword in text.lower() for keyword in action_keywords):
-        return 'acción'
+        return 'accion'
     elif any(keyword in text.lower() for keyword in dialogue_keywords):
-        return 'diálogo'
+        return 'dialogo'
     elif any(keyword in text.lower() for keyword in description_keywords):
-        return 'descripción'
+        return 'descripcion'
     else:
         return 'narrativa'
 
@@ -232,18 +233,18 @@ def extract_characters(text):
     # Filtrar palabras comunes que no son nombres
     common_words = ['En', 'El', 'La', 'Los', 'Las', 'Un', 'Una', 'Torre', 'Reino', 'Guerra']
     characters = [char for char in characters if char not in common_words]
-    return list(set(characters))[:3]  # Máximo 3 personajes por escena
+    return list(set(characters))[:3]  # Maximo 3 personajes por escena
 
 def extract_location(text):
-    """Extrae la ubicación de la escena"""
+    """Extrae la ubicacion de la escena"""
     location_keywords = {
-        'reino': 'reino fantástico',
+        'reino': 'reino fantastico',
         'torre': 'torre antigua',
         'bosque': 'bosque misterioso',
         'castillo': 'castillo medieval',
         'ciudad': 'ciudad medieval',
         'montaña': 'paisaje montañoso',
-        'río': 'paisaje fluvial',
+        'rio': 'paisaje fluvial',
         'cueva': 'caverna oscura'
     }
     
@@ -251,16 +252,16 @@ def extract_location(text):
         if keyword in text.lower():
             return location
     
-    return 'paisaje fantástico'
+    return 'paisaje fantastico'
 
 def detect_mood(text):
-    """Detecta el mood/atmósfera de la escena"""
+    """Detecta el mood/atmosfera de la escena"""
     mood_keywords = {
         'misterioso': ['misterio', 'secreto', 'oculto', 'desconocido'],
-        'dramático': ['guerra', 'conflicto', 'lucha', 'batalla'],
-        'mágico': ['magia', 'mágico', 'hechizo', 'cristal'],
-        'épico': ['reino', 'destino', 'poder', 'épico'],
-        'íntimo': ['susurró', 'pensó', 'sintió', 'recordó'],
+        'dramatico': ['guerra', 'conflicto', 'lucha', 'batalla'],
+        'magico': ['magia', 'magico', 'hechizo', 'cristal'],
+        'epico': ['reino', 'destino', 'poder', 'epico'],
+        'intimo': ['susurro', 'penso', 'sintio', 'recordo'],
         'amenazante': ['sombras', 'peligro', 'amenaza', 'miedo']
     }
     
@@ -274,25 +275,25 @@ def create_visual_prompt(scene, scene_num, video_style, aspect_ratio, duration,
                         camera_style, lighting, color_palette, include_characters,
                         include_dialogue, include_action, quality_level,
                         creative_liberty, technical_details):
-    """Crea un prompt visual para una escena específica"""
+    """Crea un prompt visual para una escena especifica"""
     
     # Prompt base
     prompt_parts = []
     
-    # Descripción de la escena
+    # Descripcion de la escena
     scene_description = create_scene_description(scene, video_style, creative_liberty)
     prompt_parts.append(scene_description)
     
-    # Personajes si están habilitados
+    # Personajes si estan habilitados
     if include_characters and scene['characters']:
         char_description = create_character_description(scene['characters'], video_style)
         prompt_parts.append(char_description)
     
-    # Configuración de cámara
+    # Configuracion de camara
     camera_description = get_camera_description(camera_style, scene['type'])
     prompt_parts.append(camera_description)
     
-    # Iluminación
+    # Iluminacion
     lighting_description = get_lighting_description(lighting, scene['mood'])
     prompt_parts.append(lighting_description)
     
@@ -300,7 +301,7 @@ def create_visual_prompt(scene, scene_num, video_style, aspect_ratio, duration,
     color_description = get_color_description(color_palette, scene['mood'])
     prompt_parts.append(color_description)
     
-    # Detalles técnicos si están habilitados
+    # Detalles tecnicos si estan habilitados
     if technical_details:
         tech_details = get_technical_details(quality_level)
         prompt_parts.append(tech_details)
@@ -333,26 +334,26 @@ def create_visual_prompt(scene, scene_num, video_style, aspect_ratio, duration,
     return visual_prompt
 
 def create_scene_description(scene, video_style, creative_liberty):
-    """Crea descripción visual de la escena"""
+    """Crea descripcion visual de la escena"""
     
     base_description = scene['text'][:100] + "..."
     
-    # Adaptar según estilo
+    # Adaptar segun estilo
     style_adaptations = {
-        'Fantasía Épica': f"Epic fantasy scene: {scene['location']} with magical atmosphere",
+        'Fantasia Epica': f"Epic fantasy scene: {scene['location']} with magical atmosphere",
         'Drama Intimista': f"Intimate dramatic moment in {scene['location']}",
-        'Acción/Aventura': f"Dynamic action sequence in {scene['location']}",
+        'Accion/Aventura': f"Dynamic action sequence in {scene['location']}",
         'Misterio/Thriller': f"Mysterious scene unfolding in {scene['location']}",
-        'Romance Cinematográfico': f"Romantic cinematic moment in {scene['location']}",
-        'Horror Atmosférico': f"Dark atmospheric horror scene in {scene['location']}",
-        'Ciencia Ficción': f"Futuristic sci-fi scene in {scene['location']}",
+        'Romance Cinematografico': f"Romantic cinematic moment in {scene['location']}",
+        'Horror Atmosferico': f"Dark atmospheric horror scene in {scene['location']}",
+        'Ciencia Ficcion': f"Futuristic sci-fi scene in {scene['location']}",
         'Documental Estilizado': f"Stylized documentary approach to {scene['location']}"
     }
     
     return style_adaptations.get(video_style, f"Cinematic scene in {scene['location']}")
 
 def create_character_description(characters, video_style):
-    """Crea descripción de personajes"""
+    """Crea descripcion de personajes"""
     
     if not characters:
         return ""
@@ -371,49 +372,49 @@ def create_character_description(characters, video_style):
     return f"Characters: {', '.join(descriptions)}"
 
 def get_camera_description(camera_style, scene_type):
-    """Genera descripción de cámara"""
+    """Genera descripcion de camara"""
     
     camera_map = {
         'Plano fijo profesional': 'static professional shot, tripod mounted',
-        'Movimiento de cámara fluido': 'smooth camera movement, cinematic flow',
-        'Cámara en mano dinámico': 'handheld dynamic camera work',
-        'Planos aéreos/drone': 'aerial drone shot, sweeping overhead view',
-        'Primeros planos íntimos': 'intimate close-up shots',
-        'Planos generales épicos': 'epic wide establishing shots'
+        'Movimiento de camara fluido': 'smooth camera movement, cinematic flow',
+        'Camara en mano dinamico': 'handheld dynamic camera work',
+        'Planos aereos/drone': 'aerial drone shot, sweeping overhead view',
+        'Primeros planos intimos': 'intimate close-up shots',
+        'Planos generales epicos': 'epic wide establishing shots'
     }
     
     return camera_map.get(camera_style, 'cinematic camera work')
 
 def get_lighting_description(lighting, mood):
-    """Genera descripción de iluminación"""
+    """Genera descripcion de iluminacion"""
     
     lighting_map = {
         'Luz natural suave': 'soft natural lighting, gentle shadows',
-        'Luz dramática/contrastada': 'dramatic high contrast lighting',
+        'Luz dramatica/contrastada': 'dramatic high contrast lighting',
         'Luz dorada/golden hour': 'golden hour lighting, warm sunlight',
         'Luz azul/hora azul': 'blue hour lighting, cool tones',
         'Luz artificial/neon': 'artificial neon lighting effects',
-        'Luz mística/fantástica': 'mystical magical lighting, ethereal glow'
+        'Luz mistica/fantastica': 'mystical magical lighting, ethereal glow'
     }
     
     return lighting_map.get(lighting, 'cinematic lighting')
 
 def get_color_description(color_palette, mood):
-    """Genera descripción de paleta de colores"""
+    """Genera descripcion de paleta de colores"""
     
     color_map = {
         'Colores naturales/realistas': 'natural realistic color palette',
-        'Paleta cálida (dorados/rojos)': 'warm color palette, golds and reds',
-        'Paleta fría (azules/verdes)': 'cool color palette, blues and greens',
-        'Alto contraste/dramático': 'high contrast dramatic colors',
-        'Desaturado/cinematográfico': 'desaturated cinematic color grading',
+        'Paleta calida (dorados/rojos)': 'warm color palette, golds and reds',
+        'Paleta fria (azules/verdes)': 'cool color palette, blues and greens',
+        'Alto contraste/dramatico': 'high contrast dramatic colors',
+        'Desaturado/cinematografico': 'desaturated cinematic color grading',
         'Colores vibrantes/saturados': 'vibrant saturated colors'
     }
     
     return color_map.get(color_palette, 'cinematic color grading')
 
 def get_technical_details(quality_level):
-    """Genera detalles técnicos"""
+    """Genera detalles tecnicos"""
     
     if quality_level == "Profesional":
         return "shot on RED camera, 4K resolution, 24fps, shallow depth of field"
@@ -426,7 +427,7 @@ def get_style_suffix(video_style, quality_level):
     """Genera sufijo de estilo"""
     
     quality_suffixes = {
-        'Básica': 'good quality',
+        'Basica': 'good quality',
         'Detallada': 'high quality, professional cinematography',
         'Profesional': 'masterpiece cinematography, award-winning visual effects, 8K resolution'
     }
@@ -442,7 +443,7 @@ def render_generated_prompts(visual_prompts):
     for prompt in visual_prompts:
         with st.expander(f"🎭 {prompt['title']} - {prompt['mood'].title()}"):
             
-            # Información de la escena
+            # Informacion de la escena
             col1, col2 = st.columns([2, 1])
             
             with col1:
@@ -450,9 +451,9 @@ def render_generated_prompts(visual_prompts):
                 st.markdown(f"_{prompt['original_text']}_")
             
             with col2:
-                st.markdown("**ℹ️ Información:**")
+                st.markdown("**ℹ️ Informacion:**")
                 st.markdown(f"- **Tipo:** {prompt['scene_type']}")
-                st.markdown(f"- **Ubicación:** {prompt['location']}")
+                st.markdown(f"- **Ubicacion:** {prompt['location']}")
                 st.markdown(f"- **Mood:** {prompt['mood']}")
                 if prompt['characters']:
                     st.markdown(f"- **Personajes:** {', '.join(prompt['characters'])}")
@@ -461,13 +462,13 @@ def render_generated_prompts(visual_prompts):
             st.markdown("**🎬 Prompt Visual:**")
             st.code(prompt['prompt'], language="text")
             
-            # Configuración técnica
-            with st.expander("⚙️ Configuración Técnica"):
-                st.markdown(f"- **Relación de aspecto:** {prompt['technical_settings']['aspect_ratio']}")
-                st.markdown(f"- **Duración:** {prompt['technical_settings']['duration']}")
+            # Configuracion tecnica
+            with st.expander("⚙️ Configuracion Tecnica"):
+                st.markdown(f"- **Relacion de aspecto:** {prompt['technical_settings']['aspect_ratio']}")
+                st.markdown(f"- **Duracion:** {prompt['technical_settings']['duration']}")
                 st.markdown(f"- **Estilo:** {prompt['technical_settings']['style']}")
             
-            # Botones de acción
+            # Botones de accion
             col1, col2, col3, col4 = st.columns(4)
             
             with col1:
@@ -483,13 +484,13 @@ def render_generated_prompts(visual_prompts):
             with col3:
                 if st.button(f"💾 Guardar", key=f"save_{prompt['id']}"):
                     save_prompt_to_gallery(prompt)
-                    st.success("💾 Guardado en galería!")
+                    st.success("💾 Guardado en galeria!")
             
             with col4:
                 if st.button(f"🚀 Usar en IA", key=f"ai_{prompt['id']}"):
                     st.info("🚀 Abriendo en herramienta de IA...")
             
-            # Editor inline si está activado
+            # Editor inline si esta activado
             if st.session_state.get(f"editing_{prompt['id']}", False):
                 st.markdown("**✏️ Editar Prompt:**")
                 edited_prompt = st.text_area(
@@ -513,18 +514,18 @@ def render_generated_prompts(visual_prompts):
                         st.rerun()
 
 def save_prompt_to_gallery(prompt):
-    """Guarda un prompt en la galería"""
+    """Guarda un prompt en la galeria"""
     if 'saved_prompts' not in st.session_state:
         st.session_state.saved_prompts = []
     
     st.session_state.saved_prompts.append(prompt)
 
 def render_gallery_tab():
-    """Tab de galería de prompts guardados"""
-    st.subheader("📽️ Galería de Prompts")
+    """Tab de galeria de prompts guardados"""
+    st.subheader("📽️ Galeria de Prompts")
     
     if 'saved_prompts' not in st.session_state or not st.session_state.saved_prompts:
-        st.info("📭 No tienes prompts guardados. Genera algunos prompts y guárdalos para verlos aquí.")
+        st.info("📭 No tienes prompts guardados. Genera algunos prompts y guardalos para verlos aqui.")
         return
     
     # Filtros
@@ -575,7 +576,7 @@ def render_gallery_tab():
                 # Mostrar preview del prompt
                 st.code(prompt['prompt'][:100] + "...", language="text")
                 
-                # Botones de acción
+                # Botones de accion
                 col1, col2 = st.columns(2)
                 with col1:
                     if st.button("📋 Copiar", key=f"gallery_copy_{i}"):
@@ -598,10 +599,10 @@ def render_gallery_tab():
                 export_prompts_to_file(filtered_prompts)
         
         with col2:
-            if st.button("🗑️ Limpiar Galería"):
+            if st.button("🗑️ Limpiar Galeria"):
                 if st.confirm("¿Eliminar todos los prompts guardados?"):
                     st.session_state.saved_prompts = []
-                    st.success("🗑️ Galería limpiada")
+                    st.success("🗑️ Galeria limpiada")
                     st.rerun()
         
         with col3:
@@ -631,7 +632,7 @@ def generate_prompts_report(prompts):
     
     st.markdown("### 📊 Reporte de Prompts")
     
-    # Estadísticas
+    # Estadisticas
     col1, col2, col3 = st.columns(3)
     
     with col1:
@@ -640,26 +641,26 @@ def generate_prompts_report(prompts):
     with col2:
         moods = [p['mood'] for p in prompts]
         most_common_mood = max(set(moods), key=moods.count) if moods else "N/A"
-        st.metric("Mood Más Común", most_common_mood)
+        st.metric("Mood Mas Comun", most_common_mood)
     
     with col3:
         avg_length = sum(len(p['prompt']) for p in prompts) / len(prompts) if prompts else 0
         st.metric("Longitud Promedio", f"{avg_length:.0f} chars")
     
-    # Distribución por mood
+    # Distribucion por mood
     if prompts:
         mood_counts = {}
         for prompt in prompts:
             mood = prompt['mood']
             mood_counts[mood] = mood_counts.get(mood, 0) + 1
         
-        st.markdown("**Distribución por Mood:**")
+        st.markdown("**Distribucion por Mood:**")
         for mood, count in mood_counts.items():
             st.markdown(f"- {mood}: {count} prompts")
 
 def render_config_tab():
-    """Tab de configuración de generación visual"""
-    st.subheader("⚙️ Configuración de Generación Visual")
+    """Tab de configuracion de generacion visual"""
+    st.subheader("⚙️ Configuracion de Generacion Visual")
     
     st.markdown("### 🎨 Presets de Estilo")
     
@@ -667,16 +668,16 @@ def render_config_tab():
     style_presets = {
         "Netflix Original": {
             "video_style": "Drama Intimista",
-            "lighting": "Luz dramática/contrastada",
-            "color_palette": "Desaturado/cinematográfico",
-            "camera_style": "Movimiento de cámara fluido",
+            "lighting": "Luz dramatica/contrastada",
+            "color_palette": "Desaturado/cinematografico",
+            "camera_style": "Movimiento de camara fluido",
             "quality": "Profesional"
         },
         "Marvel/Disney+": {
-            "video_style": "Acción/Aventura", 
-            "lighting": "Luz dramática/contrastada",
+            "video_style": "Accion/Aventura", 
+            "lighting": "Luz dramatica/contrastada",
             "color_palette": "Colores vibrantes/saturados",
-            "camera_style": "Movimiento de cámara fluido",
+            "camera_style": "Movimiento de camara fluido",
             "quality": "Profesional"
         },
         "A24 Arthouse": {
@@ -687,10 +688,10 @@ def render_config_tab():
             "quality": "Profesional"
         },
         "YouTube/TikTok": {
-            "video_style": "Acción/Aventura",
+            "video_style": "Accion/Aventura",
             "lighting": "Luz natural suave",
             "color_palette": "Colores vibrantes/saturados", 
-            "camera_style": "Cámara en mano dinámico",
+            "camera_style": "Camara en mano dinamico",
             "quality": "Detallada"
         }
     }
@@ -702,17 +703,17 @@ def render_config_tab():
         st.session_state.preset_config = preset
         st.success(f"✅ Preset '{selected_preset}' aplicado")
     
-    # Mostrar configuración del preset seleccionado
+    # Mostrar configuracion del preset seleccionado
     if selected_preset:
         preset = style_presets[selected_preset]
-        st.markdown(f"**Configuración de '{selected_preset}':**")
+        st.markdown(f"**Configuracion de '{selected_preset}':**")
         for key, value in preset.items():
             st.markdown(f"- **{key.replace('_', ' ').title()}:** {value}")
     
     st.markdown("---")
     
-    # Configuración de herramientas de IA
-    st.markdown("### 🤖 Integración con Herramientas de IA")
+    # Configuracion de herramientas de IA
+    st.markdown("### 🤖 Integracion con Herramientas de IA")
     
     ai_tools = {
         "Runway ML": {
@@ -735,7 +736,7 @@ def render_config_tab():
         },
         "Leonardo AI": {
             "url": "https://leonardo.ai",
-            "specialty": "Imágenes y video conceptual",
+            "specialty": "Imagenes y video conceptual",
             "formats": ["MP4", "PNG"],
             "max_duration": "5 segundos"
         }
@@ -755,31 +756,31 @@ def render_config_tab():
             st.markdown(f"**📁 Formatos:** {', '.join(tool_info['formats'])}")
         
         with col2:
-            st.markdown(f"**⏱️ Duración máxima:** {tool_info['max_duration']}")
+            st.markdown(f"**⏱️ Duracion maxima:** {tool_info['max_duration']}")
             st.markdown(f"**🔗 URL:** [Visitar]({tool_info['url']})")
         
-        # Optimización específica para la herramienta
-        st.markdown("**⚙️ Optimizaciones específicas:**")
+        # Optimizacion especifica para la herramienta
+        st.markdown("**⚙️ Optimizaciones especificas:**")
         
         if preferred_ai_tool == "Runway ML":
             st.markdown("- Prompts detallados funcionan mejor")
-            st.markdown("- Incluir detalles de cámara y movimiento")
-            st.markdown("- Especificar duración exacta")
+            st.markdown("- Incluir detalles de camara y movimiento")
+            st.markdown("- Especificar duracion exacta")
         
         elif preferred_ai_tool == "Pika Labs":
-            st.markdown("- Prompts concisos son más efectivos")
+            st.markdown("- Prompts concisos son mas efectivos")
             st.markdown("- Enfocarse en elementos visuales clave")
-            st.markdown("- Evitar demasiados detalles técnicos")
+            st.markdown("- Evitar demasiados detalles tecnicos")
         
         elif preferred_ai_tool == "Stable Video Diffusion":
-            st.markdown("- Prompts técnicos detallados")
-            st.markdown("- Incluir parámetros de renderizado")
+            st.markdown("- Prompts tecnicos detallados")
+            st.markdown("- Incluir parametros de renderizado")
             st.markdown("- Especificar modelo de diffusion")
         
         elif preferred_ai_tool == "Leonardo AI":
-            st.markdown("- Enfoque en composición visual")
-            st.markdown("- Describir estilo artístico claramente")
-            st.markdown("- Incluir referencias de mood/atmósfera")
+            st.markdown("- Enfoque en composicion visual")
+            st.markdown("- Describir estilo artistico claramente")
+            st.markdown("- Incluir referencias de mood/atmosfera")
     
     st.markdown("---")
     
@@ -827,12 +828,12 @@ def render_config_tab():
                         st.rerun()
 
 def render_styles_library_tab():
-    """Tab de biblioteca de estilos cinematográficos"""
-    st.subheader("📚 Biblioteca de Estilos Cinematográficos")
+    """Tab de biblioteca de estilos cinematograficos"""
+    st.subheader("📚 Biblioteca de Estilos Cinematograficos")
     
-    # Categorías de estilos
+    # Categorias de estilos
     style_categories = {
-        "🎬 Directores Icónicos": {
+        "🎬 Directores Iconicos": {
             "Christopher Nolan": "Dark, complex narratives, practical effects, non-linear storytelling",
             "Wes Anderson": "Symmetrical compositions, pastel colors, whimsical characters", 
             "Denis Villeneuve": "Epic scale, atmospheric lighting, sci-fi aesthetics",
@@ -841,7 +842,7 @@ def render_styles_library_tab():
             "Quentin Tarantino": "Bold colors, dynamic camera work, pop culture references"
         },
         
-        "🎨 Movimientos Artísticos": {
+        "🎨 Movimientos Artisticos": {
             "Film Noir": "High contrast lighting, shadows, urban nighttime scenes",
             "French New Wave": "Handheld camera, natural lighting, documentary style",
             "German Expressionism": "Distorted perspectives, dramatic shadows, psychological themes",
@@ -849,7 +850,7 @@ def render_styles_library_tab():
             "Soviet Montage": "Rapid editing, symbolic imagery, political themes"
         },
         
-        "🌟 Géneros Populares": {
+        "🌟 Generos Populares": {
             "Marvel Cinematic": "High contrast, saturated colors, dynamic action",
             "A24 Arthouse": "Natural lighting, muted colors, intimate framing", 
             "Studio Ghibli": "Warm colors, magical elements, nature integration",
@@ -857,7 +858,7 @@ def render_styles_library_tab():
             "YouTube/Creator": "Bright lighting, saturated colors, engaging compositions"
         },
         
-        "🎭 Estilos Temáticos": {
+        "🎭 Estilos Tematicos": {
             "Cyberpunk": "Neon colors, urban decay, futuristic technology",
             "Steampunk": "Brass tones, Victorian aesthetics, mechanical elements",
             "Post-Apocalyptic": "Desaturated colors, dust and decay, harsh lighting",
@@ -867,9 +868,9 @@ def render_styles_library_tab():
         }
     }
     
-    # Selector de categoría
+    # Selector de categoria
     selected_category = st.selectbox(
-        "Selecciona una categoría:",
+        "Selecciona una categoria:",
         list(style_categories.keys())
     )
     
@@ -892,7 +893,7 @@ def render_styles_library_tab():
                         for example in example_prompts:
                             st.code(example, language="text")
                     
-                    # Botón para aplicar estilo
+                    # Boton para aplicar estilo
                     if st.button(f"🎨 Aplicar Estilo", key=f"apply_style_{i}"):
                         apply_style_to_generation(style_name, description)
                         st.success(f"✅ Estilo '{style_name}' aplicado")
@@ -915,7 +916,7 @@ def render_styles_library_tab():
         style_2 = st.selectbox("Estilo 2:", all_styles, key="style_compare_2")
     
     if style_1 != style_2:
-        st.markdown("### 📊 Comparación")
+        st.markdown("### 📊 Comparacion")
         
         # Encontrar descripciones de los estilos
         desc_1 = None
@@ -955,7 +956,7 @@ def render_styles_library_tab():
             st.markdown(f"- {rec}")
 
 def get_style_example_prompts(style_name):
-    """Retorna prompts de ejemplo para un estilo específico"""
+    """Retorna prompts de ejemplo para un estilo especifico"""
     
     examples = {
         "Christopher Nolan": [
@@ -986,9 +987,9 @@ def get_style_example_prompts(style_name):
     ])
 
 def apply_style_to_generation(style_name, description):
-    """Aplica un estilo específico a la configuración de generación"""
+    """Aplica un estilo especifico a la configuracion de generacion"""
     
-    # Guardar configuración de estilo en session state
+    # Guardar configuracion de estilo en session state
     style_config = {
         'name': style_name,
         'description': description,
@@ -1001,23 +1002,23 @@ def get_style_recommendations(style_1, style_2):
     """Genera recomendaciones comparativas entre estilos"""
     
     recommendations = [
-        f"Para contenido dramático, considera {style_1}",
-        f"Para audiencia general, {style_2} podría ser más accesible",
-        "Ambos estilos se pueden combinar para crear algo único",
-        "Considera el género de tu historia al elegir entre estos estilos"
+        f"Para contenido dramatico, considera {style_1}",
+        f"Para audiencia general, {style_2} podria ser mas accesible",
+        "Ambos estilos se pueden combinar para crear algo unico",
+        "Considera el genero de tu historia al elegir entre estos estilos"
     ]
     
     return recommendations
 
 def get_example_manuscript():
-    """Retorna manuscrito de ejemplo para demostración"""
+    """Retorna manuscrito de ejemplo para demostracion"""
     
-    return """En el reino de Aethermoor, donde la magia fluye como ríos de luz dorada a través de cristales ancestrales, la joven maga Lyra Stormwind descubrió que su destino estaba escrito en runas que solo ella podía leer.
+    return """En el reino de Aethermoor, donde la magia fluye como rios de luz dorada a traves de cristales ancestrales, la joven maga Lyra Stormwind descubrio que su destino estaba escrito en runas que solo ella podia leer.
 
-El día que encontró el grimorio perdido de Arcanum Infinitus en las ruinas de la Torre de Marfil, no sabía que estaba por desencadenar una guerra que cambiaría para siempre el equilibrio entre la luz y las sombras del mundo conocido.
+El dia que encontro el grimorio perdido de Arcanum Infinitus en las ruinas de la Torre de Marfil, no sabia que estaba por desencadenar una guerra que cambiaria para siempre el equilibrio entre la luz y las sombras del mundo conocido.
 
-Los cristales resonaban con una frecuencia que hacía temblar la tierra bajo sus pies. Lyra extendió su mano hacia el libro antiguo, sintiendo cómo la energía mágica corriera por sus venas como fuego líquido.
+Los cristales resonaban con una frecuencia que hacia temblar la tierra bajo sus pies. Lyra extendio su mano hacia el libro antiguo, sintiendo como la energia magica corriera por sus venas como fuego liquido.
 
-"No todos los secretos están destinados a ser revelados," susurró una voz detrás de ella. Al voltearse, vio la silueta encapuchada del Guardián de las Sombras, sus ojos brillando con una luz sobrenatural.
+"No todos los secretos estan destinados a ser revelados," susurro una voz detras de ella. Al voltearse, vio la silueta encapuchada del Guardian de las Sombras, sus ojos brillando con una luz sobrenatural.
 
-La batalla final había comenzado."""
+La batalla final habia comenzado."""

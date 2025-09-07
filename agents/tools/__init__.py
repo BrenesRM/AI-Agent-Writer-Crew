@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # agents/tools/__init__.py
 from .rag_tool import RAGTool
 from .writing_tools import WritingAnalyzer, StyleAnalyzer, CharacterAnalyzer

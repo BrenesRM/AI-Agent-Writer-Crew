@@ -23,11 +23,19 @@ gradio>=3.50.0
 # Utilities
 python-dotenv>=1.0.0
 pydantic>=2.5.0
+pydantic-settings>=2.0.0
 sqlalchemy>=2.0.0
 fastapi>=0.104.0
 uvicorn>=0.24.0
+
+# NLP Dependencies
+nltk>=3.8
+textblob>=0.17.1
 
 # Development
 pytest>=7.4.0
 black>=23.9.0
 flake8>=6.1.0
+
+# Additional fixes
+mammoth>=1.6.0

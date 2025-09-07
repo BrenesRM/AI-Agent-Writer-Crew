@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import logging
 from typing import List, Dict, Any, Optional
@@ -7,7 +8,7 @@ from sentence_transformers import SentenceTransformer
 from langchain.schema import Document
 
 class VectorStore:
-    """Gestor del almacén vectorial con ChromaDB"""
+    """Gestor del almacen vectorial con ChromaDB"""
     
     def __init__(self, persist_directory: str = "./rag/vectorstore", 
                  embedding_model: str = "all-MiniLM-L6-v2"):
@@ -27,12 +28,12 @@ class VectorStore:
         # Cargar modelo de embeddings
         self.embedding_model = SentenceTransformer(embedding_model)
         
-        # Colección principal
+        # Coleccion principal
         self.collection_name = "novel_documents"
         self.collection = self._get_or_create_collection()
     
     def _get_or_create_collection(self):
-        """Obtiene o crea la colección principal"""
+        """Obtiene o crea la coleccion principal"""
         try:
             return self.client.get_collection(name=self.collection_name)
         except Exception:
@@ -78,7 +79,7 @@ class VectorStore:
     
     def similarity_search(self, query: str, k: int = 5, 
                          doc_type: Optional[str] = None) -> List[Dict[str, Any]]:
-        """Búsqueda por similitud en el vector store"""
+        """Busqueda por similitud en el vector store"""
         try:
             # Generar embedding de la consulta
             query_embedding = self.embedding_model.encode([query]).tolist()[0]
@@ -88,7 +89,7 @@ class VectorStore:
             if doc_type:
                 where_clause["doc_type"] = doc_type
             
-            # Realizar búsqueda
+            # Realizar busqueda
             results = self.collection.query(
                 query_embeddings=[query_embedding],
                 n_results=k,
@@ -109,11 +110,11 @@ class VectorStore:
             return formatted_results
             
         except Exception as e:
-            self.logger.error(f"Error en búsqueda: {str(e)}")
+            self.logger.error(f"Error en busqueda: {str(e)}")
             return []
     
     def get_collection_stats(self) -> Dict[str, Any]:
-        """Obtiene estadísticas de la colección"""
+        """Obtiene estadisticas de la coleccion"""
         try:
             count = self.collection.count()
             return {
@@ -122,7 +123,7 @@ class VectorStore:
                 "collection_name": self.collection_name
             }
         except Exception as e:
-            self.logger.error(f"Error obteniendo estadísticas: {str(e)}")
+            self.logger.error(f"Error obteniendo estadisticas: {str(e)}")
             return {}
     
     def delete_documents_by_source(self, source: str) -> bool:

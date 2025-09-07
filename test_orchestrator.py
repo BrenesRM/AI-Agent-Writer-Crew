@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-Script de prueba para el sistema de orquestación
+Script de prueba para el sistema de orquestacion
 """
 
 import asyncio
@@ -14,16 +15,16 @@ logging.basicConfig(
 )
 
 async def test_orchestrator():
-    """Prueba básica del coordinador"""
+    """Prueba basica del coordinador"""
     
     # Manuscript de ejemplo
     sample_manuscript = """
-    En el reino de Aethermoor, la maga Lyra Stormwind descubrió un antiguo grimorio
-    que podría salvar al reino de las Sombras del Vacío. Con su compañero élfico
-    Thane Silverleaf, se embarcó en una peligrosa misión hacia las Montañas de Cristal.
+    En el reino de Aethermoor, la maga Lyra Stormwind descubrio un antiguo grimorio
+    que podria salvar al reino de las Sombras del Vacio. Con su compañero elfico
+    Thane Silverleaf, se embarco en una peligrosa mision hacia las Montañas de Cristal.
     
-    El grimorio contenía hechizos ancestrales que habían sido olvidados por siglos.
-    Pero usar tal poder tenía un precio que Lyra no estaba segura de poder pagar.
+    El grimorio contenia hechizos ancestrales que habian sido olvidados por siglos.
+    Pero usar tal poder tenia un precio que Lyra no estaba segura de poder pagar.
     
     Mientras tanto, las fuerzas oscuras del Lord Malachar avanzaban hacia la capital,
     y el tiempo se agotaba para el reino de la luz.
@@ -51,12 +52,12 @@ async def test_orchestrator():
         )
         
         print("\n✅ Procesamiento completado!")
-        print(f"Sesión: {results['session_id']}")
+        print(f"Sesion: {results['session_id']}")
         print(f"Estado: {results['processing_summary']['status']}")
         print(f"Iteraciones: {results['processing_summary']['iterations']}")
         print(f"Acciones totales: {results['processing_summary']['total_actions']}")
         
-        print("\n📋 Resumen de análisis:")
+        print("\n📋 Resumen de analisis:")
         for category, analysis in results['analysis_results'].items():
             print(f"  - {category}: ✓")
         
@@ -108,9 +109,9 @@ async def test_components():
         return False
 
 def main():
-    """Función principal de prueba"""
+    """Funcion principal de prueba"""
     
-    print("🧪 Sistema de Orquestación - Pruebas")
+    print("🧪 Sistema de Orquestacion - Pruebas")
     print("=" * 50)
     
     # Probar componentes
@@ -128,7 +129,7 @@ def main():
         else:
             print("\n❌ Fallas en el sistema completo")
     else:
-        print("\n❌ Fallas en componentes básicos")
+        print("\n❌ Fallas en componentes basicos")
 
 if __name__ == "__main__":
     main()

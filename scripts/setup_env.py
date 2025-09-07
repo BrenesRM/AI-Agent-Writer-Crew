@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 # scripts/setup_env.py
 #!/usr/bin/env python3
@@ -43,7 +44,7 @@ def setup_environment():
         print("📝 Edita el archivo .env con tus configuraciones")
     
     print("\n✅ Entorno configurado correctamente")
-    print("\nPróximos pasos:")
+    print("\nProximos pasos:")
     print("1. Activar entorno: source novel_env/bin/activate")
     print("2. Instalar dependencias: pip install -r requirements.txt")
     print("3. Configurar archivo .env")

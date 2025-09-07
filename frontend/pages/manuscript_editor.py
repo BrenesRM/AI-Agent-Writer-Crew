@@ -1,20 +1,21 @@
+# -*- coding: utf-8 -*-
 import streamlit as st
 import time
 from datetime import datetime
 from typing import Dict, List
 
 def render_manuscript_page(agent_manager):
-    """Renderiza la página del editor de manuscrito"""
+    """Renderiza la pagina del editor de manuscrito"""
     
     st.header("✍️ Editor de Manuscrito")
-    st.markdown("*Escribe tu manuscrito y mejóralo con la ayuda de agentes especializados*")
+    st.markdown("*Escribe tu manuscrito y mejoralo con la ayuda de agentes especializados*")
     
     # Tabs principales
     tab1, tab2, tab3, tab4 = st.tabs([
         "📝 Editor",
         "🔄 Procesamiento",
         "📋 Historial",
-        "⚙️ Configuración"
+        "⚙️ Configuracion"
     ])
     
     with tab1:
@@ -33,7 +34,7 @@ def render_editor_tab(agent_manager):
     """Tab del editor principal"""
     st.subheader("📝 Editor de Manuscrito")
     
-    # Estadísticas del manuscrito
+    # Estadisticas del manuscrito
     if st.session_state.manuscript:
         word_count = len(st.session_state.manuscript.split())
         char_count = len(st.session_state.manuscript)
@@ -45,23 +46,23 @@ def render_editor_tab(agent_manager):
         with col2:
             st.metric("Caracteres", char_count)
         with col3:
-            st.metric("Párrafos", paragraph_count)
+            st.metric("Parrafos", paragraph_count)
         with col4:
             reading_time = max(1, word_count // 250)  # ~250 palabras por minuto
             st.metric("Tiempo de lectura", f"{reading_time} min")
     
     # Editor principal
     manuscript_text = st.text_area(
-        "Escribe tu manuscrito aquí:",
+        "Escribe tu manuscrito aqui:",
         value=st.session_state.manuscript,
         height=400,
         placeholder="""Ejemplo:
 
-En el reino de Aethermoor, donde la magia fluye como ríos de luz dorada a través de cristales ancestrales, la joven maga Lyra Stormwind descubrió que su destino estaba escrito en runas que solo ella podía leer.
+En el reino de Aethermoor, donde la magia fluye como rios de luz dorada a traves de cristales ancestrales, la joven maga Lyra Stormwind descubrio que su destino estaba escrito en runas que solo ella podia leer.
 
-El día que encontró el grimorio perdido de Arcanum Infinitus en las ruinas de la Torre de Marfil, no sabía que estaba por desencadenar una guerra que cambiaría para siempre el equilibrio entre la luz y las sombras...
+El dia que encontro el grimorio perdido de Arcanum Infinitus en las ruinas de la Torre de Marfil, no sabia que estaba por desencadenar una guerra que cambiaria para siempre el equilibrio entre la luz y las sombras...
 
-[Continúa escribiendo tu historia aquí]""",
+[Continua escribiendo tu historia aqui]""",
         key="manuscript_editor"
     )
     
@@ -69,9 +70,9 @@ El día que encontró el grimorio perdido de Arcanum Infinitus en las ruinas de 
     if manuscript_text != st.session_state.manuscript:
         st.session_state.manuscript = manuscript_text
     
-    # Herramientas rápidas
+    # Herramientas rapidas
     st.markdown("---")
-    st.subheader("🛠️ Herramientas Rápidas")
+    st.subheader("🛠️ Herramientas Rapidas")
     
     col1, col2, col3 = st.columns(3)
     
@@ -93,25 +94,25 @@ El día que encontró el grimorio perdido de Arcanum Infinitus en las ruinas de 
             st.success(f"✅ Borrador guardado como: {draft_name}")
     
     with col2:
-        if st.button("📊 Análisis Rápido", use_container_width=True):
+        if st.button("📊 Analisis Rapido", use_container_width=True):
             if st.session_state.manuscript:
                 with st.spinner("Analizando manuscrito..."):
-                    # Simular análisis rápido
+                    # Simular analisis rapido
                     time.sleep(2)
                     
-                    # Análisis básico
+                    # Analisis basico
                     words = st.session_state.manuscript.split()
                     sentences = st.session_state.manuscript.split('.')
                     
-                    # Mostrar resultados básicos
-                    st.success("📈 Análisis completado")
+                    # Mostrar resultados basicos
+                    st.success("📈 Analisis completado")
                     
-                    with st.expander("Ver resultados del análisis"):
-                        st.markdown("**Métricas de legibilidad:**")
-                        st.markdown(f"- Promedio palabras por oración: {len(words)/len(sentences):.1f}")
-                        st.markdown(f"- Palabras únicas: {len(set(word.lower() for word in words))}")
+                    with st.expander("Ver resultados del analisis"):
+                        st.markdown("**Metricas de legibilidad:**")
+                        st.markdown(f"- Promedio palabras por oracion: {len(words)/len(sentences):.1f}")
+                        st.markdown(f"- Palabras unicas: {len(set(word.lower() for word in words))}")
                         
-                        # Palabras más frecuentes (análisis básico)
+                        # Palabras mas frecuentes (analisis basico)
                         word_freq = {}
                         for word in words:
                             clean_word = word.lower().strip('.,!?";')
@@ -120,7 +121,7 @@ El día que encontró el grimorio perdido de Arcanum Infinitus en las ruinas de 
                         
                         if word_freq:
                             top_words = sorted(word_freq.items(), key=lambda x: x[1], reverse=True)[:5]
-                            st.markdown("**Palabras más frecuentes:**")
+                            st.markdown("**Palabras mas frecuentes:**")
                             for word, count in top_words:
                                 st.markdown(f"- {word}: {count} veces")
             else:
@@ -130,11 +131,11 @@ El día que encontró el grimorio perdido de Arcanum Infinitus en las ruinas de 
         if st.button("🎨 Sugerencia Creativa", use_container_width=True):
             # Generar sugerencia creativa
             suggestions = [
-                "🌟 Considera añadir un detalle sensorial que haga la escena más vívida",
-                "🎭 ¿Qué pasaría si tu personaje tomara la decisión opuesta?",
-                "🔮 Introduce un elemento inesperado que cambie la dinámica",
-                "💎 Desarrolla más la voz interior de tu personaje principal",
-                "⚡ Acelera el ritmo con un diálogo dinámico",
+                "🌟 Considera añadir un detalle sensorial que haga la escena mas vivida",
+                "🎭 ¿Que pasaria si tu personaje tomara la decision opuesta?",
+                "🔮 Introduce un elemento inesperado que cambie la dinamica",
+                "💎 Desarrolla mas la voz interior de tu personaje principal",
+                "⚡ Acelera el ritmo con un dialogo dinamico",
                 "🌊 Explora las emociones profundas de este momento",
                 "🔍 Añade un detalle que revele algo sobre el personaje",
                 "🎪 Introduce un contraste que sorprenda al lector"
@@ -150,21 +151,21 @@ El día que encontró el grimorio perdido de Arcanum Infinitus en las ruinas de 
         st.subheader("📋 Plantillas de Inicio")
         
         templates = {
-            "🏰 Fantasía Épica": """En el reino de [NOMBRE_REINO], donde [ELEMENTO_MÁGICO] determina el destino de los mortales, [PROTAGONISTA] descubrió que [SECRETO_REVELADOR] cambiaría para siempre [MUNDO/VIDA].
+            "🏰 Fantasia Epica": """En el reino de [NOMBRE_REINO], donde [ELEMENTO_MAGICO] determina el destino de los mortales, [PROTAGONISTA] descubrio que [SECRETO_REVELADOR] cambiaria para siempre [MUNDO/VIDA].
 
-El día que [EVENTO_INICIAL], no sabía que estaba por [CONSECUENCIA_MAYOR] que [IMPACTO_EN_EL_MUNDO].""",
+El dia que [EVENTO_INICIAL], no sabia que estaba por [CONSECUENCIA_MAYOR] que [IMPACTO_EN_EL_MUNDO].""",
             
-            "🕵️ Misterio": """El detective [NOMBRE] había visto muchas cosas en sus [AÑOS] años de servicio, pero nunca algo como esto. El cuerpo de [VÍCTIMA] yacía en [LUGAR], rodeado de [EVIDENCIA_EXTRAÑA] que desafiaba toda lógica.
+            "🕵️ Misterio": """El detective [NOMBRE] habia visto muchas cosas en sus [AÑOS] años de servicio, pero nunca algo como esto. El cuerpo de [VICTIMA] yacia en [LUGAR], rodeado de [EVIDENCIA_EXTRAÑA] que desafiaba toda logica.
 
-Lo que más le inquietaba no era [DETALLE_OBVIO], sino [DETALLE_SUTIL] que sugería que el asesino [PISTA_CLAVE].""",
+Lo que mas le inquietaba no era [DETALLE_OBVIO], sino [DETALLE_SUTIL] que sugeria que el asesino [PISTA_CLAVE].""",
             
-            "🚀 Ciencia Ficción": """En el año [AÑO_FUTURO], la humanidad había [AVANCE_TECNOLÓGICO], pero [PROTAGONISTA] sabía que algo estaba terriblemente mal. Las [SEÑALES/DATOS] que había detectado en [LUGAR/SISTEMA] apuntaban a una verdad que [ORGANIZACIÓN/GOBIERNO] haría cualquier cosa por ocultar.
+            "🚀 Ciencia Ficcion": """En el año [AÑO_FUTURO], la humanidad habia [AVANCE_TECNOLOGICO], pero [PROTAGONISTA] sabia que algo estaba terriblemente mal. Las [SEÑALES/DATOS] que habia detectado en [LUGAR/SISTEMA] apuntaban a una verdad que [ORGANIZACION/GOBIERNO] haria cualquier cosa por ocultar.
 
-Mientras [ACCIÓN_ACTUAL], no podía ignorar la evidencia: [REVELACIÓN_INQUIETANTE].""",
+Mientras [ACCION_ACTUAL], no podia ignorar la evidencia: [REVELACION_INQUIETANTE].""",
             
-            "💕 Romance": """[PROTAGONISTA] nunca esperó encontrar el amor en [LUGAR_INESPERADO]. Después de [EVENTO_DEL_PASADO], había decidido que [BARRERA_EMOCIONAL]. Pero cuando [ENCUENTRO_CON_AMOR_INTERÉS], algo en su interior [CAMBIO_EMOCIONAL].
+            "💕 Romance": """[PROTAGONISTA] nunca espero encontrar el amor en [LUGAR_INESPERADO]. Despues de [EVENTO_DEL_PASADO], habia decidido que [BARRERA_EMOCIONAL]. Pero cuando [ENCUENTRO_CON_AMOR_INTERES], algo en su interior [CAMBIO_EMOCIONAL].
 
-Era [DESCRIPCIÓN_FÍSICA/EMOCIONAL] lo que la/lo desarmo completamente, pero fue [MOMENTO_ESPECÍFICO] cuando supo que [REALIZACIÓN_ROMÁNTICA]."""
+Era [DESCRIPCION_FISICA/EMOCIONAL] lo que la/lo desarmo completamente, pero fue [MOMENTO_ESPECIFICO] cuando supo que [REALIZACION_ROMANTICA]."""
         }
         
         selected_template = st.selectbox("Elige una plantilla:", list(templates.keys()))
@@ -181,18 +182,18 @@ def render_processing_tab(agent_manager):
         st.warning("⚠️ Primero escribe algo en el editor para poder procesarlo con los agentes.")
         return
     
-    # Información del manuscrito actual
+    # Informacion del manuscrito actual
     word_count = len(st.session_state.manuscript.split())
     
     st.info(f"📝 Manuscrito actual: {word_count} palabras")
     
-    # Selección de fases de análisis
-    st.subheader("🎯 Seleccionar Fases de Análisis")
+    # Seleccion de fases de analisis
+    st.subheader("🎯 Seleccionar Fases de Analisis")
     
     phases = {
         "worldbuilding": {
             "name": "🏰 Worldbuilding",
-            "description": "Coherencia del mundo, lore y reglas mágicas",
+            "description": "Coherencia del mundo, lore y reglas magicas",
             "agents": ["Lorekeeper", "Researcher", "Continuity Auditor"],
             "time": "2-3 min"
         },
@@ -204,7 +205,7 @@ def render_processing_tab(agent_manager):
         },
         "plot": {
             "name": "📖 Estructura Narrativa",
-            "description": "Trama, ritmo y elementos dramáticos",
+            "description": "Trama, ritmo y elementos dramaticos",
             "agents": ["Plot Weaver", "Pacing Specialist", "Innovation Scout"],
             "time": "4-5 min"
         },
@@ -215,14 +216,14 @@ def render_processing_tab(agent_manager):
             "time": "2-3 min"
         },
         "visual": {
-            "name": "🎬 Generación Visual",
-            "description": "Prompts cinematográficos para IA de video",
+            "name": "🎬 Generacion Visual",
+            "description": "Prompts cinematograficos para IA de video",
             "agents": ["Visualizer"],
             "time": "1-2 min"
         },
         "quality": {
             "name": "🔍 Control de Calidad",
-            "description": "Corrección, consistencia y pulido final",
+            "description": "Correccion, consistencia y pulido final",
             "agents": ["Proofreader", "Continuity Auditor"],
             "time": "2-3 min"
         }
@@ -247,17 +248,17 @@ def render_processing_tab(agent_manager):
             st.markdown(f"**{phase_info['description']}**")
             st.caption(f"Agentes: {', '.join(phase_info['agents'])} • Tiempo estimado: {phase_info['time']}")
     
-    # Configuración de procesamiento
+    # Configuracion de procesamiento
     st.markdown("---")
-    st.subheader("⚙️ Configuración de Procesamiento")
+    st.subheader("⚙️ Configuracion de Procesamiento")
     
     col1, col2 = st.columns(2)
     
     with col1:
         processing_mode = st.selectbox(
             "Modo de procesamiento:",
-            ["Análisis Completo", "Análisis Rápido", "Solo Sugerencias"],
-            help="Completo: análisis detallado, Rápido: insights principales, Sugerencias: solo recomendaciones"
+            ["Analisis Completo", "Analisis Rapido", "Solo Sugerencias"],
+            help="Completo: analisis detallado, Rapido: insights principales, Sugerencias: solo recomendaciones"
         )
     
     with col2:
@@ -279,7 +280,7 @@ def render_processing_tab(agent_manager):
         if st.button("🚀 Iniciar Procesamiento con Agentes", type="primary", use_container_width=True):
             process_manuscript_with_agents(agent_manager, selected_phases, phases, processing_mode, creativity_level)
     else:
-        st.warning("⚠️ Selecciona al menos una fase de análisis.")
+        st.warning("⚠️ Selecciona al menos una fase de analisis.")
 
 def process_manuscript_with_agents(agent_manager, selected_phases, phases_info, mode, creativity):
     """Procesa el manuscrito con los agentes seleccionados"""
@@ -307,7 +308,7 @@ def process_manuscript_with_agents(agent_manager, selected_phases, phases_info, 
             st.session_state.current_phase = phase_info["name"]
             status_text.text(f"🔄 Procesando {phase_info['name']}... ({i+1}/{total_phases})")
             
-            # Simular procesamiento (en implementación real, usar agent_manager)
+            # Simular procesamiento (en implementacion real, usar agent_manager)
             phase_progress = st.progress(0)
             
             # Proceso simulado por agente
@@ -335,9 +336,9 @@ def process_manuscript_with_agents(agent_manager, selected_phases, phases_info, 
         
         # Mostrar resumen final
         with results_container:
-            st.success("🎉 ¡Análisis completado exitosamente!")
+            st.success("🎉 ¡Analisis completado exitosamente!")
             
-            # Estadísticas finales
+            # Estadisticas finales
             total_suggestions = sum(len(result.get('suggestions', [])) for result in st.session_state.analysis_results.values())
             st.metric("Sugerencias generadas", total_suggestions)
     
@@ -346,71 +347,71 @@ def process_manuscript_with_agents(agent_manager, selected_phases, phases_info, 
         st.error(f"❌ Error durante el procesamiento: {str(e)}")
 
 def generate_simulated_results(phase_id, phase_info, mode, creativity):
-    """Genera resultados simulados para demostración"""
+    """Genera resultados simulados para demostracion"""
     
     results_templates = {
         "worldbuilding": {
             "score": 8.2,
             "suggestions": [
                 "El sistema de magia basado en cristales es coherente, pero considera especificar las limitaciones",
-                "Excelente descripción de Aethermoor. Podrías añadir detalles sobre el clima/geografía",
-                "La Torre de Marfil tiene potencial narrativo. Desarrolla más su historia"
+                "Excelente descripcion de Aethermoor. Podrias añadir detalles sobre el clima/geografia",
+                "La Torre de Marfil tiene potencial narrativo. Desarrolla mas su historia"
             ],
             "strengths": [
-                "Mitología sólida y bien establecida",
-                "Elementos mágicos únicos e interesantes", 
+                "Mitologia solida y bien establecida",
+                "Elementos magicos unicos e interesantes", 
                 "Coherencia en las reglas del mundo"
             ],
             "improvements": [
-                "Expandir la geografía política del reino",
+                "Expandir la geografia politica del reino",
                 "Definir mejor las consecuencias del uso de magia",
-                "Añadir más detalles culturales/sociales"
+                "Añadir mas detalles culturales/sociales"
             ]
         },
         "character": {
             "score": 7.5,
             "suggestions": [
-                "Lyra es una protagonista prometedora. Desarrolla más sus miedos/debilidades internas",
-                "Su motivación está clara, pero podrías añadir conflictos emocionales más profundos",
-                "Considera crear un mentor o aliado que desafíe sus perspectivas"
+                "Lyra es una protagonista prometedora. Desarrolla mas sus miedos/debilidades internas",
+                "Su motivacion esta clara, pero podrias añadir conflictos emocionales mas profundos",
+                "Considera crear un mentor o aliado que desafie sus perspectivas"
             ],
             "strengths": [
                 "Protagonista con potencial de crecimiento",
-                "Motivación clara y comprensible",
+                "Motivacion clara y comprensible",
                 "Personalidad distintiva"
             ],
             "improvements": [
-                "Añadir flaws más complejos",
+                "Añadir flaws mas complejos",
                 "Desarrollar relationships interpersonales",
-                "Crear arco de transformación más definido"
+                "Crear arco de transformacion mas definido"
             ]
         },
         "plot": {
             "score": 8.7,
             "suggestions": [
                 "El inciting incident (encontrar el grimorio) es efectivo y intrigante",
-                "La escalada hacia la guerra es prometedora. Asegúrate de mantener el ritmo",
-                "Considera añadir obstáculos más personales además de los externos"
+                "La escalada hacia la guerra es prometedora. Asegurate de mantener el ritmo",
+                "Considera añadir obstaculos mas personales ademas de los externos"
             ],
             "strengths": [
                 "Hook inicial muy efectivo",
                 "Stakes claros y elevados",
-                "Potential para múltiples plot threads"
+                "Potential para multiples plot threads"
             ],
             "improvements": [
-                "Desarrollar más los antagonistas",
+                "Desarrollar mas los antagonistas",
                 "Añadir subplots que enriquezcan la trama principal",
                 "Planificar mejor los plot twists"
             ]
         }
     }
     
-    # Personalizar según creatividad y modo
+    # Personalizar segun creatividad y modo
     base_result = results_templates.get(phase_id, {
         "score": 7.0 + creativity * 0.2,
-        "suggestions": ["Análisis en desarrollo..."],
+        "suggestions": ["Analisis en desarrollo..."],
         "strengths": ["Elementos prometedores identificados"],
-        "improvements": ["Áreas de mejora detectadas"]
+        "improvements": ["Areas de mejora detectadas"]
     })
     
     return base_result
@@ -422,7 +423,7 @@ def display_phase_results(result, phase_info):
     score = result.get('score', 7.0)
     score_color = "🟢" if score >= 8 else "🟡" if score >= 6 else "🔴"
     
-    st.markdown(f"**Puntuación General:** {score_color} {score}/10")
+    st.markdown(f"**Puntuacion General:** {score_color} {score}/10")
     
     # Fortalezas
     if result.get('strengths'):
@@ -436,9 +437,9 @@ def display_phase_results(result, phase_info):
         for suggestion in result['suggestions']:
             st.markdown(f"- {suggestion}")
     
-    # Áreas de mejora
+    # Areas de mejora
     if result.get('improvements'):
-        st.markdown("**🔧 Áreas de mejora:**")
+        st.markdown("**🔧 Areas de mejora:**")
         for improvement in result['improvements']:
             st.markdown(f"- {improvement}")
 
@@ -475,11 +476,11 @@ def render_history_tab():
                         st.success("✅ Borrador eliminado")
                         st.rerun()
     else:
-        st.info("📭 No hay borradores guardados. Usa el botón 'Guardar Borrador' en el editor.")
+        st.info("📭 No hay borradores guardados. Usa el boton 'Guardar Borrador' en el editor.")
     
-    # Historial de análisis
+    # Historial de analisis
     st.markdown("---")
-    st.markdown("**🤖 Historial de Análisis:**")
+    st.markdown("**🤖 Historial de Analisis:**")
     
     if st.session_state.analysis_results:
         for phase_id, result in st.session_state.analysis_results.items():
@@ -488,11 +489,11 @@ def render_history_tab():
             
             st.markdown(f"- **{phase_id.title()}**: {score}/10 ({suggestions_count} sugerencias)")
     else:
-        st.info("📭 No hay análisis previos. Procesa tu manuscrito en la pestaña 'Procesamiento'.")
+        st.info("📭 No hay analisis previos. Procesa tu manuscrito en la pestaña 'Procesamiento'.")
 
 def render_config_tab():
-    """Tab de configuración del editor"""
-    st.subheader("⚙️ Configuración del Editor")
+    """Tab de configuracion del editor"""
+    st.subheader("⚙️ Configuracion del Editor")
     
     col1, col2 = st.columns(2)
     
@@ -501,48 +502,48 @@ def render_config_tab():
         
         # Configuraciones de escritura
         genre = st.selectbox(
-            "Género principal:",
-            ["Fantasía", "Ciencia Ficción", "Romance", "Misterio", "Terror", "Aventura", "Drama", "Otro"],
-            help="Ayuda a los agentes a dar sugerencias más precisas"
+            "Genero principal:",
+            ["Fantasia", "Ciencia Ficcion", "Romance", "Misterio", "Terror", "Aventura", "Drama", "Otro"],
+            help="Ayuda a los agentes a dar sugerencias mas precisas"
         )
         
         target_audience = st.selectbox(
             "Audiencia objetivo:",
-            ["Adultos", "Jóvenes Adultos", "Adolescentes", "Infantil", "Todos los públicos"],
+            ["Adultos", "Jovenes Adultos", "Adolescentes", "Infantil", "Todos los publicos"],
             help="Influye en el tono y complejidad de las sugerencias"
         )
         
         writing_style = st.selectbox(
             "Estilo de escritura:",
-            ["Descriptivo", "Directo", "Poético", "Conversacional", "Académico"],
+            ["Descriptivo", "Directo", "Poetico", "Conversacional", "Academico"],
             help="Preferencia de estilo para el refinamiento"
         )
     
     with col2:
-        st.markdown("**🤖 Configuración de Agentes:**")
+        st.markdown("**🤖 Configuracion de Agentes:**")
         
         # Configuraciones de agentes
         agent_feedback_level = st.selectbox(
             "Nivel de feedback:",
-            ["Básico", "Detallado", "Exhaustivo"],
-            help="Cantidad de sugerencias y análisis que recibirás"
+            ["Basico", "Detallado", "Exhaustivo"],
+            help="Cantidad de sugerencias y analisis que recibiras"
         )
         
         focus_areas = st.multiselect(
-            "Áreas de enfoque:",
-            ["Worldbuilding", "Personajes", "Diálogos", "Descripción", "Ritmo", "Estilo"],
+            "Areas de enfoque:",
+            ["Worldbuilding", "Personajes", "Dialogos", "Descripcion", "Ritmo", "Estilo"],
             default=["Personajes", "Ritmo"],
-            help="Los agentes se enfocarán más en estas áreas"
+            help="Los agentes se enfocaran mas en estas areas"
         )
         
         auto_save = st.checkbox(
             "Auto-guardado cada 5 minutos",
             value=True,
-            help="Guarda automáticamente borradores mientras escribes"
+            help="Guarda automaticamente borradores mientras escribes"
         )
     
     # Guardar configuraciones
-    if st.button("💾 Guardar Configuración"):
+    if st.button("💾 Guardar Configuracion"):
         # Guardar en session state
         st.session_state.editor_config = {
             'genre': genre,
@@ -553,12 +554,12 @@ def render_config_tab():
             'auto_save': auto_save
         }
         
-        st.success("✅ Configuración guardada exitosamente")
+        st.success("✅ Configuracion guardada exitosamente")
     
-    # Restablecer configuración
+    # Restablecer configuracion
     st.markdown("---")
     if st.button("🔄 Restablecer a Valores por Defecto"):
         if 'editor_config' in st.session_state:
             del st.session_state.editor_config
-        st.success("✅ Configuración restablecida")
+        st.success("✅ Configuracion restablecida")
         st.rerun()
