@@ -125,14 +125,14 @@ def test_individual_tools():
         """
         
         tools_to_test = [
-            (WritingAnalyzer(), "texto de analisis", test_text),
-            (StyleAnalyzer(), "texto de analisis estilistica", test_text),
-            (CharacterAnalyzer(), "texto que contiene personajes", test_text),
-            (ConsistencyChecker(), "texto a verificar", test_text),
-            (PacingAnalyzer(), "texto para analizar ritmo", test_text),
-            (PlotAnalyzer(), "texto narrativo para trama", test_text),
-            (IdeaGenerator(), "contexto de generacion", "reino magico con cristales"),
-            (VisualPromptGenerator(), "descripcion de escena", "maga caminando por bosque encantado")
+            (WritingAnalyzer(), "text", test_text),
+            (StyleAnalyzer(), "text", test_text),
+            (CharacterAnalyzer(), "text", test_text),
+            (ConsistencyChecker(), "text", test_text),
+            (PacingAnalyzer(), "text", test_text),
+            (PlotAnalyzer(), "text", test_text),
+            (IdeaGenerator(), "context", "reino magico con cristales"),
+            (VisualPromptGenerator(), "scene_description", "maga caminando por bosque encantado")
         ]
         
         successful_tools = 0
