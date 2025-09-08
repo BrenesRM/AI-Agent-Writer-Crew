@@ -39,3 +39,10 @@ flake8>=6.1.0
 
 # Additional fixes
 mammoth>=1.6.0
+
+# Modern Web Interface
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+websockets>=12.0
+jinja2>=3.1.0
+python-multipart>=0.0.6

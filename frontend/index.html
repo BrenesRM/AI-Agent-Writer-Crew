@@ -1,0 +1,421 @@
+document.getElementById('temp-value');
+            tempSlider.addEventListener('input', function() {
+                tempValue.textContent = this.value;
+                saveSettings();
+            });
+
+            // Auto-save other settings
+            const settings = ['max-tokens', 'context-chunks'];
+            settings.forEach(setting => {
+                const element = document.getElementById(setting);
+                element.addEventListener('change', saveSettings);
+            });
+
+            // Auto-adjust textarea height
+            document.getElementById('chat-input').addEventListener('input', adjustTextareaHeight);
+        }
+
+        // Chat Functions
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            
+            if (!message || isProcessing) return;
+            
+            // Add user message
+            addMessage(message, 'user');
+            input.value = '';
+            adjustTextareaHeight();
+            
+            // Process message
+            await processMessage(message);
+        }
+
+        function addMessage(content, sender, agentType = null) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            let avatar, author;
+            if (sender === 'user') {
+                avatar = '👤';
+                author = 'You';
+            } else {
+                avatar = getAgentAvatar(agentType);
+                author = agentType ? formatAgentName(agentType) : 'AI Assistant';
+            }
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${avatar}</div>
+                <div class="message-content">
+                    <div class="message-header">
+                        <div class="message-author">${author}</div>
+                        <div class="message-time">${timeString}</div>
+                    </div>
+                    <div class="message-text">${formatMessage(content)}</div>
+                </div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            scrollToBottom();
+            
+            // Save to history
+            chatHistory.push({
+                content,
+                sender,
+                agentType,
+                timestamp: now.toISOString()
+            });
+            saveChatHistory();
+        }
+
+        async function processMessage(message) {
+            isProcessing = true;
+            updateSendButton();
+            showTypingIndicator();
+            
+            try {
+                const settings = getSettings();
+                const enabledAgentsList = Array.from(enabledAgents);
+                
+                const requestData = {
+                    message: message,
+                    enabled_agents: enabledAgentsList,
+                    settings: settings,
+                    chat_history: chatHistory.slice(-10) // Last 10 messages for context
+                };
+
+                const response = await fetch(`${API_BASE}/api/chat`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                hideTypingIndicator();
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                // Add agent responses
+                for (const agentResponse of data.responses) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    addMessage(agentResponse.content, 'assistant', agentResponse.agent_type);
+                }
+
+                if (data.rag_context_used) {
+                    showToast('Response enhanced with RAG context', 'success');
+                }
+
+            } catch (error) {
+                hideTypingIndicator();
+                console.error('Error processing message:', error);
+                
+                // Fallback to simulated responses
+                const activeAgents = Array.from(enabledAgents).slice(0, 3);
+                for (let i = 0; i < activeAgents.length; i++) {
+                    await new Promise(resolve => setTimeout(resolve, 800 + i * 500));
+                    const agentResponse = getSimulatedAgentResponse(message, activeAgents[i]);
+                    addMessage(agentResponse, 'assistant', activeAgents[i]);
+                }
+                
+                showToast('Backend unavailable. Using simulated responses.', 'warning');
+            } finally {
+                isProcessing = false;
+                updateSendButton();
+            }
+        }
+
+        function getSimulatedAgentResponse(message, agentType) {
+            const responses = {
+                'researcher': `Based on research analysis of your query "${message.substring(0, 50)}...", I recommend verifying historical facts and ensuring accuracy in your narrative details.`,
+                'character_developer': `For character development regarding "${message.substring(0, 50)}...", consider exploring deeper motivations and psychological complexity.`,
+                'plot_weaver': `The plot element in "${message.substring(0, 50)}..." could benefit from stronger structural foundations and improved pacing.`,
+                'style_editor': `Your writing style in "${message.substring(0, 50)}..." shows promise. I suggest focusing on sentence variety and word choice refinement.`,
+                'continuity_auditor': `Reviewing "${message.substring(0, 50)}..." for continuity, I've identified some areas that need consistency checks.`,
+                'beta_reader': `From a reader's perspective, "${message.substring(0, 50)}..." engages well but could use more emotional connection.`,
+                'lorekeeper': `The world-building aspects in "${message.substring(0, 50)}..." align with established lore but could be expanded.`,
+                'proofreader': `Proofreading "${message.substring(0, 50)}...", I found opportunities for grammatical improvements and clarity enhancements.`
+            };
+            
+            return responses[agentType] || `As a writing assistant, I'm analyzing "${message.substring(0, 50)}..." and providing specialized feedback.`;
+        }
+
+        function formatMessage(content) {
+            // Convert markdown-like formatting to HTML
+            let formatted = content
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/`(.*?)`/g, '<code>$1</code>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>');
+            
+            // Wrap in paragraphs
+            if (!formatted.includes('<p>')) {
+                formatted = `<p>${formatted}</p>`;
+            }
+            
+            return formatted;
+        }
+
+        function getAgentAvatar(agentType) {
+            if (availableAgents[agentType]) {
+                return availableAgents[agentType].icon;
+            }
+            
+            const avatars = {
+                'researcher': '🔍',
+                'character_developer': '👥',
+                'plot_weaver': '🕸️',
+                'style_editor': '✍️',
+                'continuity_auditor': '📋',
+                'beta_reader': '📖',
+                'lorekeeper': '📚',
+                'proofreader': '🔤'
+            };
+            return avatars[agentType] || '🤖';
+        }
+
+        function formatAgentName(agentType) {
+            if (availableAgents[agentType]) {
+                return availableAgents[agentType].name;
+            }
+            
+            return agentType.split('_').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+        }
+
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('chat-messages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typing-indicator';
+            typingDiv.innerHTML = `
+                <div class="message-avatar">🤖</div>
+                <div>AI is thinking</div>
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            messagesContainer.appendChild(typingDiv);
+            scrollToBottom();
+        }
+
+        function hideTypingIndicator() {
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+
+        function updateSendButton() {
+            const button = document.getElementById('send-button');
+            button.disabled = isProcessing;
+            button.innerHTML = isProcessing ? '<span>⏳</span>' : '<span>📤</span>';
+        }
+
+        function handleEnter(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function adjustTextareaHeight() {
+            const textarea = document.getElementById('chat-input');
+            textarea.style.height = 'auto';
+            const newHeight = Math.min(textarea.scrollHeight, 120);
+            textarea.style.height = newHeight + 'px';
+        }
+
+        function scrollToBottom() {
+            const messagesContainer = document.getElementById('chat-messages');
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Settings Management
+        function getSettings() {
+            return {
+                temperature: parseFloat(document.getElementById('temperature').value),
+                maxTokens: parseInt(document.getElementById('max-tokens').value),
+                contextChunks: parseInt(document.getElementById('context-chunks').value)
+            };
+        }
+
+        function saveSettings() {
+            const settings = getSettings();
+            localStorage.setItem('aiWriterSettings', JSON.stringify(settings));
+        }
+
+        function loadSettings() {
+            const saved = localStorage.getItem('aiWriterSettings');
+            if (saved) {
+                const settings = JSON.parse(saved);
+                document.getElementById('temperature').value = settings.temperature || 0.7;
+                document.getElementById('max-tokens').value = settings.maxTokens || 2048;
+                document.getElementById('context-chunks').value = settings.contextChunks || 5;
+                
+                // Update temperature display
+                document.getElementById('temp-value').textContent = settings.temperature || 0.7;
+            }
+        }
+
+        // Chat History Management
+        function saveChatHistory() {
+            const historyToSave = chatHistory.slice(-50); // Keep last 50 messages
+            localStorage.setItem('aiWriterChatHistory', JSON.stringify(historyToSave));
+        }
+
+        function loadChatHistory() {
+            const saved = localStorage.getItem('aiWriterChatHistory');
+            if (saved) {
+                chatHistory = JSON.parse(saved);
+                
+                // Restore chat messages (skip the welcome message)
+                chatHistory.forEach(msg => {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = `message ${msg.sender}`;
+                    
+                    const time = new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    let avatar, author;
+                    if (msg.sender === 'user') {
+                        avatar = '👤';
+                        author = 'You';
+                    } else {
+                        avatar = getAgentAvatar(msg.agentType);
+                        author = msg.agentType ? formatAgentName(msg.agentType) : 'AI Assistant';
+                    }
+                    
+                    messageDiv.innerHTML = `
+                        <div class="message-avatar">${avatar}</div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <div class="message-author">${author}</div>
+                                <div class="message-time">${time}</div>
+                            </div>
+                            <div class="message-text">${formatMessage(msg.content)}</div>
+                        </div>
+                    `;
+                    
+                    document.getElementById('chat-messages').appendChild(messageDiv);
+                });
+                scrollToBottom();
+            }
+        }
+
+        function clearChat() {
+            if (confirm('Are you sure you want to clear the chat history?')) {
+                chatHistory = [];
+                localStorage.removeItem('aiWriterChatHistory');
+                
+                const messagesContainer = document.getElementById('chat-messages');
+                // Keep only the welcome message
+                const welcomeMessage = messagesContainer.firstElementChild;
+                messagesContainer.innerHTML = '';
+                messagesContainer.appendChild(welcomeMessage);
+                
+                showToast('Chat history cleared', 'success');
+            }
+        }
+
+        function exportChat() {
+            if (chatHistory.length === 0) {
+                showToast('No chat history to export', 'warning');
+                return;
+            }
+            
+            const exportData = {
+                timestamp: new Date().toISOString(),
+                messages: chatHistory,
+                settings: getSettings(),
+                enabledAgents: Array.from(enabledAgents)
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], {
+                type: 'application/json'
+            });
+            
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ai-writer-chat-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast('Chat exported successfully', 'success');
+        }
+
+        function showSettings() {
+            document.querySelector('.rag-settings').scrollIntoView({ behavior: 'smooth' });
+            showToast('Settings are in the left sidebar', 'success');
+        }
+
+        // Toast Notifications
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            
+            container.appendChild(toast);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease-in-out forwards';
+                setTimeout(() => {
+                    if (container.contains(toast)) {
+                        container.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            setTimeout(scrollToBottom, 100);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey || event.metaKey) {
+                switch(event.key) {
+                    case 'k':
+                        event.preventDefault();
+                        document.getElementById('chat-input').focus();
+                        break;
+                    case 'l':
+                        event.preventDefault();
+                        clearChat();
+                        break;
+                    case 's':
+                        event.preventDefault();
+                        exportChat();
+                        break;
+                }
+            }
+        });
+
+        // Auto-refresh system status every 30 seconds
+        setInterval(async () => {
+            try {
+                const status = await fetchSystemStatus();
+                updateSystemStatus(status);
+            } catch (error) {
+                // Silently fail - system is probably offline
+            }
+        }, 30000);
+    </script>
+</body>
+</html>
