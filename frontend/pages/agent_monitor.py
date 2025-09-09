@@ -502,7 +502,9 @@ def render_advanced_config_tab(agent_manager):
                 key="config_upload"
             )
             if uploaded_config:
-                st.success("📥 Configuracion importada exitosamente")_monitor_page(agent_manager):
+                st.success("📥 Configuracion importada exitosamente")
+
+def render_monitor_page(agent_manager):
     """Renderiza la pagina de monitoreo de agentes"""
     
     st.header("🤖 Monitor de Agentes")
@@ -738,5 +740,3 @@ def render_simulated_agents_data():
     # Mostrar como cards
     for agent in simulated_agents:
         render_agent_detail_card(agent)
-
-def render
