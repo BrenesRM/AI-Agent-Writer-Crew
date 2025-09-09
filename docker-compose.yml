@@ -7,7 +7,7 @@ services:
       - ./data:/app/data
       - ./outputs:/app/outputs
       - ./logs:/app/logs
-      - ./llm_local/models:/app/llm_local/models
+      - ./llm_local:/app/llm_local
       - ./.env:/app/.env
     environment:
       - PYTHONPATH=/app
@@ -30,6 +30,7 @@ services:
       - ./data:/app/data
       - ./outputs:/app/outputs
       - ./logs:/app/logs
+      - ./llm_local:/app/llm_local
       - ./.env:/app/.env
     environment:
       - PYTHONPATH=/app
@@ -71,6 +72,7 @@ services:
       - ./data:/app/data
       - ./outputs:/app/outputs
       - ./agents:/app/agents
+      - ./llm_local:/app/llm_local  # Added LLM model volume
       - ./.env:/app/.env
     environment:
       - PYTHONPATH=/app
