@@ -15,9 +15,6 @@ services:
       - PYTHONIOENCODING=utf-8
       - LANG=C.UTF-8
       - LC_ALL=C.UTF-8
-    ports:
-      - "8501:8501"  # Streamlit frontend
-      - "7860:7860"  # Gradio alternative
     networks:
       - ai-writer-network
     command: python -c "print('Use specific service commands or run interactively')"
@@ -43,8 +40,8 @@ services:
     networks:
       - ai-writer-network
     depends_on:
-      - ai-writer
-    command: streamlit run frontend/app.py --server.address 0.0.0.0 --server.port 8501
+      - rag-service
+    command: streamlit run frontend/app.py --server.address 0.0.0.0 --server.port 8501 --server.headless true --browser.gatherUsageStats false
 
   # RAG System Service
   rag-service:
